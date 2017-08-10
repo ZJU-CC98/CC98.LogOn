@@ -1,0 +1,15 @@
+@using Microsoft.AspNetCore.Http.Extensions
+@using Sakura.AspNetCore.Localization
+@inject IDynamicViewLocalizer ViewLocalizer
+
+<ul class="nav navbar-nav navbar-right">
+	@if (User.Identity.IsAuthenticated)
+	{
+		<li><a href="#">@ViewLocalizer.Html.LogOnCC98AccountLinkFormat(User.Identity.Name)</a></li>
+	}
+	else
+	{
+		<li><a asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">@ViewLocalizer.Html.LogOnCC98AccountLinkText</a></li>
+	}
+</ul>
+

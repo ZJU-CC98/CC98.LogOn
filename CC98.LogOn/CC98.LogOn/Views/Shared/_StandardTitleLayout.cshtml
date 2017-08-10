@@ -1,0 +1,16 @@
+@{
+	Layout = "_Layout";
+	ViewBag.PageTitle = ViewBag.PageTitle ?? ViewBag.Title;
+}
+
+<h1 class="page-header lead text-center">@ViewBag.Title</h1>
+
+@RenderBody()
+
+@section Head{
+	@await RenderSectionAsync("Head", false)
+}
+
+@section Scripts{
+	@await RenderSectionAsync("Scripts", false)
+}

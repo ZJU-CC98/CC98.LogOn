@@ -1,0 +1,49 @@
+@using Sakura.AspNetCore.Localization
+@model CC98.LogOn.Data.App
+@inject IDynamicViewLocalizer ViewLocalizer
+
+@{
+	ViewBag.Title = ViewLocalizer.Html.PageTitle;
+}
+
+<form asp-controller="App" asp-action="Create" asp-antiforgery="true" method="post">
+
+	<div class="form-group">
+		<label asp-for="Id"></label>
+		<p class="form-control-static">@Model.Id.ToString("D")</p>
+		<p class="help-block">@ViewLocalizer.Html.IdHelpText</p>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Secret"></label>
+		<p class="form-control-static">@Model.Secret.ToString("D")</p>
+		<p class="help-block">@ViewLocalizer.Html.SecretHelpText</p>
+	</div>
+
+
+	<div class="form-group">
+		<label asp-for="DisplayName"></label>
+		<input type="text" asp-for="DisplayName" />
+		<span asp-validation-for="DisplayName" class="text-danger"></span>
+		<p class="help-block">@ViewLocalizer.Html.DisplayNameHelpText</p>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Description"></label>
+		<textarea asp-for="Description" rows="4"></textarea>
+		<span asp-validation-for="Description" class="text-danger"></span>
+		<p class="help-block">@ViewLocalizer.Html.DescriptionHelpText</p>
+	</div>
+	
+	<div class="form-group">
+		<label asp-for="Description"></label>
+		<textarea asp-for="Description" rows="4"></textarea>
+		<span asp-validation-for="Description" class="text-danger"></span>
+		<p class="help-block">@ViewLocalizer.Html.DescriptionHelpText</p>
+	</div>
+
+
+	<hr />
+	<button class="btn btn-primary" type="submit">@ViewLocalizer.Html.CreateAppButtonText</button>
+	<button class="btn btn-default" type="reset">@ViewLocalizer.Html.ResetButtonText</button>
+</form>
