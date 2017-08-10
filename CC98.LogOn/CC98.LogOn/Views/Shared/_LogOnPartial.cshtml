@@ -5,7 +5,7 @@
 <ul class="nav navbar-nav navbar-right">
 	@if (User.Identity.IsAuthenticated)
 	{
-		<li><a href="#">@ViewLocalizer.Html.LogOnCC98AccountLinkFormat(User.Identity.Name)</a></li>
+		<li><a href="#">@ViewLocalizer.Html.CC98AccountFormat(User.Identity.Name)</a></li>
 	}
 	else
 	{

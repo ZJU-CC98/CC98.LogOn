@@ -123,4 +123,7 @@
   <data name="UserName" xml:space="preserve">
     <value>用户名</value>
   </data>
+  <data name="ValidTime" xml:space="preserve">
+    <value>保存时间</value>
+  </data>
 </root>

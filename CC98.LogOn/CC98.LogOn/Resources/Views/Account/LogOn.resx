@@ -153,4 +153,7 @@
   <data name="UserNameHelp" xml:space="preserve">
     <value>你的 CC98 账户名称。</value>
   </data>
+  <data name="ValidTimeHelp" xml:space="preserve">
+    <value>本次登录的有效期。注意，这个选项只影响你在 CC98 登录中心的登录有效期，并不影响你对应用的授权有效期。</value>
+  </data>
 </root>
