@@ -6,13 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CC98.LogOn.Data
 {
+	/// <inheritdoc />
 	/// <summary>
 	/// 定义 CC98 用户标识数据库。
 	/// </summary>
 	public class CC98IdentityDbContext : DbContext
 	{
+		/// <inheritdoc />
 		/// <summary>
-		/// 初始化一个 <see cref="CC98IdentityDbContext"/> 对象的新实例。
+		/// 初始化一个 <see cref="T:CC98.LogOn.Data.CC98IdentityDbContext" /> 对象的新实例。
 		/// </summary>
 		/// <param name="options">初始化数据库对象时提供的选项。</param>
 		public CC98IdentityDbContext(DbContextOptions<CC98IdentityDbContext> options)
