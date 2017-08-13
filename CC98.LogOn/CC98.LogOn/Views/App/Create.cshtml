@@ -1,3 +1,4 @@
+@using CC98.LogOn.Data
 @using Sakura.AspNetCore.Localization
 @model CC98.LogOn.Data.App
 @inject IDynamicViewLocalizer ViewLocalizer
@@ -34,14 +35,14 @@
 		<span asp-validation-for="Description" class="text-danger"></span>
 		<p class="help-block">@ViewLocalizer.Html.DescriptionHelpText</p>
 	</div>
-	
+
 	<div class="form-group">
 		<label asp-for="LogoUri"></label>
 		<input type="url" asp-for="LogoUri" />
 		<span asp-validation-for="LogoUri" class="text-danger"></span>
 		<p class="help-block">@ViewLocalizer.Html.LogoUriHelpText</p>
 	</div>
-	
+
 	<div class="form-group">
 		<label asp-for="WebPageUri"></label>
 		<input type="url" asp-for="WebPageUri" />
@@ -49,7 +50,56 @@
 		<p class="help-block">@ViewLocalizer.Html.WebPageUriHelpText</p>
 	</div>
 
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h2 class="panel-title">授权类型</h2>
+		</div>
 
+		<div class="panel-body">
+			<div class="checkbox">
+				<label>
+					<input asp-enum-flag-for="GrantTypes" asp-enum-flag-value="@AppGrantTypes.AuthorizationCode" />
+					<span>授权码验证</span>
+				</label>
+				<p class="help-block">允许应用程序使用授权码验证。授权码验证通常用于具有独立后台的场景，如网站和 Web 应用程序。此方案实现过程较为复杂，但安全性较高，可防止第三方引用伪造应用身份。</p>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input asp-enum-flag-for="GrantTypes" asp-enum-flag-value="@AppGrantTypes.Implicit" />
+					<span>隐式授权验证</span>
+				</label>
+				<p class="help-block">允许应用程序使用隐式授权验证。此方案实现过程较为简单，但安全性较弱，通常用于无法保证应用代码安全性（如终端设备）或有其他第三方机制保证访问安全性（如受限制的局域网）的场合。</p>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input asp-enum-flag-for="GrantTypes" asp-enum-flag-value="@AppGrantTypes.Hybrid" />
+					<span>混合授权验证</span>
+				</label>
+				<p class="help-block">允许应用程序使用混合授权验证。混合授权验证将同时提供令牌和授权码，可用于前端、后端混合部署场景，应用可在前端立即获得访问令牌，同时可通过单独部署的后端服务器接受刷新令牌，以便于降低对用户的令牌申请频率。</p>
+			</div>
+			<hr />
+			<div class="checkbox">
+				<label>
+					<input asp-enum-flag-for="GrantTypes" asp-enum-flag-value="@AppGrantTypes.ClientCredentials" />
+					<span>混合授权验证</span>
+				</label>
+				<p class="help-block">允许应用程序使用客户端凭据验证。客户端凭据授权无需用户交互，通常用于向服务器读写和应用自身相关的数据。</p>
+			</div>
+			<hr />
+			<div class="checkbox">
+				<label>
+					<input asp-enum-flag-for="GrantTypes" asp-enum-flag-value="@AppGrantTypes.ResourceOwnerPassword" disabled="@(Model.State != AppState.Trusted)" />
+					<span>密码验证</span>
+				</label>
+				<p class="help-block">允许应用程序通过其它途径（如应用内输入界面）获得的用户名和密码进行验证。启用此方式则应用能够通过模拟用户登录过程而实现长期自动认证。只有受信任的应用才能使用这种方式。</p>
+				@if (Model.State != AppState.Trusted)
+				{
+					<p class="text-warning">这个应用不能使用这种授权方式。如果你是应用的作者并希望使用这种授权，请联系 CC98 管理团队。</p>
+				}
+			</div>
+		</div>
+
+	</div>
 
 	<hr />
 	<button class="btn btn-primary" type="submit">@ViewLocalizer.Html.CreateAppButtonText</button>
