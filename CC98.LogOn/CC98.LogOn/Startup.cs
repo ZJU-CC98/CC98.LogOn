@@ -61,8 +61,9 @@ namespace CC98.LogOn
 		[UsedImplicitly]
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<CC98IdentityDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:CC98IdentityDbContext"]));
+			services.AddApplicationInsightsTelemetry();
 
+			services.AddDbContext<CC98IdentityDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:CC98IdentityDbContext"]));
 
 			// 添加本地化支持
 			services.AddLocalization(options =>
@@ -90,12 +91,15 @@ namespace CC98.LogOn
 				new IdentityResources.Profile()
 			};
 
+			// 添加身份验证服务
 			services.AddAuthentication()
+				// 基于 Cookie 的身份验证设置
 				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 				{
 					options.Cookie.SameSite = SameSiteMode.Lax;
 					options.Cookie.HttpOnly = true;
 					options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+
 					options.LoginPath = new PathString("/Account/LogOn");
 					options.LogoutPath = new PathString("/Account/LogOff");
 				});
@@ -108,7 +112,6 @@ namespace CC98.LogOn
 					options.UserInteraction.ConsentUrl = "/Authorize";
 				})
 				.AddInMemoryCaching()
-				.AddTemporarySigningCredential()
 				.AddClientStoreCache<AppClientStore>()
 				.AddTestUsers(new List<TestUser>())
 				.AddInMemoryApiResources(new List<ApiResource>())
@@ -157,29 +160,8 @@ namespace CC98.LogOn
 			// 允许访问静态文件
 			app.UseStaticFiles();
 
+			// 启用身份验证服务
 			app.UseAuthentication();
-
-
-			app.UseCookieAuthentication(new CookieAuthenticationOptions
-			{
-				AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
-				CookieHttpOnly = true,
-				CookieSecure = CookieSecurePolicy.None,
-				LoginPath = new PathString("/Account/LogOn"),
-				LogoutPath = new PathString("/Account/LogOff"),
-				AutomaticChallenge = true,
-				AutomaticAuthenticate = true
-			});
-
-			app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-			{
-				AuthenticationScheme = OpenIdConnectDefaults.AuthenticationScheme,
-				SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme,
-				Authority = "http://localhost:5000",
-				RequireHttpsMetadata = false,
-				ClientId = "mvc",
-				SaveTokens = true
-			});
 
 			// MVC 路由配置
 			app.UseMvc(routes =>

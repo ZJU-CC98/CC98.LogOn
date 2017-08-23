@@ -29,29 +29,44 @@ namespace CC98.LogOn.Data
 		/// 获取或设置数据库中包含的应用的集合。
 		/// </summary>
 		public virtual DbSet<App> Apps { get; set; }
+
+		/// <summary>
+		/// 获取或设置数据库中记录的所有领域的集合。
+		/// </summary>
+		public virtual DbSet<AppScope> AppScopes { get; set; }
 	}
 
 	/// <summary>
-	/// 表示一个 CC98 用户。
+	/// 表示一个应用的授权领域。
 	/// </summary>
-	public class CC98User
+	public class AppScope
 	{
 		/// <summary>
-		/// 获取或设置用户的标识。
+		/// 获取或设置该领域的标识。
 		/// </summary>
+		[MaxLength(20)]
 		[Key]
-		public int Id { get; set; }
+		public string Id { get; set; }
 
 		/// <summary>
-		/// 获取或设置用户的名称。
+		/// 获取或设置该领域的显示名称。
 		/// </summary>
 		[Required]
-		public string Name { get; set; }
+		public string DisplayName { get; set; }
 
 		/// <summary>
-		/// 获取或设置用户的密码的散列值。
+		/// 获取或设置该领域的描述。
 		/// </summary>
-		[Required]
-		public string PasswordHash { get; set; }
+		public string Description { get; set; }
+
+		/// <summary>
+		/// 获取或设置该领域所属的相关使用范围。
+		/// </summary>
+		public string Region { get; set; }
+
+		/// <summary>
+		/// 获取或设置一个值，指示是否要在领域列表中隐藏该领域。
+		/// </summary>
+		public string IsHidden { get; set; }
 	}
 }

@@ -6,12 +6,15 @@ using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ViewModels.Account;
 using IdentityServer4;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sakura.AspNetCore.Localization;
+using AuthenticationProperties = Microsoft.AspNetCore.Authentication.AuthenticationProperties;
 
 namespace CC98.LogOn.Controllers
 {
@@ -46,11 +49,13 @@ namespace CC98.LogOn.Controllers
 		/// <summary>
 		/// 显示登录界面。
 		/// </summary>
+		/// <param name="returnUrl">登录成功后返回的地址。</param>
 		/// <returns>操作结果。</returns>
 		[AllowAnonymous]
 		[HttpGet]
-		public IActionResult LogOn()
+		public IActionResult LogOn(string returnUrl)
 		{
+			ViewBag.ReturnUrl = returnUrl;
 			return View();
 		}
 
@@ -67,9 +72,11 @@ namespace CC98.LogOn.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				// 提取用户名和密码散列
 				var userName = model.UserName;
 				var passwordHash = CC98PasswordHashService.GetPasswordHash(model.Password);
 
+				// 检测登录信息是否正确
 				var user = await (from i in IdentityDbContext.Users
 								  where i.Name == userName && i.PasswordHash == passwordHash
 								  select i).FirstOrDefaultAsync();
@@ -80,6 +87,7 @@ namespace CC98.LogOn.Controllers
 					return View(model);
 				}
 
+				// 执行登录
 				var properties = new AuthenticationProperties
 				{
 					IssuedUtc = DateTimeOffset.Now,
@@ -88,9 +96,13 @@ namespace CC98.LogOn.Controllers
 					RedirectUri = returnUrl
 				};
 
-				await HttpContext.Authentication.SignInAsync(HttpContext.Authentication.GetIdentityServerAuthenticationScheme(), CreatePrincipalFromUserInfo(user), properties);
 
-				return Url.IsLocalUrl(returnUrl) ? (IActionResult)Redirect(returnUrl) : RedirectToAction("Index", "Home");
+				// 执行登录
+				await HttpContext.SignInAsync(HttpContext.GetIdentityServerAuthenticationScheme(), CreatePrincipalFromUserInfo(user), properties);
+
+				// 返回登录前页面
+				var realReturnUrl = Url.IsLocalUrl(returnUrl) ? returnUrl : Url.Action("Index", "Home");
+				return Redirect(realReturnUrl);
 			}
 
 
@@ -104,15 +116,21 @@ namespace CC98.LogOn.Controllers
 		/// <returns>The created <see cref="ClaimsPrincipal"/> object.</returns>
 		private static ClaimsPrincipal CreatePrincipalFromUserInfo(CC98User user)
 		{
+			const string provider = "CC98";
 			var userId = user.Id.ToString("D");
-			var provider = "CC98";
 
+			var authMethods = new[]
+			{
+				CookieAuthenticationDefaults.AuthenticationScheme
+			};
+
+			// 登录相关的额外声明信息
 			var extraClaims = new[]
 			{
 				new Claim(ClaimTypes.NameIdentifier, userId, ClaimValueTypes.Integer, provider)
 			};
 
-			return IdentityServerPrincipal.Create(userId, user.Name, provider, new[] { CookieAuthenticationDefaults.AuthenticationScheme }, extraClaims);
+			return IdentityServerPrincipal.Create(userId, user.Name, provider, authMethods, DateTime.Now, extraClaims);
 		}
 	}
 }
