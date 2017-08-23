@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
-using IdentityServer4.Configuration;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using JetBrains.Annotations;
@@ -94,6 +90,16 @@ namespace CC98.LogOn
 				new IdentityResources.Profile()
 			};
 
+			services.AddAuthentication()
+				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+				{
+					options.Cookie.SameSite = SameSiteMode.Lax;
+					options.Cookie.HttpOnly = true;
+					options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+					options.LoginPath = new PathString("/Account/LogOn");
+					options.LogoutPath = new PathString("/Account/LogOff");
+				});
+
 			// 添加 IdentityServer 服务
 			services.AddIdentityServer(options =>
 				{
@@ -150,6 +156,9 @@ namespace CC98.LogOn
 
 			// 允许访问静态文件
 			app.UseStaticFiles();
+
+			app.UseAuthentication();
+
 
 			app.UseCookieAuthentication(new CookieAuthenticationOptions
 			{
