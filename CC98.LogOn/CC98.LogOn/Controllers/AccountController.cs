@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -8,15 +6,11 @@ using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ViewModels.Account;
 using IdentityServer4;
-using IdentityServer4.Configuration;
-using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.EntityFrameworkCore.Query.ExpressionTranslators.Internal;
 using Sakura.AspNetCore.Localization;
 
 namespace CC98.LogOn.Controllers
@@ -64,6 +58,7 @@ namespace CC98.LogOn.Controllers
 		/// 执行登录操作。
 		/// </summary>
 		/// <param name="model">登录信息</param>
+		/// <param name="returnUrl">登录后的返回地址。</param>
 		/// <returns>操作结果。</returns>
 		[AllowAnonymous]
 		[HttpPost]
@@ -95,14 +90,7 @@ namespace CC98.LogOn.Controllers
 
 				await HttpContext.Authentication.SignInAsync(HttpContext.Authentication.GetIdentityServerAuthenticationScheme(), CreatePrincipalFromUserInfo(user), properties);
 
-				if (Url.IsLocalUrl(returnUrl))
-				{
-					return Redirect(returnUrl);
-				}
-				else
-				{
-					return RedirectToAction("Index", "Home");
-				}
+				return Url.IsLocalUrl(returnUrl) ? (IActionResult)Redirect(returnUrl) : RedirectToAction("Index", "Home");
 			}
 
 
