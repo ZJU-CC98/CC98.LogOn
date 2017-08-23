@@ -158,7 +158,8 @@ namespace CC98.LogOn
 				CookieSecure = CookieSecurePolicy.None,
 				LoginPath = new PathString("/Account/LogOn"),
 				LogoutPath = new PathString("/Account/LogOff"),
-				AutomaticChallenge = true
+				AutomaticChallenge = true,
+				AutomaticAuthenticate = true
 			});
 
 			app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions

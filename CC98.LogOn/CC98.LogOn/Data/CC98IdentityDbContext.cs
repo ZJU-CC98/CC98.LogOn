@@ -28,6 +28,9 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		public virtual DbSet<CC98User> Users { get; set; }
 
+		/// <summary>
+		/// 获取或设置数据库中包含的应用的集合。
+		/// </summary>
 		public virtual DbSet<App> Apps { get; set; }
 	}
 

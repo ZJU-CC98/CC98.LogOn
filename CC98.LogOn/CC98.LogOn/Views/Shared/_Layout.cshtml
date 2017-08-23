@@ -37,7 +37,12 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a asp-controller="App" asp-action="Index">应用</a></li>
+					<li class="dropdown">
+						<a asp-controller="App" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">应用 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a asp-controller="App" asp-action="Create">创建应用</a></li>
+						</ul>
+					</li>
 				</ul>
 				@await Html.PartialAsync("_LogOnPartial")
 			</div>
