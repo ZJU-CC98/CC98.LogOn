@@ -28,6 +28,8 @@ namespace CC98.LogOn.Migrations
                     b.Property<string>("AllowedScopesValue")
                         .HasColumnName("AllowedScopes");
 
+                    b.Property<DateTimeOffset>("CreateTime");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("DisplayName");
@@ -39,6 +41,9 @@ namespace CC98.LogOn.Migrations
                     b.Property<string>("LogoUri");
 
                     b.Property<string>("OwnerUserName");
+
+                    b.Property<string>("PostLogoutRedirectUrisValue")
+                        .HasColumnName("PostLogoutRedirectUris");
 
                     b.Property<string>("RedirectUrisValue")
                         .HasColumnName("RedirectUris");
@@ -52,6 +57,26 @@ namespace CC98.LogOn.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Apps");
+                });
+
+            modelBuilder.Entity("CC98.LogOn.Data.AppScope", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired();
+
+                    b.Property<string>("IsHidden");
+
+                    b.Property<string>("Region");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppScopes");
                 });
 
             modelBuilder.Entity("CC98.LogOn.Data.CC98User", b =>

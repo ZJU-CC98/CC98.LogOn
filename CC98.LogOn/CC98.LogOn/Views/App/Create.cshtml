@@ -1,6 +1,5 @@
-@using CC98.LogOn.Data
 @using Sakura.AspNetCore.Localization
-@model CC98.LogOn.Data.App
+@model App
 @inject IDynamicViewLocalizer ViewLocalizer
 
 @{
@@ -13,6 +12,8 @@
 	@await Html.PartialAsync("_AppInfoPartial")
 
 	<hr/>
+	
+	<div asp-validation-summary="ModelOnly"></div>
 	<button class="btn btn-primary" type="submit">@ViewLocalizer.Html.CreateAppButtonText</button>
-	<button class="btn btn-default" type="reset">@ViewLocalizer.Html.ResetButtonText</button>
+	<button class="btn btn-secondary" type="reset">@ViewLocalizer.Html.ResetButtonText</button>
 </form>

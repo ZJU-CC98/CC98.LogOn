@@ -3,36 +3,30 @@ using Microsoft.AspNetCore.Mvc.Localization;
 
 namespace CC98.LogOn.Controllers
 {
-    public class HomeController : Controller
-    {
-	    public HomeController(IViewLocalizer viewLocalizer)
-	    {
-	    }
+	public class HomeController : Controller
+	{
+		public IActionResult Index()
+		{
+			return View();
+		}
 
-	    private IViewLocalizer ViewLocalizer { get; }
+		public IActionResult About()
+		{
+			ViewData["Message"] = "Your application description page.";
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+			return View();
+		}
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
+		public IActionResult Contact()
+		{
+			ViewData["Message"] = "Your contact page.";
 
-            return View();
-        }
+			return View();
+		}
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
-        }
-    }
+		public IActionResult Error()
+		{
+			return View();
+		}
+	}
 }

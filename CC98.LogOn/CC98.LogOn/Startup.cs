@@ -16,7 +16,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Framework.DependencyInjection;
 using Sakura.AspNetCore.Localization;
+using Sakura.AspNetCore.Mvc;
 
 namespace CC98.LogOn
 {
@@ -73,7 +75,7 @@ namespace CC98.LogOn
 
 
 			// 添加 MVC 服务
-			services.AddMvc()
+			services.AddMvc(options => { options.EnableActionResultExceptionFilter(); }) // ActionResult 异常处理
 				.AddDataAnnotationsLocalization() // 数据批注本地化
 				.AddViewLocalization(LanguageViewLocationExpanderFormat.SubFolder); // 视图本地化
 
@@ -90,6 +92,20 @@ namespace CC98.LogOn
 				new IdentityResources.OpenId(),
 				new IdentityResources.Profile()
 			};
+
+			// 授权系统
+			services.AddAuthorization(options =>
+			{
+				options.AddPolicy(Policies.AdminApps, builder =>
+				{
+					builder.RequireRole(Policies.Roles.Administrators, Policies.Roles.AppAdministrators);
+				});
+
+				options.AddPolicy(Policies.OperateApps, builder =>
+				{
+					builder.RequireRole(Policies.Roles.Administrators, Policies.Roles.AppAdministrators, Policies.Roles.AppOperators);
+				});
+			});
 
 			// 添加身份验证服务
 			services.AddAuthentication()
@@ -116,6 +132,18 @@ namespace CC98.LogOn
 				.AddTestUsers(new List<TestUser>())
 				.AddInMemoryApiResources(new List<ApiResource>())
 				.AddInMemoryIdentityResources(resources);
+
+			//  分页器
+			services.AddBootstrapPagerGenerator(options => options.ConfigureDefault());
+
+			// 加强的临时数据
+			services.AddEnhancedTempData();
+
+			//  消息服务
+			services.AddOperationMessages();
+
+			services.AddSession();
+			services.AddMemoryCache();
 		}
 
 		/// <summary>
@@ -156,6 +184,8 @@ namespace CC98.LogOn
 			});
 
 			app.UseIdentityServer();
+
+			app.UseSession();
 
 			// 允许访问静态文件
 			app.UseStaticFiles();

@@ -1,0 +1,19 @@
+﻿@using Sakura.AspNetCore.Localization
+@model App
+@inject IDynamicViewLocalizer ViewLocalizer
+
+@{
+	ViewBag.Title = ViewLocalizer.Html.PageTitleFormat(Model.DisplayName);
+	ViewBag.IsEditMode = true;
+}
+
+<form asp-controller="App" asp-action="Edit" asp-antiforgery="true" method="post">
+
+	@await Html.PartialAsync("_AppInfoPartial")
+
+	<hr />
+
+	<div asp-validation-summary="ModelOnly"></div>
+	<button class="btn btn-primary" type="submit">@ViewLocalizer.Html.EditAppButtonText</button>
+	<button class="btn btn-secondary" type="reset">@ViewLocalizer.Html.ResetButtonText</button>
+</form>

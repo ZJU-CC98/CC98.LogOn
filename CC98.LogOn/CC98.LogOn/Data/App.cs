@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
+using JetBrains.Annotations;
 
 namespace CC98.LogOn.Data
 {
@@ -67,8 +68,8 @@ namespace CC98.LogOn.Data
 		[NotMapped]
 		public string[] RedirectUris
 		{
-			get => RedirectUrisValue.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-			set => RedirectUrisValue = string.Join("\n", value);
+			get => RedirectUrisValue.SplitForStore();
+			set => RedirectUrisValue = value.JoinForStore();
 		}
 
 		/// <summary>
@@ -86,8 +87,8 @@ namespace CC98.LogOn.Data
 		[NotMapped]
 		public string[] AllowedScopes
 		{
-			get => AllowedScopesValue.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-			set => AllowedScopesValue = string.Join("\n", value);
+			get => AllowedScopesValue.SplitForStore();
+			set => AllowedScopesValue = value.JoinForStore();
 		}
 
 		/// <summary>
@@ -104,62 +105,55 @@ namespace CC98.LogOn.Data
 		/// 获取或设置该应用允许的授权类型。
 		/// </summary>
 		public AppGrantTypes GrantTypes { get; set; }
+
+		/// <summary>
+		/// 获取或设置该客户端允许的注销后重定向 URL 地址。
+		/// </summary>
+		[DataType(DataType.MultilineText)]
+		[Column(nameof(PostLogoutRedirectUris))]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public string PostLogoutRedirectUrisValue { get; set; }
+
+		/// <summary>
+		/// 获取或设置该客户端允许的注销后重定向 URL 地址。
+		/// </summary>
+		[IgnoreDataMember]
+		[NotMapped]
+		public string[] PostLogoutRedirectUris
+		{
+			get => PostLogoutRedirectUrisValue.SplitForStore();
+			set => PostLogoutRedirectUrisValue = value.JoinForStore();
+		}
+
+		/// <summary>
+		/// 获取或设置应用的创建时间。
+		/// </summary>
+		public DateTimeOffset CreateTime { get; set; }
 	}
 
-
 	/// <summary>
-	/// 定义应用的类型。
+	/// 定义应用的机密信息。
 	/// </summary>
-	public enum AppState
+	public class AppSecretInfo
 	{
 		/// <summary>
-		/// 测试应用。测试应用具有所有访问权限但对于授权时间有限制。
+		/// 获取或设置机密的值。
 		/// </summary>
-		TestOnly = 0,
-		/// <summary>
-		/// 通过身份验证的普通应用。
-		/// </summary>
-		Normal,
-		/// <summary>
-		/// 受信任的开发者应用。受信任应用允许使用较为危险的授权类型。
-		/// </summary>
-		Trusted,
-		/// <summary>
-		/// 应用被吊销并无法使用。
-		/// </summary>
-		Revoked
-	}
+		public string Value { get; set; }
 
-	/// <summary>
-	/// 指定应用允许的授权类型。
-	/// </summary>
-	[Flags]
-	public enum AppGrantTypes
-	{
 		/// <summary>
-		/// 不允许任何授权。
+		/// 获取或设置机密的描述。
 		/// </summary>
-		None = 0x0,
-		/// <summary>
-		/// 应用程序授权码验证。
-		/// </summary>
-		AuthorizationCode = 0x1,
-		/// <summary>
-		/// 隐式授权验证。
-		/// </summary>
-		Implicit = 0x2,
-		/// <summary>
-		/// 客户端凭据授权验证。
-		/// </summary>
-		ClientCredentials = 0x4,
-		/// <summary>
-		/// 混合授权验证。
-		/// </summary>
-		Hybrid = 0x8,
-		/// <summary>
-		/// 所有者密码授权验证。
-		/// </summary>
-		ResourceOwnerPassword = 0x10
+		public string Description { get; set; }
 
+		/// <summary>
+		/// 获取或设置机密的创建时间。
+		/// </summary>
+		public DateTime CreateTime { get; set; }
+
+		/// <summary>
+		/// 获取或设置机密的过期时间。
+		/// </summary>
+		public DateTime? ExpireTime { get; set; }
 	}
 }

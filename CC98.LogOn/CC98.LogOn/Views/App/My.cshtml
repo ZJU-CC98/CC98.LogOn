@@ -1,0 +1,64 @@
+﻿@using Sakura.AspNetCore.Localization
+
+@model IPagedList<App>
+@inject IDynamicViewLocalizer ViewLocalizer
+@{
+	ViewBag.Title = "我的应用";
+}
+
+<div class="alert alert-info">该列表中列出了所有由你创建的应用信息。</div>
+
+@if (Model.Any())
+{
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>名称</th>
+				<th>状态</th>
+				<th>创建日期</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var i in Model)
+			{
+				<tr>
+					<th><a asp-controller="App" asp-action="Detail" asp-route-id="@i.Id">@i.DisplayName</a></th>
+					<td>
+						@switch (i.State)
+						{
+							case AppState.Normal:
+								<strong class="text-success">已审核</strong>
+								break;
+							case AppState.TestOnly:
+								<strong class="text-warning">未审核</strong>
+								break;
+							case AppState.Trusted:
+								<strong class="text-primary">受信任</strong>
+								break;
+							case AppState.Revoked:
+								<strong class="text-danger">已吊销</strong>
+								break;
+							default:
+								<strong class="text-muted">未知</strong>
+								break;
+						}
+					</td>
+					<td>@i.CreateTime.ToString("G", CultureInfo.CurrentUICulture)</td>
+					<td>
+						<div class="btn-group btn-group-sm">
+							<a asp-controller="App" asp-action="Edit" asp-route-id="@i.Id" class="btn btn-secondary">编辑</a>
+							<a asp-controller="App" asp-action="Delete" asp-route-id="@i.Id" class="btn btn-danger">删除</a>
+						</div>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<pager />
+}
+else
+{
+	<p class="text-muted text-center">你还没有注册任何应用。<a asp-controller="App" asp-action="Create">点击这里</a> 立即注册你的第一个应用吧！</p>
+}

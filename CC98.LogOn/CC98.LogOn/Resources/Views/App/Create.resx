@@ -120,28 +120,10 @@
   <data name="CreateAppButtonText" xml:space="preserve">
     <value>创建应用</value>
   </data>
-  <data name="DescriptionHelpText" xml:space="preserve">
-    <value>应用程序的描述。这将显示在用户授权页面和应用介绍页面上。</value>
-  </data>
-  <data name="DisplayNameHelpText" xml:space="preserve">
-    <value>应用程序的名称。这将显示在和应用相关的大部分页面上，包括授权确认，应用介绍和授权管理等。</value>
-  </data>
-  <data name="IdHelpText" xml:space="preserve">
-    <value>你的应用的标识，对应于 OpenID 协议的 ClientID 字段。你不能更改已经创建的标识。</value>
-  </data>
-  <data name="LogoUriHelpText" xml:space="preserve">
-    <value>应用的 LOGO 图标文件地址（可选）。如果指定了 LOGO，则它会显示在用户授权和应用介绍页面上。</value>
-  </data>
   <data name="PageTitle" xml:space="preserve">
     <value>创建应用</value>
   </data>
   <data name="ResetButtonText" xml:space="preserve">
     <value>清空内容</value>
-  </data>
-  <data name="SecretHelpText" xml:space="preserve">
-    <value>你的应用的机密，对应于 OpenID 协议的 ClientSecret 字段。你不能手动修改应用机密，如果需要更换机密，请单击&lt;q&gt;更换机密&lt;/q&gt;按钮。</value>
-  </data>
-  <data name="WebPageUriHelpText" xml:space="preserve">
-    <value>应用的主页地址（可选）。如果指定了主页地址，则将在授权和介绍页面用户将能够通过超链接访问该地址。</value>
   </data>
 </root>
