@@ -75,7 +75,11 @@ namespace CC98.LogOn
 
 
 			// 添加 MVC 服务
-			services.AddMvc(options => { options.EnableActionResultExceptionFilter(); }) // ActionResult 异常处理
+			services.AddMvc(options =>
+				{
+					options.EnableActionResultExceptionFilter(); // ActionResult 异常处理
+					options.AddFlagsEnumModelBinderProvider(); // 标志枚举绑定
+				}) 
 				.AddDataAnnotationsLocalization() // 数据批注本地化
 				.AddViewLocalization(LanguageViewLocationExpanderFormat.SubFolder); // 视图本地化
 

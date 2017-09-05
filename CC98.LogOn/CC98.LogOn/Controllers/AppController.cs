@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -18,10 +19,11 @@ namespace CC98.LogOn.Controllers
 	/// </summary>
 	public class AppController : Controller
 	{
-		public AppController(CC98IdentityDbContext dbContext, IAuthorizationService authorizationService)
+		public AppController(CC98IdentityDbContext dbContext, IAuthorizationService authorizationService, IOperationMessageAccessor messageAccessor)
 		{
 			DbContext = dbContext;
 			AuthorizationService = authorizationService;
+			MessageAccessor = messageAccessor;
 		}
 
 		/// <summary>
@@ -33,6 +35,11 @@ namespace CC98.LogOn.Controllers
 		/// 身份验证服务。
 		/// </summary>
 		private IAuthorizationService AuthorizationService { get; }
+
+		/// <summary>
+		/// 消息服务。
+		/// </summary>
+		private IOperationMessageAccessor MessageAccessor { get; }
 
 		/// <summary>
 		/// 视图主页。
@@ -136,9 +143,8 @@ namespace CC98.LogOn.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await LoadAppAndCheckPermissionAsync(model.Id);
-
-				DbContext.Apps.Update(model);
+				var item = await LoadAppAndCheckPermissionAsync(model.Id);
+				item.PatchExclude(model, i => new { i.Id, i.Secret, i.OwnerUserName });
 
 				try
 				{
@@ -153,6 +159,29 @@ namespace CC98.LogOn.Controllers
 			}
 
 			return View(model);
+		}
+
+		[HttpPost]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Delete(Guid id)
+		{
+			var app = await LoadAppAndCheckPermissionAsync(id);
+
+			DbContext.Apps.Remove(app);
+
+			try
+			{
+				await DbContext.SaveChangesAsync();
+				MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功",
+					string.Format(CultureInfo.CurrentUICulture, "你已经成功删除了应用 {0}", app.DisplayName));
+				return RedirectToAction("My", "App");
+
+			}
+			catch (DbUpdateException ex)
+			{
+				return BadRequest(ex.GetMessage());
+			}
 		}
 
 		/// <summary>

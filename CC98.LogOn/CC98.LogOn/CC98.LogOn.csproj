@@ -16,6 +16,7 @@
 		<PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="2.0.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
 		<PackageReference Include="Sakura.AspNetCore.DynamicLocalizer" Version="2.0.1" />
 		<PackageReference Include="Sakura.AspNetCore.Mvc.ActionResultExceptionExtensions" Version="1.0.0" />

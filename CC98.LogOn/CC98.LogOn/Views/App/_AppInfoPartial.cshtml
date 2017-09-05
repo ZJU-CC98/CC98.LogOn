@@ -4,6 +4,7 @@
 
 @{
 	var isEditMode = (bool)ViewBag.IsEditMode;
+	var isTrusted = Model?.State == AppState.Trusted;
 }
 
 <div class="row">
@@ -11,19 +12,26 @@
 		<div class="card">
 			<div class="card-header">基本信息</div>
 			<div class="card-body">
-				<div class="form-group">
-					<label asp-for="Secret" class="form-control-label"></label>
-					@if (isEditMode)
-					{
-						<p class="form-text text-muted">@Model.Secret.ToString("D")</p>
-					}
-					else
-					{
-						<p class="form-text text-info">创建应用后自动生成</p>
-					}
-					<small class="form-text text-muted">@ViewLocalizer.Html.SecretHelpText</small>
-				</div>
+				@if (isEditMode)
+				{
+					<div class="form-group">
+						<label asp-for="Id" class="form-control-label"></label>
+						<p class="form-text text-muted">@Model?.Id.ToString("D")</p>
+						<small class="form-text text-muted">@ViewLocalizer.Html.IdHelpText</small>
+					</div>
 
+					<div class="form-group">
+						<label asp-for="Secret" class="form-control-label"></label>
+						<p class="form-text text-muted">@Model?.Secret.ToString("D")</p>
+						<small class="form-text text-muted">@ViewLocalizer.Html.SecretHelpText</small>
+					</div>
+				}
+				else
+				{
+					<p class="form-text text-info">在创建应用后，系统将为你自动生成应用标识和应用的机密。</p>
+				}
+
+				<hr />
 
 				<div class="form-group">
 					<label asp-for="DisplayName" class="form-control-label"></label>
@@ -97,13 +105,13 @@
 				<hr />
 				<div class="form-check">
 					<label class="form-check-label">
-						<input class="form-check-input" type="checkbox" asp-enum-flag-for="GrantTypes" asp-enum-flag-value="@AppGrantTypes.ResourceOwnerPassword" disabled="@(Model != null && Model.State != AppState.Trusted)" />
+						<input class="form-check-input" type="checkbox" asp-enum-flag-for="GrantTypes" asp-enum-flag-value="@AppGrantTypes.ResourceOwnerPassword" disabled="@(!isTrusted)" />
 						<span>密码验证</span>
 					</label>
 					<small class="form-text text-muted">允许应用程序通过其它途径（如应用内输入界面）获得的用户名和密码进行验证。启用此方式则应用能够通过模拟用户登录过程而实现长期自动认证。只有受信任的应用才能使用这种方式。</small>
-					@if (Model != null && Model.State != AppState.Trusted)
+					@if (!isTrusted)
 					{
-						<p class="text-warning">这个应用不能使用这种授权方式。如果你是应用的作者并希望使用这种授权，请联系 CC98 管理团队。</p>
+						<small class="form-text text-warning">这个应用不能使用这种授权方式。如果你是应用的作者并希望使用这种授权，请联系 CC98 管理团队。</small>
 					}
 				</div>
 			</div>

@@ -1,7 +1,11 @@
+@addTagHelper *, Sakura.AspNetCore.Mvc.Messages
+
 @{
 	Layout = "_Layout";
 	ViewBag.PageTitle = ViewBag.PageTitle ?? ViewBag.Title;
 }
+
+<div asp-message-list="AlertDialogClosable"></div>
 
 <h1 class="lead text-center">@ViewBag.Title</h1>
 <hr />

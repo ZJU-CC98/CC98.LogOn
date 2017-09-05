@@ -5,7 +5,8 @@
     "bootstrap": "v4.0.0-beta",
     "jquery": "3.2.1",
     "jquery-validation": "1.17.0",
-    "jquery-validation-unobtrusive": "3.2.6"
+    "jquery-validation-unobtrusive": "3.2.6",
+    "jquery-ajax-unobtrusive": "v3.2.4"
   },
   "resolutions": {
     "jquery": "3.2.1",
