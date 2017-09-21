@@ -30,31 +30,17 @@ namespace CC98.LogOn
 		/// <summary>
 		/// 初始化一个 <see cref="Startup"/> 类型的新实例。
 		/// </summary>
-		/// <param name="env">应用程序的宿主环境。</param>
+		/// <param name="configuration">应用程序的配置信息。</param>
 		[UsedImplicitly]
-		public Startup(IHostingEnvironment env)
+		public Startup(IConfiguration configuration)
 		{
-			// 加载应用程序配置
-			var builder = new ConfigurationBuilder()
-				.SetBasePath(env.ContentRootPath) // 配置文件基础路径
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) // 基本配置
-				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true) // 特性环境配置
-				.AddEnvironmentVariables();
-
-			// 在开发环境中导入用户机密设置
-			if (env.IsDevelopment())
-			{
-				builder.AddUserSecrets<Startup>();
-			}
-
-			// 生成配置文件
-			Configuration = builder.Build();
+			Configuration = configuration;
 		}
 
 		/// <summary>
 		/// 获取应用程序的配置信息。
 		/// </summary>
-		private IConfigurationRoot Configuration { get; }
+		private IConfiguration Configuration { get; }
 
 		/// <summary>
 		/// 配置应用程序服务。
@@ -79,7 +65,7 @@ namespace CC98.LogOn
 				{
 					options.EnableActionResultExceptionFilter(); // ActionResult 异常处理
 					options.AddFlagsEnumModelBinderProvider(); // 标志枚举绑定
-				}) 
+				})
 				.AddDataAnnotationsLocalization() // 数据批注本地化
 				.AddViewLocalization(LanguageViewLocationExpanderFormat.SubFolder); // 视图本地化
 
@@ -129,11 +115,12 @@ namespace CC98.LogOn
 				{
 					options.UserInteraction.LoginUrl = "/Account/LogOn";
 					options.UserInteraction.LogoutUrl = "/Account/LogOff";
-					options.UserInteraction.ConsentUrl = "/Authorize";
+					options.UserInteraction.ConsentUrl = "/Account/Consent";
 				})
 				.AddInMemoryCaching()
 				.AddClientStoreCache<AppClientStore>()
-				.AddTestUsers(new List<TestUser>())
+				.AddProfileService<CC98UserProfileService>()
+				.AddResourceOwnerValidator<CC98UserPasswordValidator>()
 				.AddInMemoryApiResources(new List<ApiResource>())
 				.AddInMemoryIdentityResources(resources);
 

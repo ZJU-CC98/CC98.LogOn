@@ -6,7 +6,8 @@
     "jquery": "3.2.1",
     "jquery-validation": "1.17.0",
     "jquery-validation-unobtrusive": "3.2.6",
-    "jquery-ajax-unobtrusive": "v3.2.4"
+    "jquery-ajax-unobtrusive": "v3.2.4",
+    "font-awesome": "Font-Awesome#v4.7.0"
   },
   "resolutions": {
     "jquery": "3.2.1",

@@ -1,0 +1,17 @@
+﻿@model AppScope
+@{
+	ViewBag.Title = string.Format(CultureInfo.CurrentUICulture, "编辑领域 - {0}", Model.Id);
+	ViewBag.IsEditMode = true;
+}
+
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<form asp-controller="Scope" asp-action="Edit" method="post" asp-antiforgery="true">
+			@await Html.PartialAsync("_ScopeInfoPartial")
+			<hr />
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<button type="submit" class="btn btn-primary">创建领域</button>
+			<button type="reset" class="btn btn-secondary">清空内容</button>
+		</form>
+	</div>
+</div>

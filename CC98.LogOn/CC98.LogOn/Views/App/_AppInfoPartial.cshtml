@@ -68,8 +68,26 @@
 					<small class="form-text text-muted">@ViewLocalizer.Html.RedirectUrisHelpText</small>
 				</div>
 
+				
+
+				@if (isEditMode)
+				{
+					// 编辑模式下才能修改所有者
+
+					<hr />
+
+					<div class="form-group">
+						<label asp-for="OwnerUserName" class="form-control-label"></label>
+						<textarea rows="3" asp-multiline-for="OwnerUserName" class="form-control"></textarea>
+						<span asp-validation-for="OwnerUserName" class="text-danger"></span>
+						<small class="form-text text-muted">@ViewLocalizer.Html.OwnerUserNameHelpText</small>
+					</div>
+				}
+
 			</div>
 		</div>
+	</div>
+	<div class="col-md-6">
 		<div class="card">
 			<div class="card-header">授权类型</div>
 			<div class="card-body">
@@ -110,20 +128,21 @@
 					</label>
 					<small class="form-text text-muted">允许应用程序通过其它途径（如应用内输入界面）获得的用户名和密码进行验证。启用此方式则应用能够通过模拟用户登录过程而实现长期自动认证。只有受信任的应用才能使用这种方式。</small>
 					@if (!isTrusted)
-					{
-						<small class="form-text text-warning">这个应用不能使用这种授权方式。如果你是应用的作者并希望使用这种授权，请联系 CC98 管理团队。</small>
-					}
+			{
+					<small class="form-text text-warning">这个应用不能使用这种授权方式。如果你是应用的作者并希望使用这种授权，请联系 CC98 管理团队。</small>
+			}
 				</div>
 			</div>
 
 		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="card">
+
+		<div class="card mt-3">
 			<div class="card-header">授权领域</div>
 			<div class="card-body">
 				<p class="card-text text-muted">设置该应用允许使用的授权领域。如果应用向用户请求授权时请求的领域超过了此处的授权范围，则授权过程将会立刻终止。</p>
 				<hr />
+				<vc:scope-selector input-name="@nameof(Model.AllowedScopes)" selected-items="@Model?.AllowedScopes" />
+
 			</div>
 		</div>
 	</div>

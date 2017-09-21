@@ -1,7 +1,11 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/CC98.LogOn",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:11040/",
       "sslPort": 0
@@ -17,7 +21,6 @@
     },
     "CC98.LogOn": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
