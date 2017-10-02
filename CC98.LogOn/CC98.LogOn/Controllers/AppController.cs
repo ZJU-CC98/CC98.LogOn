@@ -144,7 +144,7 @@ namespace CC98.LogOn.Controllers
 			if (ModelState.IsValid)
 			{
 				var item = await LoadAppAndCheckPermissionAsync(model.Id);
-				item.PatchExclude(model, i => new { i.Id, i.Secret, i.CreateTime });
+				item.PatchExclude(model, i => new { i.Id, i.Secret, i.CreateTime, i.State });
 
 				try
 				{
