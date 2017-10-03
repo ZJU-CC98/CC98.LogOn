@@ -142,6 +142,7 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		[IgnoreDataMember]
 		[NotMapped]
+		[Display(Name = "AllowedCorsOriginsName")]
 		public string[] AllowedCorsOrigins
 		{
 			get => AllowedCorsOriginsValue.SplitForStore();

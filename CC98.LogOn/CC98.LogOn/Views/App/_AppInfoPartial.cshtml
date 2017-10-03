@@ -77,23 +77,19 @@
 					<small class="form-text text-muted">@ViewLocalizer.Html.AllowedCorsOriginsHelpText</small>
 				</div>
 
-			</div>
-		</div>
-
 
 				@if (isEditMode)
 				{
 					// 编辑模式下才能修改所有者
 
 					<hr />
-
 					<div class="form-group">
 						<label asp-for="OwnerUserName" class="form-control-label"></label>
 						<input asp-for="OwnerUserName" class="form-control" />
 						<span asp-validation-for="OwnerUserName" class="text-danger"></span>
 						<small class="form-text text-muted">@ViewLocalizer.Html.OwnerUserNameHelpText</small>
 					</div>
-				}
+			}
 
 			</div>
 		</div>
@@ -142,7 +138,7 @@
 					{
 						<small class="form-text text-warning">这个应用不能使用这种授权方式。如果你是应用的作者并希望使用这种授权，请联系 CC98 管理团队。</small>
 					}
-					</div>
+				</div>
 			</div>
 
 		</div>
@@ -158,5 +154,3 @@
 		</div>
 	</div>
 </div>
-
-
