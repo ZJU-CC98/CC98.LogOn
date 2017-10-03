@@ -7,6 +7,19 @@
 	ViewBag.IsEditMode = true;
 }
 
+@switch (Model.State)
+{
+	case AppState.TestOnly:
+		<div class="alert alert-warning">这个应用目前尚未通过审核。未通过审核的应用，授权时间和次数将会受到限制。</div>
+		break;
+	case AppState.Trusted:
+		<div class="alert alert-primary">这个应用是受信任应用程序，可以使用对安全性要求较高的授权模式请求用户授权较为危险的操作。</div>
+		break;
+	case AppState.Revoked:
+		<div class="alert alert-danger">这个应用已经被吊销，无法请求用户进行授权。要了解详细信息，请联系 CC98 管理团队。</div>
+		break;
+}
+
 <form asp-controller="App" asp-action="Edit" asp-antiforgery="true" method="post">
 
 	@await Html.PartialAsync("_AppInfoPartial")

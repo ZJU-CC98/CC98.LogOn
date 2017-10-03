@@ -68,6 +68,7 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		[IgnoreDataMember]
 		[NotMapped]
+		[Display(Name = "RedirectUrisName")]
 		public string[] RedirectUris
 		{
 			get => RedirectUrisValue.SplitForStore();
@@ -96,6 +97,7 @@ namespace CC98.LogOn.Data
 		/// <summary>
 		/// 获取或设置该应用的所有者名称。
 		/// </summary>
+		[Display(Name ="OwnerUserNameName")]
 		public string OwnerUserName { get; set; }
 
 		/// <summary>

@@ -135,6 +135,9 @@
   <data name="LogoUriHelpText" xml:space="preserve">
     <value>应用的 LOGO 图标文件地址（可选）。如果指定了 LOGO，则它会显示在用户授权和应用介绍页面上。</value>
   </data>
+  <data name="OwnerUserNameHelpText" xml:space="preserve">
+    <value>应用的所有者账户名称。管理员和应用所有者可以编辑修改应用的信息。如果修改这一栏的内容，则应用将被转移到新的所有者。如果这一栏留空，则只有管理员能修改应用信息。</value>
+  </data>
   <data name="PageTitle" xml:space="preserve">
     <value>创建应用</value>
   </data>

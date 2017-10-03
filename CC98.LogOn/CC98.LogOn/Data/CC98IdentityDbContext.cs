@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace CC98.LogOn.Data
 {
@@ -34,39 +33,19 @@ namespace CC98.LogOn.Data
 		/// 获取或设置数据库中记录的所有领域的集合。
 		/// </summary>
 		public virtual DbSet<AppScope> AppScopes { get; set; }
-	}
 
-	/// <summary>
-	/// 表示一个应用的授权领域。
-	/// </summary>
-	public class AppScope
-	{
-		/// <summary>
-		/// 获取或设置该领域的标识。
-		/// </summary>
-		[MaxLength(20)]
-		[Key]
-		public string Id { get; set; }
+		public virtual DbSet<CC98Role> Roles { get; set; }
 
-		/// <summary>
-		/// 获取或设置该领域的显示名称。
-		/// </summary>
-		[Required]
-		public string DisplayName { get; set; }
+		public virtual DbSet<CC98UserRole> UserRoles { get; set; }
 
-		/// <summary>
-		/// 获取或设置该领域的描述。
-		/// </summary>
-		public string Description { get; set; }
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
 
-		/// <summary>
-		/// 获取或设置该领域所属的相关使用范围。
-		/// </summary>
-		public string Region { get; set; }
+			modelBuilder.Entity<CC98Role>().HasAlternateKey(i => i.Name);
+			modelBuilder.Entity<CC98User>().HasAlternateKey(i => i.Name);
 
-		/// <summary>
-		/// 获取或设置一个值，指示是否要在领域列表中隐藏该领域。
-		/// </summary>
-		public string IsHidden { get; set; }
+			modelBuilder.Entity<CC98UserRole>().HasKey(i => new { i.UserId, i.RoleId });
+		}
 	}
 }

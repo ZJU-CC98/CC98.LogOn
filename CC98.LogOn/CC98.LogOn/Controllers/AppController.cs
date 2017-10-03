@@ -144,7 +144,7 @@ namespace CC98.LogOn.Controllers
 			if (ModelState.IsValid)
 			{
 				var item = await LoadAppAndCheckPermissionAsync(model.Id);
-				item.PatchExclude(model, i => new { i.Id, i.Secret, i.OwnerUserName });
+				item.PatchExclude(model, i => new { i.Id, i.Secret, i.CreateTime, i.State });
 
 				try
 				{
@@ -155,12 +155,16 @@ namespace CC98.LogOn.Controllers
 				{
 					ModelState.AddModelError(string.Empty, ex.Message);
 				}
-
 			}
 
 			return View(model);
 		}
 
+		/// <summary>
+		/// 执行删除操作。
+		/// </summary>
+		/// <param name="id">要删除的标识。</param>
+		/// <returns>操作结果。</returns>
 		[HttpPost]
 		[Authorize]
 		[ValidateAntiForgeryToken]
@@ -264,6 +268,21 @@ namespace CC98.LogOn.Controllers
 		private async Task<bool> CanManageAppsOrIsOwnerAsync(App app)
 		{
 			return await CanManageAppsAsync() || IsAppOwner(app);
+		}
+
+		/// <summary>
+		/// 查看应用管理界面。
+		/// </summary>
+		/// <returns>操作结果。</returns>
+		[HttpGet]
+		[Authorize(Policies.OperateApps)]
+		public async Task<IActionResult> Manage(int page = 1)
+		{
+			var items = from i in DbContext.Apps
+						orderby i.CreateTime descending
+						select i;
+
+			return View(await items.ToPagedListAsync(20, page));
 		}
 	}
 }

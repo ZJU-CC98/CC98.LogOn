@@ -73,7 +73,7 @@ namespace CC98.LogOn.Migrations
                     b.Property<string>("DisplayName")
                         .IsRequired();
 
-                    b.Property<string>("IsHidden");
+                    b.Property<bool>("IsHidden");
 
                     b.Property<string>("Region");
 
@@ -82,20 +82,73 @@ namespace CC98.LogOn.Migrations
                     b.ToTable("AppScopes");
                 });
 
-            modelBuilder.Entity("CC98.LogOn.Data.CC98User", b =>
+            modelBuilder.Entity("CC98.LogOn.Data.CC98Role", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DisplayName");
 
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired();
+                    b.Property<string>("Region");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.HasAlternateKey("Name");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("CC98.LogOn.Data.CC98User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("UserId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("UserName");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnName("UserPassword");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("Name");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("CC98.LogOn.Data.CC98UserRole", b =>
+                {
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("RoleId");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("CC98.LogOn.Data.CC98UserRole", b =>
+                {
+                    b.HasOne("CC98.LogOn.Data.CC98Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CC98.LogOn.Data.CC98User", "User")
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

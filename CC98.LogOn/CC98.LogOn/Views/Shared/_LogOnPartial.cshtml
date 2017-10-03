@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Http.Extensions
+﻿@using Microsoft.AspNetCore.Http.Extensions
 @using Sakura.AspNetCore.Localization
 @inject IDynamicViewLocalizer ViewLocalizer
 
@@ -6,6 +6,11 @@
 	@if (User.Identity.IsAuthenticated)
 	{
 		<li class="nav-item"><a class="nav-link" href="#">@ViewLocalizer.Html.CC98AccountFormat(User.Identity.Name)</a></li>
+		<li>
+			<form id="log-off-form" asp-controller="Account" asp-action="LogOff" method="post" asp-antiforgery="true">
+				<a class="nav-link" href="#" onclick="$('#log-off-form').submit();">注销</a>
+			</form>
+		</li>
 	}
 	else
 	{
