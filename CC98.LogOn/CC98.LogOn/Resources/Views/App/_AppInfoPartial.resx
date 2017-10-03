@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AllowedCorsOriginsHelpText" xml:space="preserve">
+    <value>该应用允许的 CORS 来源地址。如果你的应用需要发起后台请求，则应当设定有效的 CORS 来源，防止应用被第三方开发者嵌入到不可信位置。</value>
+  </data>
   <data name="CreateAppButtonText" xml:space="preserve">
     <value>创建应用</value>
   </data>

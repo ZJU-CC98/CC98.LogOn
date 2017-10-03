@@ -61,11 +61,20 @@
 					<small class="form-text text-muted">@ViewLocalizer.Html.WebPageUriHelpText</small>
 				</div>
 
+				<hr />
+
 				<div class="form-group">
 					<label asp-for="RedirectUris" class="form-control-label"></label>
 					<textarea rows="3" asp-multiline-for="RedirectUris" class="form-control"></textarea>
 					<span asp-validation-for="RedirectUris" class="text-danger"></span>
 					<small class="form-text text-muted">@ViewLocalizer.Html.RedirectUrisHelpText</small>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="AllowedCorsOrigins" class="form-control-label"></label>
+					<textarea rows="3" asp-multiline-for="AllowedCorsOrigins" class="form-control"></textarea>
+					<span asp-validation-for="AllowedCorsOrigins" class="text-danger"></span>
+					<small class="form-text text-muted">@ViewLocalizer.Html.AllowedCorsOriginsHelpText</small>
 				</div>
 
 			</div>
