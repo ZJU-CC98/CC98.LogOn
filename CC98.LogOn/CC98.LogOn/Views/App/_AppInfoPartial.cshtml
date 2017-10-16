@@ -61,6 +61,8 @@
 					<small class="form-text text-muted">@ViewLocalizer.Html.WebPageUriHelpText</small>
 				</div>
 
+				<hr />
+
 				<div class="form-group">
 					<label asp-for="RedirectUris" class="form-control-label"></label>
 					<textarea rows="3" asp-multiline-for="RedirectUris" class="form-control"></textarea>
@@ -68,6 +70,12 @@
 					<small class="form-text text-muted">@ViewLocalizer.Html.RedirectUrisHelpText</small>
 				</div>
 
+				<div class="form-group">
+					<label asp-for="AllowedCorsOrigins" class="form-control-label"></label>
+					<textarea rows="3" asp-multiline-for="AllowedCorsOrigins" class="form-control"></textarea>
+					<span asp-validation-for="AllowedCorsOrigins" class="text-danger"></span>
+					<small class="form-text text-muted">@ViewLocalizer.Html.AllowedCorsOriginsHelpText</small>
+				</div>
 
 
 				@if (isEditMode)
@@ -75,14 +83,13 @@
 					// 编辑模式下才能修改所有者
 
 					<hr />
-
 					<div class="form-group">
 						<label asp-for="OwnerUserName" class="form-control-label"></label>
 						<input asp-for="OwnerUserName" class="form-control" />
 						<span asp-validation-for="OwnerUserName" class="text-danger"></span>
 						<small class="form-text text-muted">@ViewLocalizer.Html.OwnerUserNameHelpText</small>
 					</div>
-				}
+			}
 
 			</div>
 		</div>
@@ -188,5 +195,3 @@
 		</div>
 	</div>
 </div>
-
-

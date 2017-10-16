@@ -16,11 +16,13 @@ namespace CC98.LogOn.Data
 		/// 获取或设置该对象的标识。
 		/// </summary>
 		[Key]
+		[Display(Name = "IdName")]
 		public Guid Id { get; set; }
 
 		/// <summary>
 		/// 获取或设置该对象的机密。
 		/// </summary>
+		[Display(Name = "SecretName")]
 		public Guid Secret { get; set; }
 
 		[DataType(DataType.Text)]
@@ -126,6 +128,26 @@ namespace CC98.LogOn.Data
 		{
 			get => PostLogoutRedirectUrisValue.SplitForStore();
 			set => PostLogoutRedirectUrisValue = value.JoinForStore();
+		}
+
+		/// <summary>
+		/// 获取或设置该客户端允许的 CORS 来源。
+		/// </summary>
+		[DataType(DataType.MultilineText)]
+		[Column(nameof(AllowedCorsOrigins))]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public string AllowedCorsOriginsValue { get; set; }
+
+		/// <summary>
+		/// 获取或设置该客户端允许的 CORS 来源。
+		/// </summary>
+		[IgnoreDataMember]
+		[NotMapped]
+		[Display(Name = "AllowedCorsOriginsName")]
+		public string[] AllowedCorsOrigins
+		{
+			get => AllowedCorsOriginsValue.SplitForStore();
+			set => AllowedCorsOriginsValue = value.JoinForStore();
 		}
 
 		/// <summary>

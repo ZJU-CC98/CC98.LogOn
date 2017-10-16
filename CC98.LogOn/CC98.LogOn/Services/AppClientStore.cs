@@ -67,6 +67,9 @@ namespace CC98.LogOn.Services
 				// 重定向 URI 集合
 				RedirectUris = app.RedirectUris,
 
+				// 允许的 CORS 来源
+				AllowedCorsOrigins = app.AllowedScopes,
+
 				// 注销后重定向地址
 				PostLogoutRedirectUris = app.PostLogoutRedirectUris,
 				// 允许的授权类型
@@ -117,9 +120,6 @@ namespace CC98.LogOn.Services
 				// 允许使用的声明，目前不支持
 				Claims = new Claim[0],
 
-				// 允许的 CORS 来源，目前不允许
-				AllowedCorsOrigins = new string[0],
-
 				// 不要求必须 PK
 				RequirePkce = false,
 				// 不允许明文传输 PK
@@ -142,7 +142,7 @@ namespace CC98.LogOn.Services
 				// 后台和前台注销会话地址
 				BackChannelLogoutUri = null,
 				FrontChannelLogoutUri = null,
-				
+
 				// 始终包含 JWT 标识
 				IncludeJwtId = true,
 				// 支持的协议类型

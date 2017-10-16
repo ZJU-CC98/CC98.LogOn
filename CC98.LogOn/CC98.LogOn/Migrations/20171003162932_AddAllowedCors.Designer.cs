@@ -11,9 +11,10 @@ using System;
 namespace CC98.LogOn.Migrations
 {
     [DbContext(typeof(CC98IdentityDbContext))]
-    partial class CC98IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171003162932_AddAllowedCors")]
+    partial class AddAllowedCors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +74,7 @@ namespace CC98.LogOn.Migrations
                     b.Property<string>("DisplayName")
                         .IsRequired();
 
-                    b.Property<bool>("IsHidden");
+                    b.Property<string>("IsHidden");
 
                     b.Property<string>("Region");
 
@@ -82,73 +83,20 @@ namespace CC98.LogOn.Migrations
                     b.ToTable("AppScopes");
                 });
 
-            modelBuilder.Entity("CC98.LogOn.Data.CC98Role", b =>
+            modelBuilder.Entity("CC98.LogOn.Data.CC98User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("DisplayName");
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("Region");
-
-                    b.HasKey("Id");
-
-                    b.HasAlternateKey("Name");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("CC98.LogOn.Data.CC98User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("UserId");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnName("UserName");
-
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnName("UserPassword");
+                        .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name");
-
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("CC98.LogOn.Data.CC98UserRole", b =>
-                {
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles");
-                });
-
-            modelBuilder.Entity("CC98.LogOn.Data.CC98UserRole", b =>
-                {
-                    b.HasOne("CC98.LogOn.Data.CC98Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CC98.LogOn.Data.CC98User", "User")
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

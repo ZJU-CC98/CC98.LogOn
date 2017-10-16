@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AllowedCorsOriginsName" xml:space="preserve">
+    <value>允许的 CORS 来源</value>
+  </data>
   <data name="DescriptionName" xml:space="preserve">
     <value>描述</value>
   </data>
@@ -124,7 +127,7 @@
     <value>显示名称</value>
   </data>
   <data name="IdName" xml:space="preserve">
-    <value>标识</value>
+    <value>应用标识</value>
   </data>
   <data name="LogoUriName" xml:space="preserve">
     <value>图标地址</value>
@@ -134,6 +137,9 @@
   </data>
   <data name="RedirectUrisName" xml:space="preserve">
     <value>重定向地址</value>
+  </data>
+  <data name="SecretName" xml:space="preserve">
+    <value>应用机密</value>
   </data>
   <data name="StateName" xml:space="preserve">
     <value>状态</value>
