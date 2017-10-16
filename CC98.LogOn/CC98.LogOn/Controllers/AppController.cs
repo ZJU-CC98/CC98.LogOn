@@ -146,6 +146,12 @@ namespace CC98.LogOn.Controllers
 				var item = await LoadAppAndCheckPermissionAsync(model.Id);
 				item.PatchExclude(model, i => new { i.Id, i.Secret, i.CreateTime, i.State });
 
+				// 管理员可以修改状态
+				if ((await AuthorizationService.AuthorizeAsync(User, Policies.OperateApps)).Succeeded)
+				{
+					item.PatchInclude(model, i => new { i.State });
+				}
+
 				try
 				{
 					await DbContext.SaveChangesAsync();

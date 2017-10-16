@@ -135,6 +135,9 @@
   <data name="RedirectUrisName" xml:space="preserve">
     <value>重定向地址</value>
   </data>
+  <data name="StateName" xml:space="preserve">
+    <value>状态</value>
+  </data>
   <data name="WebPageUriName" xml:space="preserve">
     <value>网页地址</value>
   </data>

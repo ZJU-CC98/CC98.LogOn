@@ -2,6 +2,7 @@
 using System.Globalization;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
+using CC98.LogOn.ZjuInfoAuth;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using JetBrains.Annotations;
@@ -108,6 +109,12 @@ namespace CC98.LogOn
 
 					options.LoginPath = new PathString("/Account/LogOn");
 					options.LogoutPath = new PathString("/Account/LogOff");
+				})
+				// 浙大通行证身份验证
+				.AddZjuInfo(options =>
+				{
+					options.ClientId = Configuration["Authentication:ZjuInfo:ClientId"];
+					options.ClientSecret = Configuration["Authentication:ZjuInfo:ClientSecret"]; ;
 				});
 
 			// 添加 IdentityServer 服务

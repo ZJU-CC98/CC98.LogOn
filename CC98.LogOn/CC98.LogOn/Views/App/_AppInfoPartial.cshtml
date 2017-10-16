@@ -88,7 +88,48 @@
 		</div>
 	</div>
 	<div class="col-md-6">
-		<div class="card">
+
+		@if (isEditMode)
+		{
+			<div class="card">
+				<div class="card-header">应用状态</div>
+				<div class="card-body">
+					@if (Model.IsEnabled)
+					{
+						<p class="text-success">
+							<i class="fa fa-check-circle"></i> <strong>应用已启用</strong>
+						</p>
+						<p class="card-text text-muted">目前应用已经启用，可以请求用户授权。如果要临时停用这个应用，请单击下方的按钮。</p>
+						<a class="btn btn-secondary" href="#">停用这个应用</a>
+					}
+					else
+					{
+						<p class="text-danger">
+							<i class="fa fa-times-circle"></i> <strong>应用已停用</strong>
+						</p>
+						<p class="card-text text-muted">目前应用已经停用，无法请求用户授权。如果要回复使用这个应用，请单击下方的按钮。</p>
+						<a class="btn btn-secondary" href="#">停用这个应用</a>
+					}
+					
+					<authorize policy="@Policies.OperateApps">
+						<hr />
+
+						<div class="form-group">
+							<label asp-for="State" class="form-control-label"></label>
+							<select asp-enum-for="State" asp-text-source="Name" class="form-control"></select>
+							<span asp-validation-for="State" class="text-danger"></span>
+							<small class="form-text text-muted">@ViewLocalizer.Html.StateHelpText</small>
+						</div>
+
+					</authorize>
+
+				</div>
+			</div>
+
+		}
+
+
+		<div class="card mt-3">
 			<div class="card-header">授权类型</div>
 			<div class="card-body">
 				<div class="form-check">
@@ -131,7 +172,7 @@
 					{
 						<small class="form-text text-warning">这个应用不能使用这种授权方式。如果你是应用的作者并希望使用这种授权，请联系 CC98 管理团队。</small>
 					}
-					</div>
+				</div>
 			</div>
 
 		</div>

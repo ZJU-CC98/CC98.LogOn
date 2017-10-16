@@ -101,6 +101,7 @@ namespace CC98.LogOn.Data
 		/// <summary>
 		/// 获取或设置该应用的状态。
 		/// </summary>
+		[Display(Name="StateName")]
 		public AppState State { get; set; }
 
 		/// <summary>

@@ -147,6 +147,9 @@
   <data name="SecretHelpText" xml:space="preserve">
     <value>你的应用的机密，对应于 OpenID 协议的 &lt;code&gt;client_secret&lt;/code&gt; 字段。你不能手动修改应用机密，如果需要更换机密，请单击&lt;q&gt;更换机密&lt;/q&gt;按钮。</value>
   </data>
+  <data name="StateHelpText" xml:space="preserve">
+    <value>作为管理员，你可以修改该应用的状态。应用状态将影响该应用的可用性以及权限。</value>
+  </data>
   <data name="WebPageUriHelpText" xml:space="preserve">
     <value>应用的主页地址（可选）。如果指定了主页地址，则将在授权和介绍页面用户将能够通过超链接访问该地址。</value>
   </data>
