@@ -4,6 +4,7 @@ using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ZjuInfoAuth;
 using IdentityServer4.Models;
+using IdentityServer4.Services;
 using IdentityServer4.Test;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -129,7 +130,8 @@ namespace CC98.LogOn
 				.AddProfileService<CC98UserProfileService>()
 				.AddResourceOwnerValidator<CC98UserPasswordValidator>()
 				.AddInMemoryApiResources(new List<ApiResource>())
-				.AddInMemoryIdentityResources(resources);
+				.AddInMemoryIdentityResources(resources)
+				.AddCorsPolicyService<AppCorsPolicyService>();
 
 			//  分页器
 			services.AddBootstrapPagerGenerator(options => options.ConfigureDefault());

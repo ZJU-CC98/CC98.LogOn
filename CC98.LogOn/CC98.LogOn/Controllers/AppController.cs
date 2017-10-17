@@ -100,6 +100,7 @@ namespace CC98.LogOn.Controllers
 				model.Secret = Guid.NewGuid();
 				model.OwnerUserName = User.Identity.Name;
 				model.CreateTime = DateTimeOffset.Now;
+				model.IsEnabled = true;
 
 				// 添加数据库项目
 				DbContext.Apps.Add(model);
@@ -144,7 +145,7 @@ namespace CC98.LogOn.Controllers
 			if (ModelState.IsValid)
 			{
 				var item = await LoadAppAndCheckPermissionAsync(model.Id);
-				item.PatchExclude(model, i => new { i.Id, i.Secret, i.CreateTime, i.State });
+				item.PatchExclude(model, i => new { i.Id, i.Secret, i.CreateTime, i.State, i.IsEnabled });
 
 				// 管理员可以修改状态
 				if ((await AuthorizationService.AuthorizeAsync(User, Policies.OperateApps)).Succeeded)

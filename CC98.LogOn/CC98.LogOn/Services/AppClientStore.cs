@@ -132,8 +132,6 @@ namespace CC98.LogOn.Services
 				AlwaysSendClientClaims = true,
 				// 不始终包含用户声明
 				AlwaysIncludeUserClaimsInIdToken = true,
-				// 为客户端声明添加 client_ 前缀
-				PrefixClientClaims = true,
 
 				// 是否要求后台注销会话
 				BackChannelLogoutSessionRequired = false,
@@ -146,7 +144,9 @@ namespace CC98.LogOn.Services
 				// 始终包含 JWT 标识
 				IncludeJwtId = true,
 				// 支持的协议类型
-				ProtocolType = IdentityServerConstants.ProtocolTypes.OpenIdConnect
+				ProtocolType = IdentityServerConstants.ProtocolTypes.OpenIdConnect,
+			
+
 			};
 		}
 
