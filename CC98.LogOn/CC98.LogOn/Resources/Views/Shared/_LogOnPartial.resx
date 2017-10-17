@@ -124,4 +124,11 @@
   <data name="LogOnCC98AccountLinkText" xml:space="preserve">
     <value>登录 CC98 账号</value>
   </data>
+  <data name="LogOnZjuInfoAccountLinkText" xml:space="preserve">
+    <value>登录浙大通行证</value>
+  </data>
+  <data name="ZjuInfoAccountFormat" xml:space="preserve">
+    <value>浙大通行证 &lt;strong&gt;{0}&lt;/strong&gt;</value>
+    <comment>{0}: 用户名</comment>
+  </data>
 </root>
