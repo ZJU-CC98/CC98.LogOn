@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CC98.LogOn.ZjuInfoAuth;
+using IdentityModel;
+using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Sakura.AspNetCore.Authentication;
 
 namespace CC98.LogOn.Controllers
 {
@@ -29,8 +32,16 @@ namespace CC98.LogOn.Controllers
 		}
 
 
-		public IActionResult LogOnCallback(string returnUrl)
+		public async Task<IActionResult> LogOnCallback(string returnUrl)
 		{
+			var authenticatoinResult = await HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
+			var principal = authenticatoinResult.Principal;
+
+			if (principal != null)
+			{
+				await HttpContext.SignInAsync(principal.CreateIdentityServerPrincipal());
+			}
+
 			if (!Url.IsLocalUrl(returnUrl))
 			{
 				returnUrl = Url.Action("Index", "Home");

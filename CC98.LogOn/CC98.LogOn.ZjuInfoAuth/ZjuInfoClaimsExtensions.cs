@@ -20,7 +20,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 			// 用于提取浙大通行证中特定属性的方法。
 			string GetValueInAttributes(JObject objectData, string attributeName)
 			{
-				return objectData["attribute"].First.Value<string>(attributeName);
+				return objectData["attributes"].First.Value<string>(attributeName);
 			}
 
 			void MapAttributeAndDescription(string claimType, string valueType, string valueAttributeName, string descriptionAttributeName = null)

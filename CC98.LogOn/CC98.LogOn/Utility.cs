@@ -70,5 +70,17 @@ namespace CC98.LogOn
 
 			return null;
 		}
+
+		/// <summary>
+		/// 讲一个标准 <see cref="ClaimsPrincipal"/> 对象转换为 IdentityServer 所使用的对象。
+		/// </summary>
+		/// <param name="principal">要转换的标准对象。</param>
+		/// <returns>转换后的对象。</returns>
+		public static ClaimsPrincipal CreateIdentityServerPrincipal(this ClaimsPrincipal principal)
+		{
+			return IdentityServerPrincipal.Create(principal.FindFirstValue(ClaimTypes.NameIdentifier),
+				principal.FindFirstValue(ClaimTypes.Name), principal.Claims.ToArray());
+		}
 	}
 }
+

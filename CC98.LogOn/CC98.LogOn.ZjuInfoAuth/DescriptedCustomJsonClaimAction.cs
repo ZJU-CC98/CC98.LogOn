@@ -12,7 +12,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 	public class DescriptedCustomJsonClaimAction : CustomJsonClaimAction
 	{
 
-		public Func<JObject, string> DescriptionResolver { get; set; }
+		public Func<JObject, string> DescriptionResolver { get; }
 
 		/// <inheritdoc />
 		public override void Run(JObject userData, ClaimsIdentity identity, string issuer)

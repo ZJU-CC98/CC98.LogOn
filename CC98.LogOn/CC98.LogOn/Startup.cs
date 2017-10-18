@@ -3,6 +3,7 @@ using System.Globalization;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ZjuInfoAuth;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Test;
@@ -114,6 +115,7 @@ namespace CC98.LogOn
 				// 浙大通行证身份验证
 				.AddZjuInfo(options =>
 				{
+					options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 					options.ClientId = Configuration["Authentication:ZjuInfo:ClientId"];
 					options.ClientSecret = Configuration["Authentication:ZjuInfo:ClientSecret"]; ;
 				});
@@ -132,6 +134,8 @@ namespace CC98.LogOn
 				.AddInMemoryApiResources(new List<ApiResource>())
 				.AddInMemoryIdentityResources(resources)
 				.AddCorsPolicyService<AppCorsPolicyService>();
+
+			services.AddExternalSignInManager();
 
 			//  分页器
 			services.AddBootstrapPagerGenerator(options => options.ConfigureDefault());
