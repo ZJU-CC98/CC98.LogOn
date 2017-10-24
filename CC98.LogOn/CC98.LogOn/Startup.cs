@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ZjuInfoAuth;
@@ -128,6 +129,7 @@ namespace CC98.LogOn
 					options.UserInteraction.ConsentUrl = "/Account/Consent";
 				})
 				.AddInMemoryCaching()
+                .AddSigningCredential(Configuration["IdentityServer:SigningCertificateSubjectDistinguishedName"])
 				.AddClientStoreCache<AppClientStore>()
 				.AddProfileService<CC98UserProfileService>()
 				.AddResourceOwnerValidator<CC98UserPasswordValidator>()
