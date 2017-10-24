@@ -17,48 +17,29 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// <param name="claimActions">包含所有声明操作的集合。</param>
 		public static void ConfigureZjuInfoClaims(this ClaimActionCollection claimActions)
 		{
-			// 用于提取浙大通行证中特定属性的方法。
-			string GetValueInAttributes(JObject objectData, string attributeName)
-			{
-				return objectData["attributes"].First.Value<string>(attributeName);
-			}
 
-			void MapAttributeAndDescription(string claimType, string valueType, string valueAttributeName, string descriptionAttributeName = null)
-			{
-				var mapValueFunc = new Func<JObject, string>(obj => GetValueInAttributes(obj, valueAttributeName));
-				var mapDescriptionFunc = descriptionAttributeName != null
-					? new Func<JObject, string>(obj => GetValueInAttributes(obj, descriptionAttributeName))
-					: null;
+			claimActions.MapJsonWithDescription(ClaimTypes.NameIdentifier, ClaimValueTypes.String, "CODE");
+			claimActions.MapJsonWithDescription(ClaimTypes.Name, ClaimValueTypes.String, "XM");
+			claimActions.MapJsonWithDescription(ClaimTypes.Gender, ClaimValueTypes.Integer, "XB", "XBMC");
+			claimActions.MapJsonWithDescription(ClaimTypes.DateOfBirth, ClaimValueTypes.Date, "CSRQ");
+			claimActions.MapJsonWithDescription(ClaimTypes.Email, ClaimValueTypes.Email, "DZYX");
+			claimActions.MapJsonWithDescription(ClaimTypes.MobilePhone, ClaimValueTypes.String, "LXDH");
 
-				claimActions.MapCustomJsonWithDescription(claimType, valueType, mapValueFunc, mapDescriptionFunc);
-
-			}
-
-
-			claimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id", ClaimValueTypes.String);
-
-			MapAttributeAndDescription(ClaimTypes.NameIdentifier, ClaimValueTypes.String, "CODE");
-			MapAttributeAndDescription(ClaimTypes.Name, ClaimValueTypes.String, "XM");
-			MapAttributeAndDescription(ClaimTypes.Gender, ClaimValueTypes.Integer, "XB", "XBMC");
-			MapAttributeAndDescription(ClaimTypes.DateOfBirth, ClaimValueTypes.Date, "CSRQ");
-			MapAttributeAndDescription(ClaimTypes.Email, ClaimValueTypes.Email, "DZYX");
-			MapAttributeAndDescription(ClaimTypes.MobilePhone, ClaimValueTypes.String, "LXDH");
-
-			MapAttributeAndDescription(ZjuInfoClaimTypes.Organization, ClaimValueTypes.Integer, "JGDM", "JGMC");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.UserType, ClaimValueTypes.Integer, "YHLX", "YHLXMC");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.CertificateType, ClaimValueTypes.Integer, "ZJLX", "ZJLXMC");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.CertificateId, ClaimValueTypes.String, "ZJHM");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.PoliticalStatus, ClaimValueTypes.Integer, "ZZMMDM", "ZZMMMC");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.Nationality, ClaimValueTypes.String, "GJ", "GJMC");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.Ethnicity, ClaimValueTypes.Integer, "MDZM", "MZMC");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.Grade, ClaimValueTypes.String, "NJ");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.Class, ClaimValueTypes.Integer, "BH", "BJMC");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.Major, ClaimValueTypes.Integer, "ZYDM", "ZYMC");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.StudentStatus, ClaimValueTypes.String, "XJZT");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.StaffStatus, ClaimValueTypes.String, "ZGZT");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.PlaceOfBirth, ClaimValueTypes.String, "SYD");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.LengthOfSchooling, ClaimValueTypes.Double, "XZ");
-			MapAttributeAndDescription(ZjuInfoClaimTypes.EntranceTime, ClaimValueTypes.Date, "RXSJ");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Organization, ClaimValueTypes.Integer, "JGDM", "JGMC");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.UserType, ClaimValueTypes.Integer, "YHLX", "YHLXMC");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.CertificateType, ClaimValueTypes.Integer, "ZJLX", "ZJLXMC");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.CertificateId, ClaimValueTypes.String, "ZJHM");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.PoliticalStatus, ClaimValueTypes.Integer, "ZZMMDM", "ZZMMMC");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Nationality, ClaimValueTypes.String, "GJ", "GJMC");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Ethnicity, ClaimValueTypes.Integer, "MDZM", "MZMC");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Grade, ClaimValueTypes.String, "NJ");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Class, ClaimValueTypes.Integer, "BH", "BJMC");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Major, ClaimValueTypes.Integer, "ZYDM", "ZYMC");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.StudentStatus, ClaimValueTypes.String, "XJZT");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.StaffStatus, ClaimValueTypes.String, "ZGZT");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.PlaceOfBirth, ClaimValueTypes.String, "SYD");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.LengthOfSchooling, ClaimValueTypes.Double, "XZ");
+			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.EntranceTime, ClaimValueTypes.Date, "RXSJ");
 
 
 		}

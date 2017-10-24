@@ -100,26 +100,6 @@ namespace CC98.LogOn
 				});
 			});
 
-			// 添加身份验证服务
-			services.AddAuthentication()
-				// 基于 Cookie 的身份验证设置
-				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-				{
-					options.Cookie.SameSite = SameSiteMode.Lax;
-					options.Cookie.HttpOnly = true;
-					options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-
-					options.LoginPath = new PathString("/Account/LogOn");
-					options.LogoutPath = new PathString("/Account/LogOff");
-				})
-				// 浙大通行证身份验证
-				.AddZjuInfo(options =>
-				{
-					options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-					options.ClientId = Configuration["Authentication:ZjuInfo:ClientId"];
-					options.ClientSecret = Configuration["Authentication:ZjuInfo:ClientSecret"]; ;
-				});
-
 			// 添加 IdentityServer 服务
 			services.AddIdentityServer(options =>
 				{
@@ -135,7 +115,15 @@ namespace CC98.LogOn
 				.AddInMemoryIdentityResources(resources)
 				.AddCorsPolicyService<AppCorsPolicyService>();
 
-			services.AddExternalSignInManager();
+			// 添加身份验证服务
+			services.AddAuthentication()
+				// 浙大通行证身份验证
+				.AddZjuInfo(options =>
+				{
+					options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+					options.ClientId = Configuration["Authentication:ZjuInfo:ClientId"];
+					options.ClientSecret = Configuration["Authentication:ZjuInfo:ClientSecret"]; ;
+				});
 
 			//  分页器
 			services.AddBootstrapPagerGenerator(options => options.ConfigureDefault());

@@ -165,7 +165,7 @@ namespace CC98.LogOn.Controllers
 			};
 
 			// Ö´ÐÐµÇÂ¼
-			await HttpContext.SignInAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme, CreatePrincipalFromUserInfo(user), properties);
+			await HttpContext.SignInAsync(CreatePrincipalFromUserInfo(user), properties);
 
 			// ·µ»ØµÇÂ¼Ç°Ò³Ãæ
 			var realReturnUrl = Url.IsLocalUrl(returnUrl) ? returnUrl : Url.Action("Index", "Home");

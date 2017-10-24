@@ -48,12 +48,37 @@ namespace CC98.LogOn.ZjuInfoAuth
 			}
 
 			var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+			var regeneratedData = RebuildJsonObject(payload);
 
-			var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, payload);
+			var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, regeneratedData);
 			context.RunClaimActions();
 
 			await Events.CreatingTicket(context);
 			return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+		}
+
+		/// <summary>
+		/// 将服务器提供的 JSON 对象数据进行重新组合，以便于后续声明处理程序提取声明数据。
+		/// </summary>
+		/// <param name="data"></param>
+		protected static JObject RebuildJsonObject(JObject data)
+		{
+			var result = new JObject();
+
+			var attributeNode = data["attributes"];
+
+			foreach (var token in attributeNode)
+			{
+				if (token is JObject obj)
+				{
+					foreach (var prop in obj.Properties())
+					{
+						result[prop.Name] = prop.Value;
+					}
+				}
+			}
+
+			return result;
 		}
 	}
 }

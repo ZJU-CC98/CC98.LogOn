@@ -75,11 +75,25 @@ namespace CC98.LogOn
 		/// 讲一个标准 <see cref="ClaimsPrincipal"/> 对象转换为 IdentityServer 所使用的对象。
 		/// </summary>
 		/// <param name="principal">要转换的标准对象。</param>
+		/// <param name="provider">身份验证提供程序。</param>
 		/// <returns>转换后的对象。</returns>
-		public static ClaimsPrincipal CreateIdentityServerPrincipal(this ClaimsPrincipal principal)
+		public static ClaimsPrincipal CreateIdentityServerPrincipal(this ClaimsPrincipal principal, string provider)
 		{
-			return IdentityServerPrincipal.Create(principal.FindFirstValue(ClaimTypes.NameIdentifier),
-				principal.FindFirstValue(ClaimTypes.Name), principal.Claims.ToArray());
+			var authMethods = new[] { provider };
+
+			return IdentityServerPrincipal.Create(principal.FindFirstValueOfAny(ClaimTypes.NameIdentifier, JwtClaimTypes.Subject),
+				principal.FindFirstValueOfAny(ClaimTypes.Name, JwtClaimTypes.Name), provider, authMethods, DateTime.UtcNow, principal.Claims.ToArray());
+		}
+
+		/// <summary>
+		/// 查找给定主体对象中若干声明类型中的第一个值。
+		/// </summary>
+		/// <param name="principal">主体对象。</param>
+		/// <param name="claimTypes">要查找的多个声明的类型。</param>
+		/// <returns>声明类型在 <paramref name="claimTypes"/> 中的第一个声明的值。</returns>
+		public static string FindFirstValueOfAny(this ClaimsPrincipal principal, params string[] claimTypes)
+		{
+			return principal.FindFirst(i => claimTypes.Contains(i.Type))?.Value;
 		}
 	}
 }

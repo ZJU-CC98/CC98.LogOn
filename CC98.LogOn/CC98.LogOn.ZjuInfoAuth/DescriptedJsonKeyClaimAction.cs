@@ -9,21 +9,19 @@ namespace CC98.LogOn.ZjuInfoAuth
 	/// 对于具有描述的声明，同时提取它的值和描述。
 	/// </summary>
 	/// <inheritdoc />
-	public class DescriptedCustomJsonClaimAction : CustomJsonClaimAction
+	public class DescriptedJsonKeyClaimAction : JsonKeyClaimAction
 	{
-
-		public Func<JObject, string> DescriptionResolver { get; }
+		/// <summary>
+		/// 描述对象的 JSON 键名称。
+		/// </summary>
+		public string DescriptionJsonKey { get; }
 
 		/// <inheritdoc />
 		public override void Run(JObject userData, ClaimsIdentity identity, string issuer)
 		{
-			if (Resolver == null)
-			{
-				return;
-			}
 
-			var claimValue = Resolver(userData);
-			var claimDescription = DescriptionResolver?.Invoke(userData);
+			var claimValue = userData.Value<string>(JsonKey);
+			var claimDescription = string.IsNullOrEmpty(DescriptionJsonKey) ? null : userData.Value<string>(DescriptionJsonKey);
 
 			if (string.IsNullOrEmpty(claimValue))
 			{
@@ -35,12 +33,14 @@ namespace CC98.LogOn.ZjuInfoAuth
 			{
 				claim.Properties.Add(ClaimProperties.Keys.Description, claimDescription);
 			}
+
+			identity.AddClaim(claim);
 		}
 
-		/// <inheritdoc />
-		public DescriptedCustomJsonClaimAction(string claimType, string valueType, Func<JObject, string> resolver, Func<JObject, string> descriptionResolver) : base(claimType, valueType, resolver)
+		public DescriptedJsonKeyClaimAction(string claimType, string valueType, string jsonKey, string descriptionJsonKey)
+			: base(claimType, valueType, jsonKey)
 		{
-			DescriptionResolver = descriptionResolver;
+			DescriptionJsonKey = descriptionJsonKey;
 		}
 	}
 }
