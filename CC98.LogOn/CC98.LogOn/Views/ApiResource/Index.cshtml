@@ -1,0 +1,33 @@
+﻿@model IPagedList<AppApiResource>
+@{
+	ViewBag.Title = "API 资源一览";
+}
+
+@if (Model.Any())
+{
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>标识</th>
+			<td>名称</td>
+			<td>描述</td>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<th>@item.Id</th>
+				<th>@item.DisplayName</th>
+				<th>@item.Description</th>
+			</tr>
+		}
+		</tbody>
+	</table>
+
+	<pager />
+}
+else
+{
+	<p class="text-center text-muted">目前没有可用的 API 资源</p>
+}

@@ -34,9 +34,20 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		public virtual DbSet<AppScope> AppScopes { get; set; }
 
+		/// <summary>
+		/// 获取或设置数据库中记录的所有角色的集合。
+		/// </summary>
 		public virtual DbSet<CC98Role> Roles { get; set; }
 
+		/// <summary>
+		/// 获取或设置数据库中记录的用户和角色关系的集合。
+		/// </summary>
 		public virtual DbSet<CC98UserRole> UserRoles { get; set; }
+
+		/// <summary>
+		/// 获取或设置数据库中记录的 API 资源的集合。
+		/// </summary>
+		public virtual DbSet<AppApiResource> ApiResources { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

@@ -23,6 +23,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Framework.DependencyInjection;
 using Sakura.AspNetCore.Localization;
 using Sakura.AspNetCore.Mvc;
+using ApiResource = IdentityServer4.Models.ApiResource;
 
 namespace CC98.LogOn
 {
@@ -109,11 +110,11 @@ namespace CC98.LogOn
 					options.UserInteraction.ConsentUrl = "/Account/Consent";
 				})
 				.AddInMemoryCaching()
-                .AddSigningCredential(Configuration["IdentityServer:SigningCertificateSubjectDistinguishedName"])
+				.AddResourceStoreCache<AppResourceStore>()
+				.AddSigningCredential(Configuration["IdentityServer:SigningCertificateSubjectDistinguishedName"])
 				.AddClientStoreCache<AppClientStore>()
 				.AddProfileService<CC98UserProfileService>()
 				.AddResourceOwnerValidator<CC98UserPasswordValidator>()
-				.AddInMemoryApiResources(new List<ApiResource>())
 				.AddInMemoryIdentityResources(resources)
 				.AddCorsPolicyService<AppCorsPolicyService>();
 
