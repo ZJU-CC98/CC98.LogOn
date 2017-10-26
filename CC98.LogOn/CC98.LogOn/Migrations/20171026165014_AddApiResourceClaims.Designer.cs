@@ -11,9 +11,10 @@ using System;
 namespace CC98.LogOn.Migrations
 {
     [DbContext(typeof(CC98IdentityDbContext))]
-    partial class CC98IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171026165014_AddApiResourceClaims")]
+    partial class AddApiResourceClaims
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

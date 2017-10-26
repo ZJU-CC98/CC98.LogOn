@@ -11,9 +11,10 @@ using System;
 namespace CC98.LogOn.Migrations
 {
     [DbContext(typeof(CC98IdentityDbContext))]
-    partial class CC98IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171026121430_AddApiResource")]
+    partial class AddApiResource
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,9 +68,6 @@ namespace CC98.LogOn.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50);
-
-                    b.Property<string>("ClaimsValue")
-                        .HasColumnName("Claims");
 
                     b.Property<string>("Description");
 

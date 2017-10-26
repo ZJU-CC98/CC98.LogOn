@@ -1,0 +1,20 @@
+﻿@model AppApiResource
+@{
+	ViewBag.Title = string.Format(CultureInfo.CurrentUICulture, "编辑 API 资源 - {0}", Model.DisplayName);
+	ViewBag.IsEditMode = true;
+}
+
+<div class="row justify-content-center">
+	<div class="col-md-6">
+
+		<form asp-controller="ApiResource" asp-action="Edit" method="post" asp-antiforgery="true">
+
+			@await Html.PartialAsync("_ApiResourceInfoPartial")
+
+			<hr />
+			<button class="btn btn-primary" type="submit">修改 API 资源</button>
+			<button class="btn btn-secondary">撤销更改</button>
+
+		</form>
+	</div>
+</div>

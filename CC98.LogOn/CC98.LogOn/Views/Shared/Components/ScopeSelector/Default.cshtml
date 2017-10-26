@@ -1,12 +1,14 @@
-﻿@model IEnumerable<AppScope>
-@{
+﻿@{
+	var scopes = (AppScope[]) ViewBag.Scopes;
+	var apiResources = (AppApiResource[]) ViewBag.ApiResources;
+
 	var selectedItems = new HashSet<string>((IEnumerable<string>)ViewBag.SelectedItems, StringComparer.OrdinalIgnoreCase);
 	var inputName = (string) ViewBag.InputName;
 }
 
-@if (Model.Any())
+@if (scopes.Any())
 {
-	foreach (var item in Model)
+	foreach (var item in scopes)
 	{
 		<div class="form-check">
 			<label class="form-check-label">
@@ -21,4 +23,21 @@
 else
 {
 	<p class="text-center text-muted">目前没有任何可用的领域</p>
+}
+
+<hr />
+
+@if (apiResources.Any())
+{
+	foreach (var item in apiResources)
+	{
+		<div class="form-check">
+			<label class="form-check-label">
+				<input name="@inputName" value="@item.Id" type="checkbox" checked="@selectedItems.Contains(item.Id)" class="form-check-input" />
+				<span>@item.DisplayName</span>
+				<span class="badge badge-secondary">@item.Id</span>
+			</label>
+			<small class="form-text text-muted">@item.Description</small>
+		</div>
+	}
 }

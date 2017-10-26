@@ -17,28 +17,28 @@
 	<environment names="Staging,Production">
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-		      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-		      crossorigin="anonymous"
-		      asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-		      asp-fallback-test-class="sr-only"
-		      asp-fallback-test-property="position"
-		      asp-fallback-test-value="absolute">
-		
-		<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" 
-		      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" 
-		      crossorigin="anonymous"
-		      asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
-		      asp-fallback-test-class="fa"
-		      asp-fallback-test-property="display"
-		      asp-fallback-test-value="inline-block">
+			  integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+			  crossorigin="anonymous"
+			  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+			  asp-fallback-test-class="sr-only"
+			  asp-fallback-test-property="position"
+			  asp-fallback-test-value="absolute">
+
+		<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"
+			  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+			  crossorigin="anonymous"
+			  asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
+			  asp-fallback-test-class="fa"
+			  asp-fallback-test-property="display"
+			  asp-fallback-test-value="inline-block">
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-		      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-		      crossorigin="anonymous"
-		      asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-		      asp-fallback-test-class="sr-only"
-		      asp-fallback-test-property="position"
-		      asp-fallback-test-value="absolute">
+			  integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+			  crossorigin="anonymous"
+			  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+			  asp-fallback-test-class="sr-only"
+			  asp-fallback-test-property="position"
+			  asp-fallback-test-value="absolute">
 
 		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 	</environment>
@@ -62,7 +62,7 @@
 						<div class="dropdown-menu" aria-labelledby="app-menu">
 							<a class="dropdown-item" asp-controller="App" asp-action="My">我的应用</a>
 							<a class="dropdown-item" asp-controller="App" asp-action="Create">创建应用</a>
-							
+
 							<authorize policy="@Policies.OperateApps">
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" asp-controller="App" asp-action="Manage">管理应用</a>
@@ -74,6 +74,7 @@
 						<a id="help-menu" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">帮助</a>
 						<div class="dropdown-menu" aria-labelledby="help-menu">
 							<a class="dropdown-item" asp-controller="Scope" asp-action="Index">领域表</a>
+							<a class="dropdown-item" asp-controller="ApiResource" asp-action="Index">API 资源</a>
 						</div>
 					</li>
 				</ul>
