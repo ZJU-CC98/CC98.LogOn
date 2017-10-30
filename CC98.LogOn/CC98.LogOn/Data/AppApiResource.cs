@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -55,5 +57,11 @@ namespace CC98.LogOn.Data
             get => ClaimsValue.SplitForStore();
             set => ClaimsValue = value.JoinForStore();
         }
+
+        /// <summary>
+        /// 获取或设置该对象关联的领域的集合。
+        /// </summary>
+        [InverseProperty(nameof(ApiResourceScope.Api))]
+        public virtual IList<ApiResourceScope> Scopes { get; set; } = new Collection<ApiResourceScope>();
     }
 }

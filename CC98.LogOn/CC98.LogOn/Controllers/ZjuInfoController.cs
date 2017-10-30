@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CC98.LogOn.ZjuInfoAuth;
-using IdentityModel;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Sakura.AspNetCore.Authentication;
 
 namespace CC98.LogOn.Controllers
 {

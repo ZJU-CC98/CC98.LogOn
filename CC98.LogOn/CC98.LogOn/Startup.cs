@@ -1,19 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ZjuInfoAuth;
 using IdentityServer4;
 using IdentityServer4.Models;
-using IdentityServer4.Services;
-using IdentityServer4.Test;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +17,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Framework.DependencyInjection;
 using Sakura.AspNetCore.Localization;
 using Sakura.AspNetCore.Mvc;
-using ApiResource = IdentityServer4.Models.ApiResource;
 
 namespace CC98.LogOn
 {

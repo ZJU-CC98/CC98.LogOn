@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -144,6 +144,23 @@ namespace CC98.LogOn.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Detail(string id, CancellationToken cancellationToken)
+        {
+            var item = await (from i in DbContext.ApiResources
+                                .Include(p => p.Scopes).ThenInclude(p => p.Scope)
+                              where i.Id == id
+                              select i).FirstOrDefaultAsync(cancellationToken);
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
         }
     }
 }

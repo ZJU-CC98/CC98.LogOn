@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace CC98.LogOn.Services

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CC98.LogOn.ViewModels.Account
+﻿namespace CC98.LogOn.ViewModels.Account
 {
 	/// <summary>
 	/// 表示确认界面使用的数据模型。

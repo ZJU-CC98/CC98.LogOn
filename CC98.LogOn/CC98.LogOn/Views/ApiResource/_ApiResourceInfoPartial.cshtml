@@ -2,6 +2,7 @@
 @model AppApiResource
 @{
 	var isEditMode = (bool)ViewBag.IsEditMode;
+	var selectedScopes = Model?.Scopes.Select(i => i.Scope.Id).ToArray();
 }
 
 <div class="form-group">
@@ -16,11 +17,11 @@
 
 	@if (isEditMode)
 	{
-	<input asp-for="Secret" type="text" class="form-control" readonly="readonly" />
+		<input asp-for="Secret" type="text" class="form-control" readonly="readonly" />
 	}
 	else
 	{
-	<p class="form-text text-info">创建后自动生成</p>
+		<p class="form-text text-info">创建后自动生成</p>
 	}
 	<small class="form-text text-muted">该 API 资源的机密。API 资源服务器需要提供此机密用以证明自己的身份。</small>
 </div>
@@ -42,23 +43,57 @@
 <hr />
 
 <div class="card">
+	<div class="card-header">领域</div>
+	<div class="card-body">
+		<p class="card-text">
+			API 资源支持一个或多个不同领域。每个领域代表 API 的一部分功能。
+		</p>
+			<vc:scope-selector input-name="scopes" selected-items="@selectedScopes" />
+	</div>
+	<div class="card-footer">
+		<a asp-controller="ApiResource" asp-action="Create" class="btn btn-primary">添加领域</a>
+	</div>
+</div>
+
+<div class="card mt-2">
 	<div class="card-header">声明类型</div>
 	<div class="card-body">
 		<p class="card-text">在此处可以选择该 API 需要访问的用户信息。</p>
-		
+
 		<div class="form-check">
 			<label class="form-check-label">
 				<input asp-array-for="Claims" type="checkbox" asp-array-value="@JwtClaimTypes.Subject" /> 用户 ID
 			</label>
 			<small class="form-text text-muted">用户的 CC98 ID（整数）。</small>
 		</div>
-		
+
 		<div class="form-check">
 			<label class="form-check-label">
 				<input asp-array-for="Claims" type="checkbox" asp-array-value="@JwtClaimTypes.Name" /> 用户 ID
 			</label>
 			<small class="form-text text-muted">用户的 CC98 用户名。</small>
 		</div>
-		
+
 	</div>
 </div>
+
+<form asp-controller="ApiResource">
+	<div class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">添加领域要求</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

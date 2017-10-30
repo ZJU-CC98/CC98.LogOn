@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
@@ -19,6 +18,9 @@ namespace CC98.LogOn.Components
             DbContext = dbContext;
         }
 
+        /// <summary>
+        /// 数据库上下文对象。
+        /// </summary>
         private CC98IdentityDbContext DbContext { get; }
 
         /// <summary>

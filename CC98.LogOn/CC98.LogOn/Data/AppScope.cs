@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CC98.LogOn.Data
 {
@@ -10,9 +13,9 @@ namespace CC98.LogOn.Data
 		/// <summary>
 		/// 获取或设置该领域的标识。
 		/// </summary>
-		[MaxLength(20)]
+		[StringLength(20)]
 		[Key]
-		[RegularExpression(@"[\w-_]+")]
+		[RegularExpression(@"[\w-_\.]+")]
 		[Display(Name = "标识")]
 		public string Id { get; set; }
 
@@ -40,5 +43,11 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		[Display(Name = "隐藏")]
 		public bool IsHidden { get; set; }
-	}
+
+        /// <summary>
+        /// 获取或设置该领域关联到的 API 资源的集合。
+        /// </summary>
+        [InverseProperty(nameof(ApiResourceScope.Scope))]
+        public virtual IList<ApiResourceScope> ApiResources { get; set; } = new Collection<ApiResourceScope>();
+ 	}
 }

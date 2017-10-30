@@ -63,7 +63,7 @@ namespace CC98.LogOn.Controllers
 		public async Task<IActionResult> My(int page = 1)
 		{
 			// 当前用户名
-			var userName = User.GetName();
+		    var userName = User.GetDisplayName();
 
 			var myItems = from i in DbContext.Apps
 						  where i.OwnerUserName == userName
@@ -263,7 +263,7 @@ namespace CC98.LogOn.Controllers
 				return false;
 			}
 
-			var userName = User.GetName();
+		    var userName = User.GetDisplayName();
 			return string.Equals(userName, app.OwnerUserName, StringComparison.OrdinalIgnoreCase);
 		}
 

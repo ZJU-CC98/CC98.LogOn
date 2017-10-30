@@ -1,0 +1,53 @@
+﻿@model AppApiResource
+@{
+	ViewBag.Title = string.Format(CultureInfo.CurrentUICulture, "API 资源详情 - {0}", Model.DisplayName);
+}
+
+@if (!string.IsNullOrEmpty(Model.Description))
+{
+	<p>@Model.Description</p>
+}
+else
+{
+	<p class="text-center text-muted">目前没有关于该资源的介绍。</p>
+}
+
+<hr />
+
+<div class="card-deck">
+	<div class="card">
+		<div class="card-header">领域声明</div>
+		<div class="card-body">
+			<p class="card-text">下表显示了该 API 资源提供的领域。每个领域可提供对该资源的部分访问。</p>
+		</div>
+		@if (Model.Scopes.Any())
+		{
+			<div class="list-group">
+				@foreach (var item in Model.Scopes)
+				{
+					<a href="#" class="list-group-item">
+						<h5>
+							<strong>@item.Scope.DisplayName</strong>
+							<span class="badge badge-secondary">@item.Scope.Id</span>
+							@if (item.IsRequired)
+							{
+								<span class="badge badge-primary">必需</span>
+							}
+						</h5>
+						<p>@item.Scope.Description</p>
+					</a>
+				}
+			</div>
+		}
+		else
+		{
+			<hr />
+			<div class="card-body">
+				<p class="text-center text-muted">该 API 资源没有提供任何领域</p>
+			</div>
+		}
+	</div>
+	<div class="card">
+		<div class="card-header">用户标识声明</div>
+	</div>
+</div>

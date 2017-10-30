@@ -27,7 +27,7 @@
 			@foreach (var item in Model)
 			{
 				<tr>
-					<th>@item.Id</th>
+					<th><a asp-controller="ApiResource" asp-action="Detail" asp-route-id="@item.Id">@item.Id</a></th>
 					<td>@item.DisplayName</td>
 					<td>@item.Description</td>
 					<td asp-authorize-policy="@Policies.OperateApps">
