@@ -20,6 +20,8 @@
 		break;
 }
 
+<div class="alert alert-warning">为了加快网站运行，应用的信息可能会被缓存一段时间。因此，在本页面上的更改可能不会立即在验证过程中生效。</div>
+
 <form asp-controller="App" asp-action="Edit" asp-antiforgery="true" method="post">
 
 	@await Html.PartialAsync("_AppInfoPartial")

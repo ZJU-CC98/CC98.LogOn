@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
 using IdentityServer4.Models;
@@ -15,6 +16,15 @@ namespace CC98.LogOn.Services
     /// </summary>
     public class AppResourceStore : IResourceStore
     {
+        /// <summary>
+        /// 静态资源对象。
+        /// </summary>
+        private static IdentityResource[] IdentityResourcesStore { get; } =
+        {
+            new IdentityResources.OpenId(),
+            new IdentityResources.Profile()
+        };
+
         public AppResourceStore(CC98IdentityDbContext dbContext)
         {
             DbContext = dbContext;
