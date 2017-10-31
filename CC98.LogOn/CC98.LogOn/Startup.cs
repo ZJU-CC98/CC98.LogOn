@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using CC98.LogOn.Authorization;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ZjuInfoAuth;
 using IdentityServer4;
 using IdentityServer4.Models;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
@@ -93,7 +96,20 @@ namespace CC98.LogOn
 				{
 					builder.RequireRole(Policies.Roles.Administrators, Policies.Roles.AppAdministrators, Policies.Roles.AppOperators);
 				});
+
+				options.AddPolicy(Policies.CC98AccountLogOn, builder =>
+				{
+					builder.AddRequirements(
+						new JwtAuthenticationMethodRequirement(IdentityServerConstants.DefaultCookieAuthenticationScheme));
+				});
+
+				options.AddPolicy(Policies.ZjuInfoAccountLogOn, builder =>
+				{
+					builder.AddRequirements(new JwtAuthenticationMethodRequirement(ZjuInfoOAuthDefaults.AuthenticationScheme));
+				});
 			});
+
+			services.AddSingleton<IAuthorizationHandler, JwtAuthhenticationMethodHandler>();
 
 			// 添加 IdentityServer 服务
 			services.AddIdentityServer(options =>
@@ -132,6 +148,11 @@ namespace CC98.LogOn
 
 			services.AddSession();
 			services.AddMemoryCache();
+
+			// 应用程序配置
+			services.Configure<AppSetting>(Configuration.GetSection("AppSetting"));
+
+			services.AddSingleton<CC98DataService>();
 		}
 
 		/// <summary>

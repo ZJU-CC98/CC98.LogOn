@@ -27,6 +27,11 @@ namespace CC98.LogOn.Controllers
 		}
 
 
+		/// <summary>
+		/// 在登录后提供回调功能。
+		/// </summary>
+		/// <param name="returnUrl">登录后要返回的地址。</param>
+		/// <returns>操作结果。</returns>
 		public async Task<IActionResult> LogOnCallback(string returnUrl)
 		{
 			var authenticatoinResult = await HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);

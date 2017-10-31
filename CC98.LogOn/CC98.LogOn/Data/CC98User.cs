@@ -33,6 +33,25 @@ namespace CC98.LogOn.Data
 		public string PasswordHash { get; set; }
 
 		/// <summary>
+		/// 获取或设置用户注册时提供的浙大通行证账号。
+		/// </summary>
+		[StringLength(30)]
+		[Column("RegMail")]
+		public string RegisterZjuInfoId { get; set; }
+
+		/// <summary>
+		/// 获取或设置一个值，指示该账户是否已经被验证。
+		/// </summary>
+		[Column("Verified")]
+		public bool IsVerified { get; set; }
+
+		/// <summary>
+		/// 获取或设置用户的头像的 URL 地址。
+		/// </summary>
+		[Column("face")]
+		public string PortraitUri { get; set; }
+
+		/// <summary>
 		/// 获取或设置该用户关联的角色信息的集合。
 		/// </summary>
 		[InverseProperty(nameof(CC98UserRole.User))]

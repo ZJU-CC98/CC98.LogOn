@@ -1,0 +1,27 @@
+﻿@model IEnumerable<CC98User>
+@inject CC98.LogOn.Services.CC98DataService CC98DataService
+@{
+	ViewBag.Title = "CC98 账号管理";
+}
+
+<div class="alert alert-info">本页面列出了你的浙大通行证账号关联的 CC98 账号情况。</div>
+
+@if (Model.Any())
+{
+	<div class="row justify-content-center card-deck">
+		@foreach (var item in Model)
+		{
+			<div class="card col-6 text-center">
+				<img class="card-img-top img-fluid" src="@CC98DataService.GetPortraitUri(item.PortraitUri)" alt="用户头像" />
+				<div class="card-body">
+					<h4 class="card-title">@item.Name</h4>
+				</div>
+			</div>
+		}
+	</div>
+}
+else
+{
+	<hr />
+	<p class="text-center text-muted">你的浙大通行证目前还没有关联到任何 CC98 账号。</p>
+}

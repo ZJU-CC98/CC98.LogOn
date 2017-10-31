@@ -16,6 +16,16 @@
 		public const string OperateApps = nameof(OperateApps);
 
 		/// <summary>
+		/// 要求用户必须使用 CC98 账户登录。
+		/// </summary>
+		public const string CC98AccountLogOn = nameof(CC98AccountLogOn);
+
+		/// <summary>
+		/// 要求用户必须使用浙大通行证登录。
+		/// </summary>
+		public const string ZjuInfoAccountLogOn = nameof(ZjuInfoAccountLogOn);
+
+		/// <summary>
 		/// 定义应用程序中的角色。该类型为静态类型。
 		/// </summary>
 	    public static class Roles
