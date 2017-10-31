@@ -21,6 +21,8 @@
 		/// 获取或设置确认的结果。
 		/// </summary>
 		public ConsentResult Result { get; set; }
+
+        public string ReturnUrl { get; set; }
 	}
 
 	/// <summary>
