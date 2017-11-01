@@ -19,8 +19,8 @@
 			<tr>
 				<th>标识</th>
 				<th>显示名称</th>
-				<th>描述</th>
-				<th>分类</th>
+				<th>类型</th>
+				<th>关联 API</th>
 				<th asp-authorize-policy="@Policies.OperateApps">操作</th>
 			</tr>
 		</thead>
@@ -30,16 +30,26 @@
 				<tr data-id="@item.Id" data-name="@item.DisplayName">
 					<th>@item.Id</th>
 					<td>@item.DisplayName</td>
-					<td>@item.Description</td>
 					<td>
-						@if (!string.IsNullOrEmpty(item.Region))
-					{
-							<span>@item.Region</span>
-					}
-					else
-					{
+						@switch (item.Type)
+						{
+							case ScopeType.Identity:
+								<span class="text-primary">标识</span>
+								break;
+							case ScopeType.Resource:
+								<span class="text-success">资源</span>
+								break;
+						}
+					</td>
+					<td>
+						@if (item.ApiId != null)
+						{
+							<span>@item.ApiId</span>
+						}
+						else
+						{
 							<span class="text-muted">无</span>
-					}
+						}
 					</td>
 					<td asp-authorize-policy="@Policies.OperateApps">
 						<div class="btn-group btn-group-sm">

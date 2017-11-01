@@ -32,7 +32,7 @@ namespace CC98.LogOn.Components
         public async Task<IViewComponentResult> InvokeAsync(string inputName, IEnumerable<string> selectedItems)
         {
             var items = from i in DbContext.AppScopes
-                        orderby i.Region, i.Id
+                        orderby i.Type, i.ApiId, i.Id
                         select i;
 
             var apiResources = from i in DbContext.ApiResources

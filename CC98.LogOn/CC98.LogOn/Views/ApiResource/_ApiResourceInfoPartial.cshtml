@@ -2,7 +2,7 @@
 @model AppApiResource
 @{
 	var isEditMode = (bool)ViewBag.IsEditMode;
-	var selectedScopes = Model?.Scopes.Select(i => i.Scope.Id).ToArray();
+	var selectedScopes = Model?.Scopes.Select(i => i.Id).ToArray();
 }
 
 <div class="form-group">
@@ -52,28 +52,6 @@
 	</div>
 	<div class="card-footer">
 		<a asp-controller="ApiResource" asp-action="Create" class="btn btn-primary">添加领域</a>
-	</div>
-</div>
-
-<div class="card mt-2">
-	<div class="card-header">声明类型</div>
-	<div class="card-body">
-		<p class="card-text">在此处可以选择该 API 需要访问的用户信息。</p>
-
-		<div class="form-check">
-			<label class="form-check-label">
-				<input asp-array-for="Claims" type="checkbox" asp-array-value="@JwtClaimTypes.Subject" /> 用户 ID
-			</label>
-			<small class="form-text text-muted">用户的 CC98 ID（整数）。</small>
-		</div>
-
-		<div class="form-check">
-			<label class="form-check-label">
-				<input asp-array-for="Claims" type="checkbox" asp-array-value="@JwtClaimTypes.Name" /> 用户 ID
-			</label>
-			<small class="form-text text-muted">用户的 CC98 用户名。</small>
-		</div>
-
 	</div>
 </div>
 

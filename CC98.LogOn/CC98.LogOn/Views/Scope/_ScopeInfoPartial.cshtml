@@ -16,16 +16,22 @@
 	<small class="form-text text-muted">领域的显示名称。将会显示在用户许可和应用设定的界面。</small>
 </div>
 <div class="form-group">
+	<label asp-for="Type" class="form-control-label"></label>
+	<select asp-enum-for="Type" asp-text-source="Name" class="form-control" rows="3"></select>
+	<span asp-validation-for="Type" class="text-danger"></span>
+	<small class="form-text text-muted">领域的类型。资源领域用于表示一个或者多个用户信息（标识资源）。资源领域表示对特定 API 资源（调用）的访问权限。资源领域必须关联到一个或多个 API 资源。</small>
+</div>
+<div class="form-group">
 	<label asp-for="Description" class="form-control-label"></label>
 	<textarea asp-for="Description" class="form-control" rows="3"></textarea>
 	<span asp-validation-for="Description" class="text-danger"></span>
 	<small class="form-text text-muted">领域的描述。将会显示在用户许可和应用设定的界面。</small>
 </div>
 <div class="form-group">
-	<label asp-for="Region" class="form-control-label"></label>
-	<input asp-for="Region" class="form-control" placeholder="无分类" />
-	<span asp-validation-for="Region" class="text-danger"></span>
-	<small class="form-text text-muted">授权的区域。区域可用于对授权领域进行分组。</small>
+	<label asp-for="UserClaims" class="form-control-label"></label>
+	<textarea asp-for="UserClaims" class="form-control" rows="3"></textarea>
+	<span asp-validation-for="UserClaims" class="text-danger"></span>
+	<small class="form-text text-muted">领域的描述。将会显示在用户许可和应用设定的界面。</small>
 </div>
 <div class="form-check">
 	<label class="form-check-label">

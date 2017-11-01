@@ -76,11 +76,11 @@ namespace CC98.LogOn.Services
             var result = new ApiResource(item.Id, item.DisplayName);
             result.ApiSecrets.Add(new Secret(item.Secret.ToString("D", CultureInfo.InvariantCulture)));
 
-            // 添加声明
-            foreach (var claim in item.Claims)
-            {
-                result.UserClaims.Add(claim);
-            }
+            //// 添加声明
+            //foreach (var claim in item.Claims)
+            //{
+            //    result.UserClaims.Add(claim);
+            //}
 
             return result;
         }

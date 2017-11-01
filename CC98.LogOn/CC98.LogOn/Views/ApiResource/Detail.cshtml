@@ -27,14 +27,10 @@ else
 				{
 					<a href="#" class="list-group-item">
 						<h5>
-							<strong>@item.Scope.DisplayName</strong>
-							<span class="badge badge-secondary">@item.Scope.Id</span>
-							@if (item.IsRequired)
-							{
-								<span class="badge badge-primary">必需</span>
-							}
+							<strong>@item.DisplayName</strong>
+							<span class="badge badge-secondary">@item.Id</span>
 						</h5>
-						<p>@item.Scope.Description</p>
+						<p>@item.Description</p>
 					</a>
 				}
 			</div>

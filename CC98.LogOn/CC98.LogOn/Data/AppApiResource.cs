@@ -39,29 +39,10 @@ namespace CC98.LogOn.Data
         /// </summary>
         [Display(Name = "描述")]
         public string Description { get; set; }
-
-        /// <summary>
-        /// 定义 <see cref="Claims"/> 属性的内部值。
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Column(nameof(Claims))]
-        public string ClaimsValue { get; set; }
-
-        /// <summary>
-        /// 获取或设置该资源允许使用的声明类型。
-        /// </summary>
-        [NotMapped]
-        [IgnoreDataMember]
-        public string[] Claims
-        {
-            get => ClaimsValue.SplitForStore();
-            set => ClaimsValue = value.JoinForStore();
-        }
-
         /// <summary>
         /// 获取或设置该对象关联的领域的集合。
         /// </summary>
-        [InverseProperty(nameof(ApiResourceScope.Api))]
-        public virtual IList<ApiResourceScope> Scopes { get; set; } = new Collection<ApiResourceScope>();
+        [InverseProperty(nameof(AppScope.Api))]
+        public virtual IList<AppScope> Scopes { get; set; } = new Collection<AppScope>();
     }
 }

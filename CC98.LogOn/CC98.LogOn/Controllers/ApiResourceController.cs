@@ -149,7 +149,7 @@ namespace CC98.LogOn.Controllers
         public async Task<IActionResult> Detail(string id, CancellationToken cancellationToken)
         {
             var item = await (from i in DbContext.ApiResources
-                                .Include(p => p.Scopes).ThenInclude(p => p.Scope)
+                                .Include(p => p.Scopes)
                               where i.Id == id
                               select i).FirstOrDefaultAsync(cancellationToken);
 

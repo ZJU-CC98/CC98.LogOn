@@ -35,12 +35,6 @@ namespace CC98.LogOn.Data
         public string Description { get; set; }
 
         /// <summary>
-        /// 获取或设置该领域所属的相关使用范围。
-        /// </summary>
-        [Display(Name = "分类")]
-        public string Region { get; set; }
-
-        /// <summary>
         /// 获取或设置一个值，指示是否要在领域列表中隐藏该领域。
         /// </summary>
         [Display(Name = "隐藏")]
@@ -65,9 +59,36 @@ namespace CC98.LogOn.Data
         public string UserClaimsValue { get; set; }
 
         /// <summary>
-        /// 获取或设置该领域关联到的 API 资源的集合。
+        /// 获取或设置领域的类型。
         /// </summary>
-        [InverseProperty(nameof(ApiResourceScope.Scope))]
-        public virtual IList<ApiResourceScope> ApiResources { get; set; } = new Collection<ApiResourceScope>();
+        public ScopeType Type { get; set; }
+
+        /// <summary>
+        /// 获取或设置该领域关联到的 API 的标识。
+        /// </summary>
+        public string ApiId { get; set; }
+
+        /// <summary>
+        /// 获取或设置该领域关联到的 API。仅当 <see cref="Type"/> 属性为 <see cref="ScopeType.Resource"/> 时可用。
+        /// </summary>
+        [ForeignKey(nameof(ApiId))]
+        public AppApiResource Api { get; set; }
+    }
+
+    /// <summary>
+    /// 定义领域的类型。
+    /// </summary>
+    public enum ScopeType
+    {
+        /// <summary>
+        /// 资源领域。
+        /// </summary>
+        [Display(Name = "资源")]
+        Resource,
+        /// <summary>
+        /// 标识领域。
+        /// </summary>
+        [Display(Name = "标识")]
+        Identity
     }
 }
