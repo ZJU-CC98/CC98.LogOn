@@ -41,6 +41,18 @@ namespace CC98.LogOn.Data
         public bool IsHidden { get; set; }
 
         /// <summary>
+        /// 获取或设置一个值，指示该领域是否是必需的。
+        /// </summary>
+        [Display(Name = "必需")]
+        public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// 获取或设置一个值，指示该领域是否重要。
+        /// </summary>
+        [Display(Name = "重要")]
+        public bool IsImportant { get; set; }
+
+        /// <summary>
         /// 获取或设置该领域需要使用的用户声明信息。
         /// </summary>
         [NotMapped]
@@ -61,7 +73,7 @@ namespace CC98.LogOn.Data
         /// <summary>
         /// 获取或设置领域的类型。
         /// </summary>
-        [Display(Name ="类型")]
+        [Display(Name = "类型")]
         public ScopeType Type { get; set; }
 
         /// <summary>

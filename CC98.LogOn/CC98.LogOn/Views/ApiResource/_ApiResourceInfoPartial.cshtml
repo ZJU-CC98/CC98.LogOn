@@ -51,7 +51,6 @@
 				API 资源支持一个或多个不同领域。每个领域代表 API 的一部分功能。每个 API 资源必须至少拥有一个领域，否则将无法正常工作。要为这个 API 资源添加领域，你需要转到领域的管理界面，并将它关联到这个 API。
 			</p>
 		</div>
-		<hr />
 		@if (Model != null && Model.Scopes.Count != 0)
 		{
 			<table class="table table-striped">
@@ -78,6 +77,7 @@
 		}
 		else
 		{
+			<hr />
 			<div class="card-body">
 				<p class="card-text text-muted">这个 API 资源目前没有关联到任何领域</p>
 			</div>

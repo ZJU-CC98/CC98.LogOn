@@ -57,7 +57,7 @@
 				<td>@i.CreateTime.ToString("G", CultureInfo.CurrentUICulture)</td>
 				<td>
 					<div class="btn-group btn-group-sm">
-						<a asp-controller="App" asp-action="Edit" asp-route-id="@i.Id" class="btn btn-secondary">编辑</a>
+						<a asp-controller="App" asp-action="Edit" asp-route-id="@i.Id" asp-route-returnUrl="@Url.Action()" class="btn btn-secondary">编辑</a>
 						<button type="button" class="btn btn-danger" onclick="deleteApp(this);">删除</button>
 					</div>
 				</td>

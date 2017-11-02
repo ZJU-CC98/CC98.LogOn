@@ -1,9 +1,8 @@
 ﻿@{
-	var scopes = (AppScope[]) ViewBag.Scopes;
-	var apiResources = (AppApiResource[]) ViewBag.ApiResources;
+	var scopes = (AppScope[])ViewBag.Scopes;
 
 	var selectedItems = new HashSet<string>((IEnumerable<string>)ViewBag.SelectedItems, StringComparer.OrdinalIgnoreCase);
-	var inputName = (string) ViewBag.InputName;
+	var inputName = (string)ViewBag.InputName;
 }
 
 @if (scopes.Any())
@@ -15,6 +14,15 @@
 				<input name="@inputName" value="@item.Id" type="checkbox" checked="@selectedItems.Contains(item.Id)" class="form-check-input" />
 				<span>@item.DisplayName</span>
 				<span class="badge badge-secondary">@item.Id</span>
+				@switch (item.Type)
+				{
+					case ScopeType.Identity:
+						<span class="badge badge-primary">标识</span>
+						break;
+					case ScopeType.Resource:
+						<span class="badge badge-success">API</span>
+						break;
+				}
 			</label>
 			<small class="form-text text-muted">@item.Description</small>
 		</div>
@@ -23,21 +31,4 @@
 else
 {
 	<p class="text-center text-muted">目前没有任何可用的领域</p>
-}
-
-<hr />
-
-@if (apiResources.Any())
-{
-	foreach (var item in apiResources)
-	{
-		<div class="form-check">
-			<label class="form-check-label">
-				<input name="@inputName" value="@item.Id" type="checkbox" checked="@selectedItems.Contains(item.Id)" class="form-check-input" />
-				<span>@item.DisplayName</span>
-				<span class="badge badge-secondary">@item.Id</span>
-			</label>
-			<small class="form-text text-muted">@item.Description</small>
-		</div>
-	}
 }

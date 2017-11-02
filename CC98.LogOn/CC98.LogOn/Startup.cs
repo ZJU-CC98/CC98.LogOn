@@ -6,6 +6,7 @@ using CC98.LogOn.Services;
 using CC98.LogOn.ZjuInfoAuth;
 using IdentityServer4;
 using IdentityServer4.Models;
+using IdentityServer4.Validation;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -78,11 +79,6 @@ namespace CC98.LogOn
 
 			services.AddTransient<AppClientStore>();
 
-			var resources = new List<IdentityResource>
-			{
-				new IdentityResources.OpenId(),
-				new IdentityResources.Profile()
-			};
 
 			// 授权系统
 			services.AddAuthorization(options =>
@@ -119,12 +115,12 @@ namespace CC98.LogOn
 					options.UserInteraction.ConsentUrl = "/Account/Consent";
 				})
 				.AddInMemoryCaching()
-				.AddResourceStoreCache<AppResourceStore>()
+                .AddSecretValidator<PlainTextSharedSecretValidator>()
+				.AddResourceStore<AppResourceStore>()
 				.AddSigningCredential(Configuration["IdentityServer:SigningCertificateSubjectDistinguishedName"])
-				.AddClientStoreCache<AppClientStore>()
+				.AddClientStore<AppClientStore>()
 				.AddProfileService<CC98UserProfileService>()
 				.AddResourceOwnerValidator<CC98UserPasswordValidator>()
-				.AddInMemoryIdentityResources(resources)
 				.AddCorsPolicyService<AppCorsPolicyService>();
 
 			// 添加身份验证服务

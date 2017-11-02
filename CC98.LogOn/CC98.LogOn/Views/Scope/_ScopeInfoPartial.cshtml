@@ -38,7 +38,7 @@
 
 		<div class="form-group">
 			<label asp-for="ApiId" class="form-control-label"></label>
-			<select asp-for="ApiId" asp-items="@apiSelectList" class="form-control"></select>
+			<select asp-for="ApiId" asp-items="@apiSelectList" asp-option-label="不关联到任何 API" class="form-control"></select>
 			<span asp-validation-for="ApiId" class="text-danger"></span>
 			<small class="form-text text-muted">领域关联到的 API 资源对象。该选项仅对资源领域有效。</small>
 		</div>
@@ -48,6 +48,20 @@
 				<input asp-for="IsHidden" class="form-check-input" /> 隐藏该领域
 			</label>
 			<small class="form-text text-muted">如果隐藏该领域，则用户将无法在领域表中看到该项目。隐藏的领域通常用于内部操作。</small>
+		</div>
+		
+		<div class="form-check">
+			<label class="form-check-label">
+				<input asp-for="IsRequired" class="form-check-input" /> 该领域是必需的
+			</label>
+			<small class="form-text text-muted">选中该复选框后，用户在确认界面必须同意授权该领域，无法取消选择对应的复选框。</small>
+		</div>
+		
+		<div class="form-check">
+			<label class="form-check-label">
+				<input asp-for="IsRequired" class="form-check-input" /> 该领域是重要的
+			</label>
+			<small class="form-text text-muted">选中该复选框后，该领域在用户确认界面将使用特别的文字进行提示，提醒用户要谨慎授权。</small>
 		</div>
 	</div>
 </div>

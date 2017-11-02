@@ -35,13 +35,7 @@ namespace CC98.LogOn.Components
                         orderby i.Type, i.ApiId, i.Id
                         select i;
 
-            var apiResources = from i in DbContext.ApiResources
-                               orderby i.Id
-                               select i;
-
             ViewBag.Scopes = await items.ToArrayAsync();
-            ViewBag.ApiResources = await apiResources.ToArrayAsync();
-
             ViewBag.InputName = inputName;
             ViewBag.SelectedItems = selectedItems ?? Enumerable.Empty<string>();
             return View();
