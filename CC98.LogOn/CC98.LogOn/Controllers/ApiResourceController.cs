@@ -11,156 +11,164 @@ using Sakura.AspNetCore;
 
 namespace CC98.LogOn.Controllers
 {
-    /// <inheritdoc />
-    /// <summary>
-    /// 提供对 API 资源的控制。
-    /// </summary>
-    public class ApiResourceController : Controller
-    {
-        public ApiResourceController(CC98IdentityDbContext dbContext, IOperationMessageAccessor messageAccessor)
-        {
-            DbContext = dbContext;
-            MessageAccessor = messageAccessor;
-        }
+	/// <inheritdoc />
+	/// <summary>
+	/// 提供对 API 资源的控制。
+	/// </summary>
+	public class ApiResourceController : Controller
+	{
+		public ApiResourceController(CC98IdentityDbContext dbContext, IOperationMessageAccessor messageAccessor)
+		{
+			DbContext = dbContext;
+			MessageAccessor = messageAccessor;
+		}
 
-        /// <summary>
-        /// 获取消息访问器。
-        /// </summary>
-        private IOperationMessageAccessor MessageAccessor { get; }
+		/// <summary>
+		/// 获取消息访问器。
+		/// </summary>
+		private IOperationMessageAccessor MessageAccessor { get; }
 
-        /// <summary>
-        /// 获取数据库上下文对象。
-        /// </summary>
-        private CC98IdentityDbContext DbContext { get; }
+		/// <summary>
+		/// 获取数据库上下文对象。
+		/// </summary>
+		private CC98IdentityDbContext DbContext { get; }
 
-        /// <summary>
-        /// 显示 API 资源列表。
-        /// </summary>
-        /// <param name="page">页码。</param>
-        /// <returns>操作结果。</returns>
-        public async Task<IActionResult> Index(int page = 1)
-        {
-            var result = from i in DbContext.ApiResources
-                         orderby i.Id
-                         select i;
+		/// <summary>
+		/// 显示 API 资源列表。
+		/// </summary>
+		/// <param name="page">页码。</param>
+		/// <returns>操作结果。</returns>
+		public async Task<IActionResult> Index(int page = 1)
+		{
+			var result = from i in DbContext.ApiResources
+						 orderby i.Id
+						 select i;
 
-            return View(await result.ToPagedListAsync(20, page));
-        }
+			return View(await result.ToPagedListAsync(20, page));
+		}
 
-        /// <summary>
-        /// 显示创建 API 资源页面。
-        /// </summary>
-        /// <returns>操作结果。</returns>
-        [HttpGet]
-        [Authorize(Policies.OperateApps)]
-        public IActionResult Create()
-        {
-            return View();
-        }
+		/// <summary>
+		/// 显示创建 API 资源页面。
+		/// </summary>
+		/// <returns>操作结果。</returns>
+		[HttpGet]
+		[Authorize(Policies.OperateApps)]
+		public IActionResult Create()
+		{
+			return View();
+		}
 
-        /// <summary>
-        /// 执行创建操作。
-        /// </summary>
-        /// <param name="model">数据模型。</param>
-        /// <returns>操作结果。</returns>
-        [HttpPost]
-        [Authorize(Policies.OperateApps)]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AppApiResource model)
-        {
-            if (ModelState.IsValid)
-            {
-                model.Secret = Guid.NewGuid();
-                DbContext.ApiResources.Add(model);
+		/// <summary>
+		/// 执行创建操作。
+		/// </summary>
+		/// <param name="model">数据模型。</param>
+		/// <returns>操作结果。</returns>
+		[HttpPost]
+		[Authorize(Policies.OperateApps)]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(AppApiResource model)
+		{
+			if (ModelState.IsValid)
+			{
+				model.Secret = Guid.NewGuid();
+				DbContext.ApiResources.Add(model);
 
-                try
-                {
-                    await DbContext.SaveChangesAsync();
-                    MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功",
-                        string.Format(CultureInfo.CurrentUICulture, "你已经成功创建了 API 资源 {0}", model.DisplayName));
-                    return RedirectToAction("Index", "ApiResource");
-                }
-                catch (DbUpdateException ex)
-                {
-                    ModelState.AddModelError("", ex.GetMessage());
-                }
-            }
+				try
+				{
+					await DbContext.SaveChangesAsync();
+					MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功",
+						string.Format(CultureInfo.CurrentUICulture, "你已经成功创建了 API 资源 {0}", model.DisplayName));
+					return RedirectToAction("Index", "ApiResource");
+				}
+				catch (DbUpdateException ex)
+				{
+					ModelState.AddModelError("", ex.GetMessage());
+				}
+			}
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        /// <summary>
-        /// 显示编辑界面。
-        /// </summary>
-        /// <param name="id">资源标识。</param>
-        /// <returns>操作结果。</returns>
-        [HttpGet]
-        [Authorize(Policies.OperateApps)]
-        public async Task<IActionResult> Edit(string id)
-        {
-            var item = await DbContext.ApiResources.FindAsync(id);
+		/// <summary>
+		/// 显示编辑界面。
+		/// </summary>
+		/// <param name="id">资源标识。</param>
+		/// <returns>操作结果。</returns>
+		[HttpGet]
+		[Authorize(Policies.OperateApps)]
+		public async Task<IActionResult> Edit(string id)
+		{
+			var item = await (from i in DbContext.ApiResources
+								.Include(p => p.Scopes)
+							  select i).FirstOrDefaultAsync();
 
-            if (item == null)
-            {
-                return NotFound();
-            }
+			if (item == null)
+			{
+				return NotFound();
+			}
 
-            return View(item);
-        }
+			return View(item);
+		}
 
-        /// <summary>
-        /// 执行编辑操作。
-        /// </summary>
-        /// <param name="model">数据模型。</param>
-        /// <returns>操作结果。</returns>
-        [HttpPost]
-        [Authorize(Policies.OperateApps)]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(AppApiResource model)
-        {
-            if (ModelState.IsValid)
-            {
-                var item = await DbContext.ApiResources.FindAsync(model.Id);
+		/// <summary>
+		/// 执行编辑操作。
+		/// </summary>
+		/// <param name="model">数据模型。</param>
+		/// <returns>操作结果。</returns>
+		[HttpPost]
+		[Authorize(Policies.OperateApps)]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(AppApiResource model)
+		{
+			if (ModelState.IsValid)
+			{
+				var item = await DbContext.ApiResources.FindAsync(model.Id);
 
-                if (item == null)
-                {
-                    return NotFound();
-                }
+				if (item == null)
+				{
+					return NotFound();
+				}
 
-                // 修改原始数据，注意 ID 和机密保持不变
-                item.PatchExclude(model, i => new { i.Id, i.Secret });
+				// 修改原始数据，注意 ID 和机密保持不变
+				item.PatchExclude(model, i => new { i.Id, i.Secret });
 
-                try
-                {
-                    await DbContext.SaveChangesAsync();
-                    MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功",
-                        string.Format(CultureInfo.CurrentUICulture, "你已经成功修改了 API 资源 {0}", model.DisplayName));
-                    return RedirectToAction("Index", "ApiResource");
-                }
-                catch (DbUpdateException ex)
-                {
-                    ModelState.AddModelError("", ex.GetMessage());
-                }
-            }
+				try
+				{
+					await DbContext.SaveChangesAsync();
+					MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功",
+						string.Format(CultureInfo.CurrentUICulture, "你已经成功修改了 API 资源 {0}", model.DisplayName));
+					return RedirectToAction("Index", "ApiResource");
+				}
+				catch (DbUpdateException ex)
+				{
+					ModelState.AddModelError("", ex.GetMessage());
+				}
+			}
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        public async Task<IActionResult> Detail(string id, CancellationToken cancellationToken)
-        {
-            var item = await (from i in DbContext.ApiResources
-                                .Include(p => p.Scopes)
-                              where i.Id == id
-                              select i).FirstOrDefaultAsync(cancellationToken);
+		/// <summary>
+		/// 查看给定 API 资源的详细信息。
+		/// </summary>
+		/// <param name="id">API 资源的标识。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
+		/// <returns></returns>
+		public async Task<IActionResult> Detail(string id, CancellationToken cancellationToken)
+		{
+			var item = await (from i in DbContext.ApiResources
+								.Include(p => p.Scopes)
+							  where i.Id == id
+							  select i).FirstOrDefaultAsync(cancellationToken);
 
-            cancellationToken.ThrowIfCancellationRequested();
+			cancellationToken.ThrowIfCancellationRequested();
 
-            if (item == null)
-            {
-                return NotFound();
-            }
+			if (item == null)
+			{
+				return NotFound();
+			}
 
-            return View(item);
-        }
-    }
+			return View(item);
+		}
+	}
 }

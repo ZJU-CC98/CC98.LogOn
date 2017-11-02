@@ -1,0 +1,57 @@
+﻿@model IPagedList<CC98UserClaim>
+@{
+	ViewBag.Title = "用户声明一览";
+}
+
+<div class="alert alert-info">用户声明表示用户的特定身份信息。用户声明是用户信息的最终存放位置。API 或第三方应用请求用户的身份时，最终获得的用户信息都来自于用户声明。如要了解 API 或第三方请求需要访问哪些用户声明信息，请查阅 API 或领域的详细信息页面。</div>
+
+<authorize policy="@Policies.OperateApps">
+	<hr />
+	<a asp-controller="UserClaim" asp-action="Create" class="btn btn-primary">创建用户声明</a>
+</authorize>
+
+@if (Model.Any())
+{
+	<table class="table table-striped mt-4">
+		<thead>
+			<tr>
+				<th>标识</th>
+				<th>显示名称</th>
+				<th>描述</th>
+				<th asp-authorize-policy="@Policies.OperateApps">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<th>@item.Id</th>
+					<td>@item.DisplayName</td>
+					<td>
+						@if (!string.IsNullOrEmpty(item.Description))
+					{
+							<span>@item.Description</span>
+					}
+					else
+					{
+							<span class="text-muted">无</span>
+					}
+					</td>
+					<td asp-authorize-policy="@Policies.OperateApps">
+						<div class="btn-group btn-group-sm">
+							<a class="btn btn-secondary" asp-controller="UserClaim" asp-action="Edit" asp-route-id="@item.Id">编辑</a>
+							<button class="btn btn-danger" type="button">删除</button>
+						</div>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<pager />
+}
+else
+{
+	<hr />
+	<p class="text-center text-muted">目前管理员还没有创建用户声明</p>
+}

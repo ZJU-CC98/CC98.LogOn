@@ -1,0 +1,23 @@
+﻿@model CC98UserClaim
+@{
+	var isEditMode = (bool)ViewBag.IsEditMode;
+}
+
+<div class="form-group">
+	<label asp-for="Id" class="form-control-label"></label>
+	<input asp-for="Id" type="text" class="form-control" readonly="@isEditMode" />
+	<span asp-validation-for="Id" class="text-danger"></span>
+	<small class="form-text text-muted">声明的标识。对应于标识模型中的声明名称。该项目在创建后不可修改。</small>
+</div>
+<div class="form-group">
+	<label asp-for="DisplayName" class="form-control-label"></label>
+	<input asp-for="DisplayName" type="text" class="form-control" />
+	<span asp-validation-for="DisplayName" class="text-danger"></span>
+	<small class="form-text text-muted">声明的显示名称。将会出现在领域操作相关的用户界面中。</small>
+</div>
+<div class="form-group">
+	<label asp-for="Description" class="form-control-label"></label>
+	<textarea asp-for="Description" rows="3" class="form-control"></textarea>
+	<span asp-validation-for="Description" class="text-danger"></span>
+	<small class="form-text text-muted">声明的描述。将会出现在领域操作相关的用户界面中。</small>
+</div>

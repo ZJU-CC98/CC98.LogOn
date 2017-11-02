@@ -42,36 +42,50 @@
 
 <hr />
 
-<div class="card">
-	<div class="card-header">领域</div>
-	<div class="card-body">
-		<p class="card-text">
-			API 资源支持一个或多个不同领域。每个领域代表 API 的一部分功能。
-		</p>
-			<vc:scope-selector input-name="scopes" selected-items="@selectedScopes" />
-	</div>
-	<div class="card-footer">
-		<a asp-controller="ApiResource" asp-action="Create" class="btn btn-primary">添加领域</a>
-	</div>
-</div>
-
-<form asp-controller="ApiResource">
-	<div class="modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">添加领域要求</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="关闭">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">Save changes</button>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				</div>
-			</div>
+@if (isEditMode)
+{
+	<div class="card">
+		<div class="card-header">领域</div>
+		<div class="card-body">
+			<p class="card-text">
+				API 资源支持一个或多个不同领域。每个领域代表 API 的一部分功能。每个 API 资源必须至少拥有一个领域，否则将无法正常工作。要为这个 API 资源添加领域，你需要转到领域的管理界面，并将它关联到这个 API。
+			</p>
 		</div>
+		<hr />
+		@if (Model != null && Model.Scopes.Count != 0)
+		{
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>标识</th>
+						<th>名称</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var scope in Model.Scopes)
+					{
+						<tr>
+							<th>@scope.Id</th>
+							<td>@scope.DisplayName</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+			foreach (var scope in Model.Scopes)
+			{
+
+			}
+		}
+		else
+		{
+			<div class="card-body">
+				<p class="card-text text-muted">这个 API 资源目前没有关联到任何领域</p>
+			</div>
+		}
+
 	</div>
-</form>
+}
+else
+{
+	<p class="text-warning">API 创建后不能立即产生效果，你还需要为 API 添加至少一个领域。请在创建 API 资源后，转到 <a asp-controller="Scope" asp-action="Index">领域管理</a> 界面添加领域或者将领域关联到这个 API。</p>
+}

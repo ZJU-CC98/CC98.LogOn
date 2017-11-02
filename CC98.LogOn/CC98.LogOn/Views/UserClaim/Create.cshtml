@@ -1,0 +1,19 @@
+﻿@model CC98UserClaim
+@{
+	ViewBag.Title = "创建用户声明";
+	ViewBag.IsEditMode = false;
+}
+
+<form asp-controller="UserClaim" asp-action="Create" method="post" asp-antiforgery="true">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+
+			@await Html.PartialAsync("_UserClaimInfoPartial")
+
+			<hr />
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<button type="submit" class="btn btn-primary">创建声明</button>
+			<button type="reset" class="btn btn-secondary">清空内容</button>
+		</div>
+	</div>
+</form>

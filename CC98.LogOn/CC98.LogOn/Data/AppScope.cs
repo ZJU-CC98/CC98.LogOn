@@ -61,11 +61,13 @@ namespace CC98.LogOn.Data
         /// <summary>
         /// 获取或设置领域的类型。
         /// </summary>
+        [Display(Name ="类型")]
         public ScopeType Type { get; set; }
 
         /// <summary>
         /// 获取或设置该领域关联到的 API 的标识。
         /// </summary>
+        [Display(Name = "API 资源")]
         public string ApiId { get; set; }
 
         /// <summary>
