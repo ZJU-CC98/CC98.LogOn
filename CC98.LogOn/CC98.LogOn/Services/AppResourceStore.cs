@@ -96,10 +96,11 @@ namespace CC98.LogOn.Services
 
         public async Task<IEnumerable<ApiResource>> FindApiResourcesByScopeAsync(IEnumerable<string> scopeNames)
         {
+            // TODO：检查性能影响
             return await (from i in DbContext.ApiResources
                             .Include(p => p.Scopes)
-                          where scopeNames.Contains(i.Id)
-                          select CreateApiResourceFromDatabaseItem(i)).ToArrayAsync();
+                          where i.Scopes.Any(s => scopeNames.Contains(s.Id))
+                          select CreateApiResourceFromDatabaseItem(i)).Distinct().ToArrayAsync();
         }
 
         public Task<ApiResource> FindApiResourceAsync(string name)

@@ -72,6 +72,7 @@ namespace CC98.LogOn.Controllers
 
             ViewBag.Client = client;
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Scopes = authorizeContext.ScopesRequested;
             return View();
         }
 

@@ -6,20 +6,24 @@
 	var clientInfo = (Client)ViewBag.Client;
 }
 <form method="post" asp-antiforgery="true" asp-controller="Account" asp-action="Consent" asp-route-returnUrl="@ViewBag.ReturnUrl">
-	
-	<input type="hidden" asp-for="Scopes" value="@IdentityServerConstants.StandardScopes.OpenId"/>
+
+	<input type="hidden" asp-for="Scopes" value="@IdentityServerConstants.StandardScopes.OpenId" />
 
 	<div class="row justify-content-center">
 		<div class="col-md-6">
 			<h4 class="lead text-center"><strong>@clientInfo.ClientName</strong> 正在请求你的许可</h4>
-			<hr/>
+			<hr />
+			<p class="form-text text-info">下方列出了该应用向你申请的资源信息。如果你不希望授予某项资源，请取消选择该资源名称前面的复选框。</p>
+			<hr />
+			<vc:consent-scope-selector required-scopes="@ViewBag.Scopes" input-name="@nameof(Model.Scopes)" />
+			<hr />
 			<div class="form-check">
 				<label class="form-check-label">
-					<input class="form-check-input" type="checkbox" asp-for="RememberConsent"/> 记住许可结果
+					<input class="form-check-input" type="checkbox" asp-for="RememberConsent" /> 记住许可结果
 				</label>
 				<small class="form-text text-muted">记住这次许可操作的结果。下次该应用发出同样的请求时，将不再显示许可页面。<span class="text-warning">如果你选择同意许可并记住了本次结果，则应用可以在一段时间内自动获得你的许可，这可能带来一定的安全问题，请谨慎使用该功能。</span></small>
 			</div>
-			<hr/>
+			<hr />
 			<button type="submit" class="btn btn-success"><i class="fa fa-check-circle"></i> 同意许可</button>
 			<button type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i> 拒绝许可</button>
 		</div>
