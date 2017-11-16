@@ -118,6 +118,16 @@ namespace CC98.LogOn.Controllers
         }
 
         /// <summary>
+        /// 显示注册界面。
+        /// </summary>
+        /// <returns>操作结果。</returns>
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// 执行登录操作。
         /// </summary>
         /// <param name="model">登录信息</param>

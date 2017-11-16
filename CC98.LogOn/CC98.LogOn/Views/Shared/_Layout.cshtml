@@ -16,13 +16,13 @@
 	</environment>
 	<environment names="Staging,Production">
 
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
 			  integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
 			  crossorigin="anonymous"
 			  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
 			  asp-fallback-test-class="sr-only"
 			  asp-fallback-test-property="position"
-			  asp-fallback-test-value="absolute">
+			  asp-fallback-test-value="absolute" />
 
 		<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"
 			  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
@@ -30,17 +30,10 @@
 			  asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
 			  asp-fallback-test-class="fa"
 			  asp-fallback-test-property="display"
-			  asp-fallback-test-value="inline-block">
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-			  integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-			  crossorigin="anonymous"
-			  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-			  asp-fallback-test-class="sr-only"
-			  asp-fallback-test-property="position"
-			  asp-fallback-test-value="absolute">
+			  asp-fallback-test-value="inline-block" />
 
 		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+
 	</environment>
 	@Html.Raw(JavaScriptSnippet.FullScript)
 	@await RenderSectionAsync("Head", false)
@@ -57,10 +50,11 @@
 
 			<div class="navbar-collapse collapse" id="main-navbar">
 				<ul class="navbar-nav mr-auto">
-					
+
 					<li class="nav-item dropdown">
-						<a id="app-menu" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">账号</a>
-						<div class="dropdown-menu" aria-labelledby="app-menu">
+						<a id="register-menu" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">账号</a>
+						<div class="dropdown-menu" aria-labelledby="register-menu">
+							<a class="dropdown-item" asp-controller="Account" asp-action="Register">注册 CC98 账号</a>
 							<a class="dropdown-item" asp-controller="Account" asp-action="My">我的 CC98 账号</a>
 						</div>
 					</li>
@@ -103,32 +97,51 @@
 		<script src="~/lib/jquery/dist/jquery.js"></script>
 		<script src="~/lib/popper.js/dist/umd/popper.js"></script>
 		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="~/lib/i18next/i18next.js"></script>
+		<script src="~/lib/pwstrength-bootstrap/dist/pwstrength-bootstrap.js"></script>
 		<script src="~/js/site.js" asp-append-version="true"></script>
 	</environment>
 	<environment names="Staging,Production">
 
-		<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.2.1.min.js"
+		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"
 				asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
 				asp-fallback-test="window.jQuery"
-				crossorigin="anonymous"
-				integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f">
-		</script>
-
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.min.js"
-				asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
-				asp-fallback-test="window.Popper"
-				integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+				integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
 				crossorigin="anonymous"></script>
 
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+		<script src="https://cdn.bootcss.com/popper.js/1.12.9/esm/popper.min.js"
+				asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
+				asp-fallback-test="window.Popper"
+				integrity="sha384-7X8a6Cjin8U+DiYAV7pjFsRxvFo29iRu43KSip4dBj+GmeB0rROXTRIB8x99S8JG"
+				crossorigin="anonymous"></script>
+
+		<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
 				asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
 				asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
 				integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
 				crossorigin="anonymous"></script>
 
+		<script src="https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js"
+				asp-fallback-src="~/lib/i18next/i18next.min.js"
+				asp-fallback-test="window.i18next"
+				integrity="sha384-oiTLKEsa+VU4D8F6Rtarq8SLM9UU3Z0nZHAmSTv3PO2D1RxOwus5XmIoYGYKaS7o"
+				crossorigin="anonymous"></script>
+
+		<script src="https://cdn.bootcss.com/pwstrength-bootstrap/2.1.1/pwstrength-bootstrap.min.js"
+				asp-fallback-src="~/lib/pwstrength-bootstrap/dist/pwstrength-bootstrap.min.js"
+				integrity="sha384-SdQ8iFnS7oVtjXnj+nN4N/cWJ+DYxvHZN3ABzl+9my5UyoYPqal/DZ++N7ifgWrO"
+				crossorigin="anonymous"></script>
+
 		<script src="~/js/site.min.js" asp-append-version="true"></script>
 	</environment>
 
+	<script>
+		i18next.init({
+			lng: 'zh-CN'
+		});
+	</script>
+
 	@await RenderSectionAsync("Scripts", false)
+
 </body>
 </html>
