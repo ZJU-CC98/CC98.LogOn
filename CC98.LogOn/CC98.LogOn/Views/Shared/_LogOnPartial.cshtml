@@ -21,7 +21,7 @@
 		<li class="nav-item dropdown">
 			<a id="help-menu" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@ViewLocalizer.Html.CC98AccountFormat(User.GetNameWith(IdentityServerConstants.DefaultCookieAuthenticationScheme))</a>
 			<div class="dropdown-menu" aria-labelledby="zju-info-log-on-menu">
-				<a class="dropdown-item" asp-controller="Account" asp-action="LogOn">切换到浙大通行证</a>
+				<a class="dropdown-item" asp-controller="ZjuInfo" asp-action="LogOn">切换到浙大通行证</a>
 				<a class="dropdown-item" href="#" onclick="$('#log-off-form').submit();">注销</a>
 			</div>
 		</li>

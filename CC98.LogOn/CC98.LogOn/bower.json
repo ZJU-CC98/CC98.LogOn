@@ -9,7 +9,9 @@
     "jquery-ajax-unobtrusive": "v3.2.4",
     "font-awesome": "Font-Awesome#v4.7.0",
     "pwstrength-bootstrap": "2.1.3",
-    "popper.js": "v1.12.9"
+    "popper.js": "v1.12.9",
+    "i18next-xhr-backend": "v1.5.0",
+    "i18next-browser-languagedetector": "v2.1.0"
   },
   "resolutions": {
     "jquery": "3.2.1",

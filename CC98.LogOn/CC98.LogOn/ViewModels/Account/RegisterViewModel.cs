@@ -16,6 +16,7 @@ namespace CC98.LogOn.ViewModels.Account
         /// </summary>
         [Required]
         [StringLength(10)]
+        [RegularExpression(@"\w+")]
         [DataType(DataType.Text)]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
@@ -38,9 +39,9 @@ namespace CC98.LogOn.ViewModels.Account
         public string ConfirmPassword { get; set; }
 
         /// <summary>
-        /// 获取或设置一个值，指示是否要跳过账户绑定。
+        /// 获取或设置一个值，指示是否要绑定到通行证。
         /// </summary>
-        [Display(Name = "跳过验证")]
-        public bool SkipBinding { get; set; }
+        [Display(Name = "绑定到通行证")]
+        public bool BindToZjuInfoId { get; set; }
     }
 }

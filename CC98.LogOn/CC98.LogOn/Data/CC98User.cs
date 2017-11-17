@@ -50,11 +50,32 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		[Column("face")]
 		public string PortraitUri { get; set; }
+		
+		/// <summary>
+		/// 获取或设置用户的性别。
+		/// </summary>
+		[Column("Sex")]
+		public Gender Gender { get; set; }
 
 		/// <summary>
 		/// 获取或设置该用户关联的角色信息的集合。
 		/// </summary>
 		[InverseProperty(nameof(CC98UserRole.User))]
 		public virtual ICollection<CC98UserRole> Roles { get; set; } = new Collection<CC98UserRole>();
+	}
+
+	/// <summary>
+	/// 表示用户的性别。
+	/// </summary>
+	public enum Gender
+	{
+		/// <summary>
+		/// 男性。
+		/// </summary>
+		Female = 0,
+		/// <summary>
+		/// 女性。
+		/// </summary>
+		Male = 1
 	}
 }
