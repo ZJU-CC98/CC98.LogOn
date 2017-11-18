@@ -11,7 +11,7 @@
 		<li class="nav-item dropdown">
 			<a id="help-menu" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@ViewLocalizer.Html.ZjuInfoAccountFormat(User.GetNameWith(ZjuInfoOAuthDefaults.AuthenticationScheme))</a>
 			<div class="dropdown-menu" aria-labelledby="zju-info-log-on-menu">
-				<a class="dropdown-item" asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">切换到 CC98 账号</a>
+				<a class="dropdown-item" asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">切换到 CC98 账号</a>
 				<a class="dropdown-item" href="#" onclick="$('#log-off-form').submit();">注销</a>
 			</div>
 		</li>
@@ -29,10 +29,10 @@
 	else
 	{
 		<li class="nav-item">
-			<a class="nav-link" asp-controller="ZjuInfo" asp-action="LogOn" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">@ViewLocalizer.Html.LogOnZjuInfoAccountLinkText</a>
+			<a class="nav-link" asp-controller="ZjuInfo" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">@ViewLocalizer.Html.LogOnZjuInfoAccountLinkText</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">@ViewLocalizer.Html.LogOnCC98AccountLinkText</a>
+			<a class="nav-link" asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">@ViewLocalizer.Html.LogOnCC98AccountLinkText</a>
 		</li>
 	}
 </ul>

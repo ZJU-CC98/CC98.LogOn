@@ -1,4 +1,4 @@
-@using Sakura.AspNetCore.Localization
+﻿@using Sakura.AspNetCore.Localization
 
 @inject IDynamicViewLocalizer ViewLocalizer
 
@@ -16,6 +16,8 @@
 		new SelectListItem {Text = ViewLocalizer.Text.TimeOneYear, Value = TimeSpan.FromDays(365).ToString("g", CultureInfo.InvariantCulture)}
 	};
 }
+
+<div class="alert alert-info">注意：这个页面只用于登录 CC98 账号并执行应用管理和授权操作。如果你是希望注册、激活，或者管理你的 CC98 账号，请<a class="alert-link" asp-controller="ZjuInfo" asp-action="LogOn" asp-route-returnUrl="@ViewBag.ReturnUrl">登录浙大通行证</a>。</div>
 
 <div class="row justify-content-center">
 	<div class="col-6">

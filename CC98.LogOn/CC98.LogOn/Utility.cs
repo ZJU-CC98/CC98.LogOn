@@ -75,13 +75,13 @@ namespace CC98.LogOn
         /// <param name="principal">要转换的标准对象。</param>
         /// <param name="provider">身份验证提供程序。</param>
         /// <returns>转换后的对象。</returns>
-        public static ClaimsPrincipal CreateIdentityServerPrincipal(this ClaimsPrincipal principal, string provider)
+        public static IdentityServerUser CreateIdentityServerUser(this ClaimsPrincipal principal, string provider)
         {
             var identity = new IdentityServerUser(principal.FindFirstValueOfAny(ClaimTypes.NameIdentifier, JwtClaimTypes.Subject))
             {
                 DisplayName = principal.FindFirstValueOfAny(ClaimTypes.Name, JwtClaimTypes.Name),
                 IdentityProvider = provider,
-                AuthenticationTime = DateTime.UtcNow
+                AuthenticationTime = DateTime.UtcNow,
             };
 
             identity.AuthenticationMethods.Add(provider);
@@ -90,7 +90,7 @@ namespace CC98.LogOn
                 identity.AdditionalClaims.Add(claim);
             }
 
-            return identity.CreatePrincipal();
+            return identity;
 
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CC98.LogOn.Data;
 
 namespace CC98.LogOn.ViewModels.Account
 {
@@ -37,6 +38,12 @@ namespace CC98.LogOn.ViewModels.Account
         [Compare(nameof(Password))]
         [Display(Name = "确认密码")]
         public string ConfirmPassword { get; set; }
+
+        /// <summary>
+        /// 获取或设置新账户的性别。
+        /// </summary>
+        [Display(Name = "性别")]
+        public Gender Gender { get; set; }
 
         /// <summary>
         /// 获取或设置一个值，指示是否要绑定到通行证。

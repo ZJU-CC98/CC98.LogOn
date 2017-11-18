@@ -11,26 +11,33 @@
 	<div class="col-md-12">
 		<div class="card-deck">
 			<div class="card">
-				<div class="card-header bg-primary text-white">如果你是用户</div>
+				<div class="card-header bg-primary text-white">我是 CC98 用户</div>
 				<div class="card-body">
-					<p class="card-text">你可以：</p>
+					<p class="card-text">如果你希望：</p>
 					<ul>
-						<li>在一个位置使用 CC98 账户登录各种应用</li>
-						<li>防止其他应用获取你的 CC98 账号密码，保证你的账号安全</li>
-						<li>根据你的需要，同意或者拒绝应用代表你执行不同的操作</li>
-						<li>管理所有登录状态，并注销不必要的登录信息</li>
+						<li>注册并激活一个新的 CC98 账号</li>
+						<li>激活原先注册但没有激活的 CC98 账号</li>
+						<li>查看你的浙大通行证关联的 CC98 账号列表</li>
+						<li>重置你的 CC98 账号的密码</li>
 					</ul>
+					<p>请单击下方的<q>登录浙大通行证</q>按钮，并在菜单栏的<q>CC98 账号</q>一栏进行相关操作。</p>
+				</div>
+				<div class="card-footer text-center">
+					<a asp-controller="ZjuInfo" asp-action="LogOn" class="btn btn-primary">登录浙大通行证</a>
 				</div>
 			</div>
 			<div class="card">
-				<div class="card-header bg-success text-white">如果你是开发者</div>
+				<div class="card-header bg-success text-white">我是开发者</div>
 				<div class="card-body">
-					<p class="card-text">你可以：</p>
+					<p class="card-text">如果你希望：</p>
 					<ul>
-						<li>使用 CC98 账号登录你的应用，而无需用户单独创建账户</li>
-						<li>在用户授权的情况下，代表用户执行 CC98 的各项操作</li>
-						<li>管理你的应用，在有需要的情况下停用或者更新应用信息</li>
+						<li>为你的应用申请接入 CC98 数据的权限</li>
+						<li>使用 CC98 账户登录你创建的应用、网站和其他程序</li>
+						<li>代表其他用户在执行 CC98 论坛和其它相关网站的操作</li>
 					</ul>
+					<p>请单击下方的<q>登录 CC98 账号</q>按钮，并在菜单栏的<q>应用</q>一栏进行相关操作。</p>
+				</div><div class="card-footer text-center">
+					<a asp-controller="Account" asp-action="LogOn" class="btn btn-success">登录 CC98 账号</a>
 				</div>
 			</div>
 		</div>

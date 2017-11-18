@@ -1,11 +1,11 @@
-﻿@using CC98.LogOn.ZjuInfoAuth
+﻿@using CC98.LogOn.Services
+@using CC98.LogOn.ZjuInfoAuth
 @using IdentityServer4.Extensions
 @using Microsoft.AspNetCore.Http.Extensions
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.Extensions.Options
 @model CC98.LogOn.ViewModels.Account.RegisterViewModel
-@inject IOptions<AppSetting> AppSetting
-@inject CC98IdentityDbContext DbContext
+@inject CC98DataService CC98DataService
 @{
 	ViewBag.Title = "注册 CC98 账号";
 }
@@ -34,26 +34,20 @@
 
 			@if (User.IsAuthenticatedWith(ZjuInfoOAuthDefaults.AuthenticationScheme))
 			{
-				var userId = User.GetSubjectId();
-				var bindCount = await (from i in DbContext.Users
-									   where string.Equals(i.RegisterZjuInfoId, userId, StringComparison.OrdinalIgnoreCase)
-									   select i).CountAsync();
-
-
-				if (bindCount < AppSetting.Value.MaxCC98AccountPerZjuInfoId)
+				if (await CC98DataService.CanActivateUsersAsync(User.GetSubjectId()))
 				{
 					<div class="form-check">
 						<label class="form-check-label">
 							<input asp-for="BindToZjuInfoId" type="checkbox" checked="checked" class="form-check-input" onchange="switchSkipState();" /> 绑定到我的浙大通行证
 						</label>
 						<span asp-validation-for="BindToZjuInfoId" cla class="text-danger"></span>
-						<small class="form-text text-muted">默认情况下，你注册的账号将自动使用你当前登录的浙大通行证进行激活。如果你不希望系统自动进行这样的操作，可以取消选中上面的复选框。</small>
+						<small class="form-text text-muted">默认情况下，你注册的账号将自动使用你当前登录的浙大通行证进行激活。如果你不希望系统自动进行这样的操作，可以取消选中上面的复选框。<span class="text-warning">注意：激活操作不可撤销，你以后也不能更改这个账号关联的浙大通行证。</span></small>
 					</div>
 				}
 				else
 				{
 					<div class="form-text text-warning">
-						系统目前限制每个浙大通行证最多可以绑定<strong>@AppSetting.Value.MaxCC98AccountPerZjuInfoId</strong> 个 CC98 账号。你当前登录的浙大通行证账号绑定数量已经达到上限，无法用于激活新账号。你在不激活的情况下继续注册账号，或者<a asp-controller="ZjuInfo" asp-action="LogOn" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">更换浙大通行证账号</a>。
+						系统目前限制每个浙大通行证最多可以绑定<strong>@CC98DataService.MaxActivationCount</strong> 个 CC98 账号。你当前登录的浙大通行证账号绑定数量已经达到上限，无法用于激活新账号。你在不激活的情况下继续注册账号，或者<a asp-controller="ZjuInfo" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">更换浙大通行证账号</a>。
 					</div>
 				}
 
@@ -61,7 +55,7 @@
 			else
 			{
 				<div class="form-text text-warning">
-					你当前没有登录浙大通行证账号，新账号将无法自动激活。你可以在不激活的情况下继续注册账号，或者<a asp-controller="ZjuInfo" asp-action="LogOn" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">更换浙大通行证账号</a>。
+					你当前没有登录浙大通行证账号，新账号将无法自动激活。你可以在不激活的情况下继续注册账号，或者<a asp-controller="ZjuInfo" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">登录浙大通行证账号</a>。
 
 				</div>
 			}
@@ -70,7 +64,7 @@
 				注意：未绑定浙大通行证的账号将不能在论坛中进行大多数交流活动，包括发帖、回帖、给他人发送站内短消息等，由于没有其它方式确认注册者的身份，未绑定的账号也无法自助找回密码。你可以在稍后通过<q>激活账号</q>页面将新账号和浙大通行证进行关联。
 			</div>
 			<hr />
-			<div asp-validation-summary="ModelOnly"></div>
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<button id="register-button" type="submit" class="btn btn-primary">注册并激活账号</button>
 			<button id="register-temp-button" type="submit" class="btn btn-warning">注册临时账号</button>
 			<button type="reset" class="btn btn-secondary">清空内容</button>
@@ -109,6 +103,8 @@
 </div>
 
 @section Scripts{
+	
+	@await Html.PartialAsync("_ValidationScriptsPartial")
 
 	<script>
 

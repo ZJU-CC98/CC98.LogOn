@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -56,6 +57,30 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		[Column("Sex")]
 		public Gender Gender { get; set; }
+
+        /// <summary>
+        /// 获取或设置账号的注册时间。
+        /// </summary>
+        [Column("adddate")]
+        public DateTime RegisterTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置最后登录时间。
+        /// </summary>
+        [Column("lastlogin")]
+        public DateTime LastLogOnTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置文章数。
+        /// </summary>
+        [Column("article")]
+        public int PostCount { get; set; }
+
+        /// <summary>
+        /// 获取或设置登录次数。
+        /// </summary>
+        [Column("logins")]
+        public int LogOnCount { get; set; }
 
 		/// <summary>
 		/// 获取或设置该用户关联的角色信息的集合。

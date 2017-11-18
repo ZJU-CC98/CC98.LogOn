@@ -1,5 +1,7 @@
-﻿@model IEnumerable<CC98User>
+﻿@using IdentityServer4.Extensions
+@model IEnumerable<CC98User>
 @inject CC98.LogOn.Services.CC98DataService CC98DataService
+@inject CC98IdentityDbContext DbContext
 @{
 	ViewBag.Title = "CC98 账号管理";
 }
@@ -8,20 +10,113 @@
 
 @if (Model.Any())
 {
-	<div class="row justify-content-center card-deck">
-		@foreach (var item in Model)
-		{
-			<div class="card col-6 text-center">
-				<img class="card-img-top img-fluid" src="@CC98DataService.GetPortraitUri(item.PortraitUri)" alt="用户头像" />
-				<div class="card-body">
-					<h4 class="card-title">@item.Name</h4>
+	if (Model.Count() <= 6)
+	{
+		<div class="row justify-content-center card-deck">
+			@foreach (var item in Model)
+			{
+				<div class="card text-center">
+					<img class="card-img-top img-fluid" src="@CC98DataService.GetPortraitUri(item.PortraitUri)" alt="用户头像" />
+					<div class="card-body">
+						<h4 class="card-title">
+							<span>@item.Name</span>
+							@switch (item.Gender)
+							{
+								case Gender.Female:
+									<i class="fa fa-venus text-danger"></i>
+									break;
+								case Gender.Male:
+									<i class="fa fa-mars text-primary"></i>
+									break;
+							}
+						</h4>
+					</div>
+					<table class="table table-sm">
+						<tbody>
+						<tr>
+							<td class="text-center"><i class="fa fa-user-plus" title="注册时间"></i></td>
+							<td class="text-justify">@item.RegisterTime.ToString("g")</td>
+						</tr>
+						<tr>
+							<td class="text-center"><i class="fa fa-clock-o" title="上次登录"></i></td>
+							<td class="text-justify">@item.LastLogOnTime.ToString("g")</td>
+						</tr>
+						<tr>
+							<td class="text-center"><i class="fa fa-sign-in" title="登录数"></i></td>
+							<td class="text-justify">@item.LogOnCount</td>
+						</tr>
+						<tr>
+							<td class="text-center"><i class="fa fa-comment" title="发言数"></i></td>
+							<td class="text-justify">@item.PostCount</td>
+						</tr>
+						</tbody>
+					</table>
+					<div class="card-footer">
+						<a asp-controller="Account" asp-action="ResetPassword" asp-route-userName="@item.Name" class="btn btn-sm btn-danger">重置密码</a>
+					</div>
 				</div>
-			</div>
-		}
-	</div>
+			}
+		</div>
+	}
+	else
+	{
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>账号名称</th>
+					<th>注册时间</th>
+					<th>上次登录</th>
+					<th>登录数</th>
+					<th>发言数</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<th>
+							<span>@item.Name</span>
+							@switch (item.Gender)
+							{
+								case Gender.Female:
+									<i class="fa fa-venus"></i>
+									break;
+								case Gender.Male:
+									<i class="fa fa-mars"></i>
+									break;
+							}
+						</th>
+						<td>@item.RegisterTime.ToString("g")</td>
+						<td>@item.LastLogOnTime.ToString("g")</td>
+						<td>@item.LogOnCount</td>
+						<td>@item.PostCount</td>
+						<td>
+							<a asp-controller="Account" asp-action="ResetPassword" asp-route-userId="@item.Id" class="btn btn-sm btn-danger">重置密码</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+
 }
 else
 {
 	<hr />
 	<p class="text-center text-muted">你的浙大通行证目前还没有关联到任何 CC98 账号。</p>
+}
+
+<hr />
+
+@if (await CC98DataService.CanActivateUsersAsync(User.GetSubjectId()))
+{
+	<p>目前，管理员允许每个浙大通行证账号最多激活 <strong>@CC98DataService.MaxActivationCount</strong> 个 CC98 账号。你目前的账号还未到达这一限制，单击下面的按钮可以使用当前的通行证继续注册新账号，或者激活现有账号。</p>
+
+	<a asp-controller="Account" asp-action="Register" class="btn btn-primary">注册并激活新的 CC98 账号</a>
+	<a asp-controller="Account" asp-action="Activate" class="btn btn-primary">激活未绑定的 CC98 账号</a>
+}
+else
+{
+	<p class="text-center text-warning">你当前的浙大通行证已经达到了激活数量上限，不能再激活其它 CC98 账号</p>
 }

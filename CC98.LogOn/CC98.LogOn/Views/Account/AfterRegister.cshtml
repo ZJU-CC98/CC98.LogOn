@@ -1,0 +1,22 @@
+﻿@{
+	ViewBag.PageTitle = "账户创建成功";
+}
+
+
+<h1 class="text-success text-center">恭喜你，账户创建成功</h1>
+<hr />
+<p>现在，你已经拥有了一个新的 CC98 账户。接下来，你可以：</p>
+<ul>
+	<li>访问 <a href="http://www.cc98.org">CC98 论坛</a>，和大家一起交流在学校的所见所闻和日常心得。</li>
+	<li>使用你的账户访问 <a href="http://share.cc98.org">CC98 网盘</a>、<a href="http://www.cc98.org">竞猜中心</a>、<a href="http://card.cc98.org">抽卡游戏</a>，以及其它许多由 CC98 团队和校园中的小伙伴们创建的有趣应用。</li>
+</ul>
+
+@if (ViewBag.NeedBind)
+{
+	<p class="text-warning">注意：你刚才创建的账户没有绑定到浙大通行证。没有绑定浙大通行证的账号在 CC98 论坛中只能进行浏览，而不能在版面中发言。请记得尽快在<a asp-controller="Account" asp-action="Activate" class="alert-link">激活账户</a>页面通过浙大通行证激活它们哦。
+	</p>
+}
+else
+{
+	<a asp-controller="Account" asp-action="My" class="btn btn-primary">显示目前我已经绑定的 CC98 账号列表</a>
+}
