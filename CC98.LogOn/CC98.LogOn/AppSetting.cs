@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CC98.LogOn
+﻿namespace CC98.LogOn
 {
 	/// <summary>
 	/// 定义应用程序的设置。

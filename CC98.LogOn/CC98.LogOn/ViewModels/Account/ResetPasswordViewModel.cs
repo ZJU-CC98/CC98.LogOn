@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using CC98.LogOn.Data;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CC98.LogOn.ViewModels.Account
 {

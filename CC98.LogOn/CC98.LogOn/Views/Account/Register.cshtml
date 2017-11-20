@@ -1,11 +1,9 @@
 ﻿@using CC98.LogOn.Services
 @using CC98.LogOn.ZjuInfoAuth
-@using IdentityServer4.Extensions
-@using Microsoft.AspNetCore.Http.Extensions
-@using Microsoft.EntityFrameworkCore
-@using Microsoft.Extensions.Options
+@using Sakura.AspNetCore.Authentication
 @model CC98.LogOn.ViewModels.Account.RegisterViewModel
 @inject CC98DataService CC98DataService
+@inject ExternalSignInManager ExternalSignInManager
 @{
 	ViewBag.Title = "注册 CC98 账号";
 }
@@ -32,9 +30,9 @@
 				<small class="form-text text-muted">请再次输入新 CC98 账户的密码。</small>
 			</div>
 
-			@if (User.IsAuthenticatedWith(ZjuInfoOAuthDefaults.AuthenticationScheme))
+			@if (ExternalSignInManager.IsSignedIn(User))
 			{
-				if (await CC98DataService.CanActivateUsersAsync(User.GetSubjectId()))
+				if (await CC98DataService.CanActivateUsersAsync(User.GetId()))
 				{
 					<div class="form-check">
 						<label class="form-check-label">

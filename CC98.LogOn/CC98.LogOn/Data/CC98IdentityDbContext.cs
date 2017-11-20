@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -29,44 +28,11 @@ namespace CC98.LogOn.Data
         /// </summary>
         public virtual DbSet<CC98User> Users { get; set; }
 
-        /// <summary>
-        /// 获取或设置数据库中包含的应用的集合。
-        /// </summary>
-        public virtual DbSet<App> Apps { get; set; }
-
-        /// <summary>
-        /// 获取或设置数据库中记录的所有领域的集合。
-        /// </summary>
-        public virtual DbSet<AppScope> AppScopes { get; set; }
-
-        /// <summary>
-        /// 获取或设置数据库中记录的所有角色的集合。
-        /// </summary>
-        public virtual DbSet<CC98Role> Roles { get; set; }
-
-        /// <summary>
-        /// 获取或设置数据库中记录的用户和角色关系的集合。
-        /// </summary>
-        public virtual DbSet<CC98UserRole> UserRoles { get; set; }
-
-        /// <summary>
-        /// 获取或设置数据库中记录的 API 资源的集合。
-        /// </summary>
-        public virtual DbSet<AppApiResource> ApiResources { get; set; }
-
-        /// <summary>
-        /// 获取或设置数据库中记录的用户声明的集合。
-        /// </summary>
-        public virtual DbSet<CC98UserClaim> UserClaims { get; set; }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<CC98Role>().HasAlternateKey(i => i.Name);
             modelBuilder.Entity<CC98User>().HasAlternateKey(i => i.Name);
-
-            modelBuilder.Entity<CC98UserRole>().HasKey(i => new { i.UserId, i.RoleId });
         }
 
 

@@ -12,11 +12,11 @@
 		<AssemblyName>CC98.LogOn</AssemblyName>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="IdentityServer4" Version="2.0.3" />
 		<PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="2.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.1" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
 		<PackageReference Include="Sakura.AspNetCore.Authentication.ExternalCookie" Version="2.1.0" />
 		<PackageReference Include="Sakura.AspNetCore.DynamicLocalizer" Version="2.0.1" />
@@ -36,15 +36,7 @@
 	  <ProjectReference Include="..\CC98.LogOn.ZjuInfoAuth\CC98.LogOn.ZjuInfoAuth.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Content Update="Views\App\Index.cshtml">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	</ItemGroup>
-	<ItemGroup>
 		<EmbeddedResource Update="Resources\Controllers\AccountController.resx">
-			<Generator></Generator>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Data\App.resx">
 			<Generator></Generator>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\ViewModels\Account\LogOnViewModel.resx">
@@ -62,6 +54,9 @@
 		<EmbeddedResource Update="Resources\Views\Shared\_LogOnPartial.resx">
 			<Generator></Generator>
 		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Views\Shared\Components\" />
 	</ItemGroup>
 	<ProjectExtensions>
 		<VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio>

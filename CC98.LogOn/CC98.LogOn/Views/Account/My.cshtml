@@ -1,5 +1,4 @@
-﻿@using IdentityServer4.Extensions
-@model IEnumerable<CC98User>
+﻿@model IEnumerable<CC98User>
 @inject CC98.LogOn.Services.CC98DataService CC98DataService
 @inject CC98IdentityDbContext DbContext
 @{
@@ -109,7 +108,7 @@ else
 
 <hr />
 
-@if (await CC98DataService.CanActivateUsersAsync(User.GetSubjectId()))
+@if (await CC98DataService.CanActivateUsersAsync(User.GetId()))
 {
 	<p>目前，管理员允许每个浙大通行证账号最多激活 <strong>@CC98DataService.MaxActivationCount</strong> 个 CC98 账号。你目前的账号还未到达这一限制，单击下面的按钮可以使用当前的通行证继续注册新账号，或者激活现有账号。</p>
 

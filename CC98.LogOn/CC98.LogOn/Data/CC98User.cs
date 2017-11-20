@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -51,56 +49,35 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		[Column("face")]
 		public string PortraitUri { get; set; }
-		
+
 		/// <summary>
 		/// 获取或设置用户的性别。
 		/// </summary>
 		[Column("Sex")]
 		public Gender Gender { get; set; }
 
-        /// <summary>
-        /// 获取或设置账号的注册时间。
-        /// </summary>
-        [Column("adddate")]
-        public DateTime RegisterTime { get; set; }
-
-        /// <summary>
-        /// 获取或设置最后登录时间。
-        /// </summary>
-        [Column("lastlogin")]
-        public DateTime LastLogOnTime { get; set; }
-
-        /// <summary>
-        /// 获取或设置文章数。
-        /// </summary>
-        [Column("article")]
-        public int PostCount { get; set; }
-
-        /// <summary>
-        /// 获取或设置登录次数。
-        /// </summary>
-        [Column("logins")]
-        public int LogOnCount { get; set; }
+		/// <summary>
+		/// 获取或设置账号的注册时间。
+		/// </summary>
+		[Column("adddate")]
+		public DateTime RegisterTime { get; set; }
 
 		/// <summary>
-		/// 获取或设置该用户关联的角色信息的集合。
+		/// 获取或设置最后登录时间。
 		/// </summary>
-		[InverseProperty(nameof(CC98UserRole.User))]
-		public virtual ICollection<CC98UserRole> Roles { get; set; } = new Collection<CC98UserRole>();
-	}
+		[Column("lastlogin")]
+		public DateTime LastLogOnTime { get; set; }
 
-	/// <summary>
-	/// 表示用户的性别。
-	/// </summary>
-	public enum Gender
-	{
 		/// <summary>
-		/// 男性。
+		/// 获取或设置文章数。
 		/// </summary>
-		Female = 0,
+		[Column("article")]
+		public int PostCount { get; set; }
+
 		/// <summary>
-		/// 女性。
+		/// 获取或设置登录次数。
 		/// </summary>
-		Male = 1
+		[Column("logins")]
+		public int LogOnCount { get; set; }
 	}
 }
