@@ -1,45 +1,13 @@
 ﻿@{
-	ViewBag.Title = "主页";
+	Layout = "_Layout";
+	ViewBag.PageTitle = "主页";
 }
 
-<div class="jumbotron">
-	<h2>CC98 开放身份验证系统欢迎你</h2>
-	<p>CC98 开放身份验证系统是基于 OpenID Connect 协议的全新一代登录和交互认证平台，为校内所有师生提供一个基于安全、灵活、可靠的 CC98 ID 的身份验证和授权系统。</p>
-</div>
 
-<div class="row">
-	<div class="col-md-12">
-		<div class="card-deck">
-			<div class="card">
-				<div class="card-header bg-primary text-white">我是 CC98 用户</div>
-				<div class="card-body">
-					<p class="card-text">如果你希望：</p>
-					<ul>
-						<li>注册并激活一个新的 CC98 账号</li>
-						<li>激活原先注册但没有激活的 CC98 账号</li>
-						<li>查看你的浙大通行证关联的 CC98 账号列表</li>
-						<li>重置你的 CC98 账号的密码</li>
-					</ul>
-					<p>请单击下方的<q>登录浙大通行证</q>按钮，并在菜单栏的<q>CC98 账号</q>一栏进行相关操作。</p>
-				</div>
-				<div class="card-footer text-center">
-					<a asp-controller="ZjuInfo" asp-action="LogOn" class="btn btn-primary">登录浙大通行证</a>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header bg-success text-white">我是开发者</div>
-				<div class="card-body">
-					<p class="card-text">如果你希望：</p>
-					<ul>
-						<li>为你的应用申请接入 CC98 数据的权限</li>
-						<li>使用 CC98 账户登录你创建的应用、网站和其他程序</li>
-						<li>代表其他用户在执行 CC98 论坛和其它相关网站的操作</li>
-					</ul>
-					<p>请单击下方的<q>登录 CC98 账号</q>按钮，并在菜单栏的<q>应用</q>一栏进行相关操作。</p>
-				</div><div class="card-footer text-center">
-					<a asp-controller="Account" asp-action="LogOn" class="btn btn-success">登录 CC98 账号</a>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="jumbotron">
+	<h1 class="display-4">欢迎访问 CC98 账户管理系统</h1>
+	<p class="lead">便捷、准确、安全的 CC98 账户自助服务平台</p>
+	<hr />
+	<p>CC98 账户管理系统依托于 OpenID Connect 协议，实现了和浙大通行证账户的无缝对接，为所有 CC98 用户提供账户注册、激活和密码重置服务。</p>
+	<small class="text-info">友情提示：这个网站的大部分功能都需要你首先<a asp-controller="Account" asp-action="LogOn">登录浙大通行证</a>才能使用。如果你不希望在单击<q>登录</q>时自动登录到上次使用的账户，你可以通过直接访问<a href="https://zjuam.zju.edu.cn/cas/login">浙大通行证登录门户</a>以输入新的通行证账号和密码。</small>
 </div>

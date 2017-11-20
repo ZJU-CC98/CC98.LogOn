@@ -47,7 +47,7 @@ namespace CC98.LogOn.Services
 
 			foreach (var b in bytes)
 			{
-				result.AppendFormat("{0:X2}", b);
+				result.AppendFormat("{0:x2}", b);
 			}
 
 			return result.ToString();

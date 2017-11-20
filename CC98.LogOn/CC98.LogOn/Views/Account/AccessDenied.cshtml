@@ -9,13 +9,11 @@
 	<p>这可能是由于下面的原因引起的：</p>
 	<ul>
 		<li>你需要访问的页面需要登录，而你当前未登录。</li>
-		<li>特定的功能只能使用<q>CC98 账户</q>或者<q>浙大通行证</q>中的其中一种登录方式访问，你当前使用了错误的登录方式。</li>
 		<li>某些功能必须要管理员权限才能执行，你当前的账户没有对应的权限。</li>
 		<li>如果你确定以上这些问题都不存在，请<a class="alert-link" href="mailto:contact@cc98.org">联系管理员</a>。</li>
 	</ul>
 </div>
 
 <hr />
-<a asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">登录 CC98 账号</a>
-<a asp-controller="ZjuInfo" asp-action="LogOn" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">登录浙大通行证</a>
+<a asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">登录</a>
 

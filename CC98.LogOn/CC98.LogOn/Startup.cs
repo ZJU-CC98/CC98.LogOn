@@ -5,6 +5,7 @@ using CC98.LogOn.ZjuInfoAuth;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -72,8 +73,6 @@ namespace CC98.LogOn
 			// CC98 密码散列服务
 			services.AddSingleton<CC98PasswordHashService>();
 
-			services.AddExternalSignInManager();
-
 			// 添加身份验证服务
 			services.AddAuthentication(IdentityConstants.ApplicationScheme)
 				// 浙大通行证身份验证
@@ -83,6 +82,18 @@ namespace CC98.LogOn
 					options.ClientId = Configuration["Authentication:ZjuInfo:ClientId"];
 					options.ClientSecret = Configuration["Authentication:ZjuInfo:ClientSecret"]; ;
 				});
+
+		    services.ConfigureApplicationCookie(options =>
+		    {
+		        options.LoginPath = new PathString("/LogOn");
+                options.LogoutPath= new PathString("/LogOff");
+                options.AccessDeniedPath = new PathString("/AccessDenied");
+                options.Cookie.HttpOnly = true;
+		        options.Cookie.SameSite = SameSiteMode.Lax;
+		        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+		    });
+
+		    services.AddExternalSignInManager();
 
 			//  分页器
 			services.AddBootstrapPagerGenerator(options => options.ConfigureDefault());

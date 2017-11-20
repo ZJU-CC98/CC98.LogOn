@@ -39,7 +39,7 @@ namespace CC98.LogOn.Data
         #region 存储过程
 
         /// <summary>
-        /// 创建一个新用用户账户。
+        /// 创建一个新用户账户。
         /// </summary>
         /// <param name="userName">要创建的新用户名。</param>
         /// <param name="password">要创建的新用户的密码。</param>
@@ -65,8 +65,26 @@ namespace CC98.LogOn.Data
             await command.ExecuteNonQueryAsync();
 
             return (int)command.Parameters["@userId"].Value;
+        }
 
+        /// <summary>
+        /// 更新最近用户。
+        /// </summary>
+        /// <returns>表示异步操作的任务。</returns>
+        public async Task BindUserAsync(int userId, string bindId, string userName, string password, string ip)
+        {
+            var connnection = (SqlConnection)Database.GetDbConnection();
 
+            var command = connnection.CreateCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "BindUserAsync";
+            command.Parameters.AddWithValue("@userId", userId);
+            command.Parameters.AddWithValue("@bindId", bindId);
+            command.Parameters.AddWithValue("@userName", userName);
+            command.Parameters.AddWithValue("@bindPassword", password);
+            command.Parameters.AddWithValue("@ip", ip);
+            await connnection.OpenAsync();
+            await command.ExecuteNonQueryAsync();
         }
 
         #endregion
