@@ -21,7 +21,7 @@ namespace CC98.LogOn.Controllers
 	/// <summary>
 	/// 提供用户账户相关操作。
 	/// </summary>
-	[Route("")]
+	[Route("[action]")]
 	public class AccountController : Controller
 	{
 		public AccountController(CC98IdentityDbContext identityDbContext, IDynamicStringLocalizer<AccountController> localizer, CC98PasswordHashService cc98PasswordHashService, IOptions<AppSetting> appSetting, IOperationMessageAccessor messageAccessor, CC98DataService cc98DataService, ExternalSignInManager externalSignInManager)

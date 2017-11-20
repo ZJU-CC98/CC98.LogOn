@@ -51,38 +51,19 @@
 			<div class="navbar-collapse collapse" id="main-navbar">
 				<ul class="navbar-nav mr-auto">
 
-					<li class="nav-item dropdown">
-						<a id="register-menu" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CC98 账号</a>
-						<div class="dropdown-menu" aria-labelledby="register-menu">
-							<a class="dropdown-item" asp-controller="Account" asp-action="Register">注册</a>
-							<a class="dropdown-item" asp-controller="Account" asp-action="Activate">激活</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" asp-controller="Account" asp-action="My">我的账号</a>
-							<a class="dropdown-item" asp-controller="Account" asp-action="ResetPassword">重置密码</a>
-						</div>
+					<li class="nav-item">
+						<a class="nav-link" asp-controller="Account" asp-action="Register">@ViewLocalizer.Html.RegisterLinkText</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" asp-controller="Account" asp-action="Activate">@ViewLocalizer.Html.ActivateLinkText</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" asp-controller="Account" asp-action="My">@ViewLocalizer.Html.MyAccountLinkText</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" asp-controller="Account" asp-action="ResetPassword">@ViewLocalizer.Html.ResetPasswordLinkText</a>
 					</li>
 
-					<li class="nav-item dropdown">
-						<a id="app-menu" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">应用</a>
-						<div class="dropdown-menu" aria-labelledby="app-menu">
-							<a class="dropdown-item" asp-controller="App" asp-action="My">我的应用</a>
-							<a class="dropdown-item" asp-controller="App" asp-action="Create">创建应用</a>
-
-							<authorize policy="@Policies.OperateApps">
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" asp-controller="App" asp-action="Manage">管理应用</a>
-							</authorize>
-
-						</div>
-					</li>
-					<li class="nav-item dropdown">
-						<a id="help-menu" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">帮助</a>
-						<div class="dropdown-menu" aria-labelledby="help-menu">
-							<a class="dropdown-item" asp-controller="Scope" asp-action="Index">领域表</a>
-							<a class="dropdown-item" asp-controller="ApiResource" asp-action="Index">API 资源</a>
-							<a class="dropdown-item" asp-controller="UserClaim" asp-action="Index">用户声明</a>
-						</div>
-					</li>
 				</ul>
 				@await Html.PartialAsync("_LogOnPartial")
 			</div>
@@ -110,10 +91,10 @@
 				integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
 				crossorigin="anonymous"></script>
 
-		<script src="https://cdn.bootcss.com/popper.js/1.12.9/esm/popper.min.js"
+		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
 				asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
 				asp-fallback-test="window.Popper"
-				integrity="sha384-7X8a6Cjin8U+DiYAV7pjFsRxvFo29iRu43KSip4dBj+GmeB0rROXTRIB8x99S8JG"
+				integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 				crossorigin="anonymous"></script>
 
 		<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"

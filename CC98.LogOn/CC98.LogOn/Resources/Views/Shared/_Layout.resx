@@ -117,12 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivateLinkText" xml:space="preserve">
+    <value>激活</value>
+  </data>
+  <data name="MyAccountLinkText" xml:space="preserve">
+    <value>我的账号</value>
+  </data>
   <data name="PageTitleFormat" xml:space="preserve">
     <value>{0} - {1}</value>
     <comment>{0}: 页面标题 {1}:网站名称</comment>
   </data>
+  <data name="RegisterLinkText" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="ResetPasswordLinkText" xml:space="preserve">
+    <value>找回密码</value>
+  </data>
   <data name="SiteTitle" xml:space="preserve">
-    <value>CC98 登录中心</value>
+    <value>CC98 账户管理系统</value>
   </data>
   <data name="ToggleNavigationButtonText" xml:space="preserve">
     <value>切换导航</value>

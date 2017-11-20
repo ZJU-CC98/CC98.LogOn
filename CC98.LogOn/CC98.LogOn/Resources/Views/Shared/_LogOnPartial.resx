@@ -117,18 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CC98AccountFormat" xml:space="preserve">
-    <value>CC98 账号 &lt;strong&gt;{0}&lt;/strong&gt;</value>
-    <comment>{0}: 用户名</comment>
+  <data name="LogOffLinkText" xml:space="preserve">
+    <value>注销</value>
   </data>
-  <data name="LogOnCC98AccountLinkText" xml:space="preserve">
-    <value>登录 CC98 账号</value>
-  </data>
-  <data name="LogOnZjuInfoAccountLinkText" xml:space="preserve">
-    <value>登录浙大通行证</value>
-  </data>
-  <data name="ZjuInfoAccountFormat" xml:space="preserve">
-    <value>浙大通行证 &lt;strong&gt;{0}&lt;/strong&gt;</value>
-    <comment>{0}: 用户名</comment>
+  <data name="LogOnLinkText" xml:space="preserve">
+    <value>登录</value>
   </data>
 </root>

@@ -134,7 +134,7 @@ namespace CC98.LogOn
 			// 多语言版本支持
 			app.UseRequestLocalization(new RequestLocalizationOptions
 			{
-				DefaultRequestCulture = new RequestCulture("zh-Hans-CN"),
+				DefaultRequestCulture = new RequestCulture("zh-CN"),
 				SupportedCultures = { new CultureInfo("zh-Hans-CN"), new CultureInfo("zh-Hans"), new CultureInfo("zh-CN"), new CultureInfo("zh"), new CultureInfo("en") },
 				FallBackToParentCultures = true,
 				FallBackToParentUICultures = true

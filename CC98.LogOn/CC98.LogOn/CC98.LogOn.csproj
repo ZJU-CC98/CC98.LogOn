@@ -11,6 +11,13 @@
 	<PropertyGroup>
 		<AssemblyName>CC98.LogOn</AssemblyName>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Views\Shared\Components\**" />
+	  <Content Remove="Views\Shared\Components\**" />
+	  <EmbeddedResource Remove="Views\Shared\Components\**" />
+	  <None Remove="Views\Shared\Components\**" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
@@ -45,18 +52,12 @@
 		<EmbeddedResource Update="Resources\Views\Account\LogOn.resx">
 			<Generator></Generator>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Views\App\Create.resx">
-			<Generator></Generator>
-		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Views\Shared\_Layout.resx">
 			<Generator></Generator>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Views\Shared\_LogOnPartial.resx">
 			<Generator></Generator>
 		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Views\Shared\Components\" />
 	</ItemGroup>
 	<ProjectExtensions>
 		<VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio>
