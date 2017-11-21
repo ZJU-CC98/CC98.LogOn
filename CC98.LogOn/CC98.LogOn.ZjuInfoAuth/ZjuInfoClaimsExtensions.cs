@@ -1,23 +1,19 @@
-using System;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
-using Newtonsoft.Json.Linq;
 
 namespace CC98.LogOn.ZjuInfoAuth
 {
 	/// <summary>
-	/// 提供对于浙大通行证产生的响应数据的声明操作。该类型为静态类型。
+	///     提供对于浙大通行证产生的响应数据的声明操作。该类型为静态类型。
 	/// </summary>
 	public static class ZjuInfoClaimsExtensions
 	{
 		/// <summary>
-		/// 用于配置浙大通行证相关声明信息的提取过程的默认方法。
+		///     用于配置浙大通行证相关声明信息的提取过程的默认方法。
 		/// </summary>
 		/// <param name="claimActions">包含所有声明操作的集合。</param>
 		public static void ConfigureZjuInfoClaims(this ClaimActionCollection claimActions)
 		{
-
 			claimActions.MapJsonWithDescription(ClaimTypes.NameIdentifier, ClaimValueTypes.String, "CODE");
 			claimActions.MapJsonWithDescription(ClaimTypes.Name, ClaimValueTypes.String, "XM");
 			claimActions.MapJsonWithDescription(ClaimTypes.Gender, ClaimValueTypes.Integer, "XB", "XBMC");
@@ -40,8 +36,6 @@ namespace CC98.LogOn.ZjuInfoAuth
 			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.PlaceOfBirth, ClaimValueTypes.String, "SYD");
 			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.LengthOfSchooling, ClaimValueTypes.Double, "XZ");
 			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.EntranceTime, ClaimValueTypes.Date, "RXSJ");
-
-
 		}
 	}
 }

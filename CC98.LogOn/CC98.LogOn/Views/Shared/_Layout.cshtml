@@ -1,111 +1,112 @@
-﻿@using Sakura.AspNetCore.Localization
-@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@using Microsoft.ApplicationInsights.AspNetCore
+@using Sakura.AspNetCore.Localization
+@inject JavaScriptSnippet JavaScriptSnippet
 @inject IDynamicViewLocalizer ViewLocalizer
 @inject IDynamicHtmlLocalizer<Startup> Startup
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>@ViewLocalizer.Html.PageTitleFormat(ViewBag.PageTitle, ViewLocalizer.Html.SiteTitle)</title>
 
 	<environment names="Development">
-		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-		<link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
-		<link rel="stylesheet" href="~/css/site.css" />
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+		<link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css"/>
+		<link rel="stylesheet" href="~/css/site.css"/>
 	</environment>
 	<environment names="Staging,Production">
 
 		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-			  integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-			  crossorigin="anonymous"
-			  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-			  asp-fallback-test-class="sr-only"
-			  asp-fallback-test-property="position"
-			  asp-fallback-test-value="absolute" />
+		      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+		      crossorigin="anonymous"
+		      asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+		      asp-fallback-test-class="sr-only"
+		      asp-fallback-test-property="position"
+		      asp-fallback-test-value="absolute"/>
 
 		<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"
-			  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-			  crossorigin="anonymous"
-			  asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
-			  asp-fallback-test-class="fa"
-			  asp-fallback-test-property="display"
-			  asp-fallback-test-value="inline-block" />
+		      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+		      crossorigin="anonymous"
+		      asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
+		      asp-fallback-test-class="fa"
+		      asp-fallback-test-property="display"
+		      asp-fallback-test-value="inline-block"/>
 
-		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
 
 	</environment>
 	@Html.Raw(JavaScriptSnippet.FullScript)
 	@await RenderSectionAsync("Head", false)
 </head>
 <body>
-	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-		<div class="container">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+	<div class="container">
 
-			<a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@ViewLocalizer.Html.SiteTitle</a>
+		<a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@ViewLocalizer.Html.SiteTitle</a>
 
-			<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false" aria-control="main-navbar" aria-label="@ViewLocalizer.Html.ToggleNavigationButtonText">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+		<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false" aria-control="main-navbar" aria-label="@ViewLocalizer.Html.ToggleNavigationButtonText">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-			<div class="navbar-collapse collapse" id="main-navbar">
-				<ul class="navbar-nav mr-auto">
+		<div class="navbar-collapse collapse" id="main-navbar">
+			<ul class="navbar-nav mr-auto">
 
-					<li class="nav-item">
-						<a class="nav-link" asp-controller="Account" asp-action="Register">@ViewLocalizer.Html.RegisterLinkText</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" asp-controller="Account" asp-action="Activate">@ViewLocalizer.Html.ActivateLinkText</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" asp-controller="Account" asp-action="My">@ViewLocalizer.Html.MyAccountLinkText</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" asp-controller="Account" asp-action="ResetPassword">@ViewLocalizer.Html.ResetPasswordLinkText</a>
-					</li>
+				<li class="nav-item">
+					<a class="nav-link" asp-controller="Account" asp-action="Register">@ViewLocalizer.Html.RegisterLinkText</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" asp-controller="Account" asp-action="Activate">@ViewLocalizer.Html.ActivateLinkText</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" asp-controller="Account" asp-action="My">@ViewLocalizer.Html.MyAccountLinkText</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" asp-controller="Account" asp-action="ResetPassword">@ViewLocalizer.Html.ResetPasswordLinkText</a>
+				</li>
 
-				</ul>
-				@await Html.PartialAsync("_LogOnPartial")
-			</div>
+			</ul>
+			@await Html.PartialAsync("_LogOnPartial")
 		</div>
-	</nav>
-	<div class="container body-content">
-		@RenderBody()
-		<hr />
-		<footer>
-			<p class="text-center">&copy; 2017 - @ViewLocalizer.Html.SiteTitle</p>
-		</footer>
 	</div>
+</nav>
+<div class="container body-content">
+	@RenderBody()
+	<hr/>
+	<footer>
+		<p class="text-center">&copy; 2017 - @ViewLocalizer.Html.SiteTitle</p>
+	</footer>
+</div>
 
-	<environment names="Development">
-		<script src="~/lib/jquery/dist/jquery.js"></script>
-		<script src="~/lib/popper.js/dist/umd/popper.js"></script>
-		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-		<script src="~/js/site.js" asp-append-version="true"></script>
-	</environment>
-	<environment names="Staging,Production">
+<environment names="Development">
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/lib/popper.js/dist/umd/popper.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
 
-		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"
-				asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-				asp-fallback-test="window.jQuery"
-				integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
-				crossorigin="anonymous"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"
+	        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+	        asp-fallback-test="window.jQuery"
+	        integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
+	        crossorigin="anonymous"></script>
 
-		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
-				asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
-				asp-fallback-test="window.Popper"
-				integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-				crossorigin="anonymous"></script>
+	<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+	        asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
+	        asp-fallback-test="window.Popper"
+	        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	        crossorigin="anonymous"></script>
 
-		<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-				asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-				asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-				integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-				crossorigin="anonymous"></script>
-		<script src="~/js/site.min.js" asp-append-version="true"></script>
-	</environment>
+	<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+	        asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+	        asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+	        integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+	        crossorigin="anonymous"></script>
+	<script src="~/js/site.min.js" asp-append-version="true"></script>
+</environment>
 
-	@await RenderSectionAsync("Scripts", false)
+@await RenderSectionAsync("Scripts", false)
 
 </body>
 </html>

@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace CC98.LogOn.Controllers
 {
 	/// <summary>
-	/// 主要功能控制器。
+	///     主要功能控制器。
 	/// </summary>
 	public class HomeController : Controller
 	{
 		/// <summary>
-		/// 显示主页。
+		///     显示主页。
 		/// </summary>
 		/// <returns>操作结果。</returns>
 		public IActionResult Index()

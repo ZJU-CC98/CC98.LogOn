@@ -4,7 +4,7 @@
 
 
 <h1 class="text-success text-center">恭喜你，账户创建成功</h1>
-<hr />
+<hr/>
 <p>现在，你已经拥有了一个新的 CC98 账户。接下来，你可以：</p>
 <ul>
 	<li>访问 <a href="http://www.cc98.org">CC98 论坛</a>，和大家一起交流在学校的所见所闻和日常心得。</li>
@@ -13,7 +13,8 @@
 
 @if (ViewBag.NeedBind)
 {
-	<p class="text-warning">注意：你刚才创建的账户没有绑定到浙大通行证。没有绑定浙大通行证的账号在 CC98 论坛中只能进行浏览，而不能在版面中发言。请记得尽快在<a asp-controller="Account" asp-action="Activate" class="alert-link">激活账户</a>页面通过浙大通行证激活它们哦。
+	<p class="text-warning">
+		注意：你刚才创建的账户没有绑定到浙大通行证。没有绑定浙大通行证的账号在 CC98 论坛中只能进行浏览，而不能在版面中发言。请记得尽快在<a asp-controller="Account" asp-action="Activate" class="alert-link">激活账户</a>页面通过浙大通行证激活它们哦。
 	</p>
 }
 else

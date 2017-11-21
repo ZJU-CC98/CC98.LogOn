@@ -21,12 +21,12 @@ using Sakura.AspNetCore.Mvc;
 namespace CC98.LogOn
 {
 	/// <summary>
-	/// 应用程序的启动类型。
+	///     应用程序的启动类型。
 	/// </summary>
 	public class Startup
 	{
 		/// <summary>
-		/// 初始化一个 <see cref="Startup"/> 类型的新实例。
+		///     初始化一个 <see cref="Startup" /> 类型的新实例。
 		/// </summary>
 		/// <param name="configuration">应用程序的配置信息。</param>
 		[UsedImplicitly]
@@ -36,12 +36,12 @@ namespace CC98.LogOn
 		}
 
 		/// <summary>
-		/// 获取应用程序的配置信息。
+		///     获取应用程序的配置信息。
 		/// </summary>
 		private IConfiguration Configuration { get; }
 
 		/// <summary>
-		/// 配置应用程序服务。
+		///     配置应用程序服务。
 		/// </summary>
 		/// <param name="services">应用程序的服务容器。</param>
 		[UsedImplicitly]
@@ -49,13 +49,11 @@ namespace CC98.LogOn
 		{
 			services.AddApplicationInsightsTelemetry();
 
-			services.AddDbContext<CC98IdentityDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:CC98IdentityDbContext"]));
+			services.AddDbContext<CC98IdentityDbContext>(options =>
+				options.UseSqlServer(Configuration["ConnectionStrings:CC98IdentityDbContext"]));
 
 			// 添加本地化支持
-			services.AddLocalization(options =>
-			{
-				options.ResourcesPath = "Resources";
-			});
+			services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
 
 
 			// 添加 MVC 服务
@@ -80,20 +78,21 @@ namespace CC98.LogOn
 				{
 					options.SignInScheme = IdentityConstants.ExternalScheme;
 					options.ClientId = Configuration["Authentication:ZjuInfo:ClientId"];
-					options.ClientSecret = Configuration["Authentication:ZjuInfo:ClientSecret"]; ;
+					options.ClientSecret = Configuration["Authentication:ZjuInfo:ClientSecret"];
+					options.RedirectPath = new PathString("/LogOn");
 				});
 
-		    services.ConfigureApplicationCookie(options =>
-		    {
-		        options.LoginPath = new PathString("/LogOn");
-                options.LogoutPath= new PathString("/LogOff");
-                options.AccessDeniedPath = new PathString("/AccessDenied");
-                options.Cookie.HttpOnly = true;
-		        options.Cookie.SameSite = SameSiteMode.Lax;
-		        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-		    });
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.LoginPath = new PathString("/LogOn");
+				options.LogoutPath = new PathString("/LogOff");
+				options.AccessDeniedPath = new PathString("/AccessDenied");
+				options.Cookie.HttpOnly = true;
+				options.Cookie.SameSite = SameSiteMode.Lax;
+				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+			});
 
-		    services.AddExternalSignInManager();
+			services.AddExternalSignInManager();
 
 			//  分页器
 			services.AddBootstrapPagerGenerator(options => options.ConfigureDefault());
@@ -114,7 +113,7 @@ namespace CC98.LogOn
 		}
 
 		/// <summary>
-		/// 配置应用程序设置。
+		///     配置应用程序设置。
 		/// </summary>
 		/// <param name="app">应用程序对象。</param>
 		/// <param name="env">宿主环境对象。</param>
@@ -146,7 +145,14 @@ namespace CC98.LogOn
 			app.UseRequestLocalization(new RequestLocalizationOptions
 			{
 				DefaultRequestCulture = new RequestCulture("zh-CN"),
-				SupportedCultures = { new CultureInfo("zh-Hans-CN"), new CultureInfo("zh-Hans"), new CultureInfo("zh-CN"), new CultureInfo("zh"), new CultureInfo("en") },
+				SupportedCultures =
+				{
+					new CultureInfo("zh-Hans-CN"),
+					new CultureInfo("zh-Hans"),
+					new CultureInfo("zh-CN"),
+					new CultureInfo("zh"),
+					new CultureInfo("en")
+				},
 				FallBackToParentCultures = true,
 				FallBackToParentUICultures = true
 			});
@@ -167,8 +173,8 @@ namespace CC98.LogOn
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute(
-					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
+					"default",
+					"{controller=Home}/{action=Index}/{id?}");
 			});
 		}
 	}

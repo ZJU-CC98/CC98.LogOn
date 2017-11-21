@@ -8,21 +8,19 @@ using JetBrains.Annotations;
 namespace CC98.LogOn.Services
 {
 	/// <summary>
-	/// 表示 CC98 网站使用的密码散列服务。
+	///     表示 CC98 网站使用的密码散列服务。
 	/// </summary>
 	public class CC98PasswordHashService
 	{
 		/// <summary>
-		/// 获得给定密码的散列。
+		///     获得给定密码的散列。
 		/// </summary>
 		/// <param name="password">要计算的密码。</param>
 		/// <returns>密码的散列值。</returns>
 		public string GetPasswordHash([NotNull] string password)
 		{
 			if (password == null)
-			{
 				throw new ArgumentNullException(nameof(password));
-			}
 
 			using (var md5 = MD5.Create())
 			{
@@ -37,18 +35,16 @@ namespace CC98.LogOn.Services
 		}
 
 		/// <summary>
-		/// 提供将字节序列转换为字符串形式的辅助方法。
+		///     提供将字节序列转换为字符串形式的辅助方法。
 		/// </summary>
 		/// <param name="bytes">字节序列集合。</param>
 		/// <returns>转换后的字符串序列。</returns>
-		private static string BytesToString([NotNull]IReadOnlyCollection<byte> bytes)
+		private static string BytesToString([NotNull] IReadOnlyCollection<byte> bytes)
 		{
 			var result = new StringBuilder(bytes.Count * 2);
 
 			foreach (var b in bytes)
-			{
 				result.AppendFormat("{0:x2}", b);
-			}
 
 			return result.ToString();
 		}

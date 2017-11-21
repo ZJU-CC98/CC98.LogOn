@@ -10,21 +10,23 @@
 		<div class="col-md-6">
 
 			<div class="alert alert-info">在这里，你可以使用当前登录的浙大通行证页面激活先前注册但尚未激活的 CC98 账户。激活需要你提供 CC98 账号的用户名和密码，以确认你对账号的拥有权。</div>
-			<div class="alert alert-warning">注意：账户激活完成后无法撤销，你也不能更换已经激活的账户关联的浙大通行证账号。目前，管理员设置了每个浙大通行证最多可以激活 <strong>@AppSetting.Value.MaxCC98AccountPerZjuInfoId</strong> 个 CC98 账户。</div>
+			<div class="alert alert-warning">
+				注意：账户激活完成后无法撤销，你也不能更换已经激活的账户关联的浙大通行证账号。目前，管理员设置了每个浙大通行证最多可以激活 <strong>@AppSetting.Value.MaxCC98AccountPerZjuInfoId</strong> 个 CC98 账户。
+			</div>
 
 			<div class="form-group">
 				<label asp-for="CC98UserName" class="form-control-label"></label>
-				<input asp-for="CC98UserName" type="text" class="form-control" />
+				<input asp-for="CC98UserName" type="text" class="form-control"/>
 				<span asp-validation-for="CC98UserName" class="text-danger"></span>
 				<small class="form-text text-muted">你希望激活的 CC98 账户的用户名。</small>
 			</div>
 			<div class="form-group">
 				<label asp-for="CC98Password" class="form-control-label"></label>
-				<input asp-for="CC98Password" type="password" class="form-control" />
+				<input asp-for="CC98Password" type="password" class="form-control"/>
 				<span asp-validation-for="CC98Password" class="text-danger"></span>
 				<small class="form-text text-muted">你希望激活的 CC98 账户的登录密码。</small>
 			</div>
-			<hr />
+			<hr/>
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<button type="submit" class="btn btn-primary">激活账户</button>
 			<button type="reset" class="btn btn-secondary">清空填写</button>

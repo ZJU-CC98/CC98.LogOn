@@ -1,16 +1,14 @@
-﻿using System;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
-using Newtonsoft.Json.Linq;
+﻿using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
 namespace CC98.LogOn.ZjuInfoAuth
 {
 	/// <summary>
-	/// 为  <see cref="DescriptedJsonKeyClaimAction"/> 相关的操作提供扩展方法。该类型为静态类型。
+	///     为  <see cref="DescriptedJsonKeyClaimAction" /> 相关的操作提供扩展方法。该类型为静态类型。
 	/// </summary>
 	public static class DescriptedClaimActionExtensions
 	{
 		/// <summary>
-		/// 用于添加 <see cref="DescriptedJsonKeyClaimAction"/> 的扩展方法。
+		///     用于添加 <see cref="DescriptedJsonKeyClaimAction" /> 的扩展方法。
 		/// </summary>
 		/// <param name="claimActions">定义所有声明操作的集合。</param>
 		/// <param name="claimType">声明的类型。</param>

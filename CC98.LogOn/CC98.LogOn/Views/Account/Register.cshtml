@@ -1,5 +1,4 @@
 ﻿@using CC98.LogOn.Services
-@using CC98.LogOn.ZjuInfoAuth
 @using Sakura.AspNetCore.Authentication
 @model CC98.LogOn.ViewModels.Account.RegisterViewModel
 @inject CC98DataService CC98DataService
@@ -13,19 +12,19 @@
 		<div class="col-md-6">
 			<div class="form-group">
 				<label asp-for="UserName" class="form-control-label"></label>
-				<input id="user-name-input" asp-for="UserName" type="text" class="form-control" />
+				<input id="user-name-input" asp-for="UserName" type="text" class="form-control"/>
 				<span asp-validation-for="UserName" class="text-danger"></span>
 				<small class="form-text text-muted">你要注册的 CC98 用户名。用户名在注册后不能修改。<a href="#" title="注册用户提示" data-placement="bottom" id="show-register-tip-link">点击此处</a>查看有关用户名的提示和建议。</small>
 			</div>
 			<div class="form-group">
 				<label asp-for="Password" class="form-control-label"></label>
-				<input id="password-input" asp-for="Password" type="password" class="form-control" />
+				<input id="password-input" asp-for="Password" type="password" class="form-control"/>
 				<span asp-validation-for="Password" class="text-danger"></span>
 				<small class="form-text text-muted">新 CC98 账户的密码。如果你忘记了密码，你必须通过登录到关联的浙大通行证来修改密码。未关联到浙大通行证的临时账户无法自助修改密码。</small>
 			</div>
 			<div class="form-group">
 				<label asp-for="ConfirmPassword" class="form-control-label"></label>
-				<input asp-for="ConfirmPassword" type="password" class="form-control" />
+				<input asp-for="ConfirmPassword" type="password" class="form-control"/>
 				<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 				<small class="form-text text-muted">请再次输入新 CC98 账户的密码。</small>
 			</div>
@@ -36,7 +35,7 @@
 				{
 					<div class="form-check">
 						<label class="form-check-label">
-							<input asp-for="BindToZjuInfoId" type="checkbox" checked="checked" class="form-check-input" onchange="switchSkipState();" /> 绑定到我的浙大通行证
+							<input asp-for="BindToZjuInfoId" type="checkbox" checked="checked" class="form-check-input" onchange="switchSkipState();"/> 绑定到我的浙大通行证
 						</label>
 						<span asp-validation-for="BindToZjuInfoId" cla class="text-danger"></span>
 						<small class="form-text text-muted">默认情况下，你注册的账号将自动使用你当前登录的浙大通行证进行激活。如果你不希望系统自动进行这样的操作，可以取消选中上面的复选框。<span class="text-warning">注意：激活操作不可撤销，你以后也不能更改这个账号关联的浙大通行证。</span></small>
@@ -48,7 +47,6 @@
 						系统目前限制每个浙大通行证最多可以绑定<strong>@CC98DataService.MaxActivationCount</strong> 个 CC98 账号。你当前登录的浙大通行证账号绑定数量已经达到上限，无法用于激活新账号。你在不激活的情况下继续注册账号，或者<a asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">更换浙大通行证账号</a>。
 					</div>
 				}
-
 			}
 			else
 			{
@@ -61,7 +59,7 @@
 			<div class="form-text text-warning" id="not-bind-warning">
 				注意：未绑定浙大通行证的账号将不能在论坛中进行大多数交流活动，包括发帖、回帖、给他人发送站内短消息等，由于没有其它方式确认注册者的身份，未绑定的账号也无法自助找回密码。你可以在稍后通过<q>激活账号</q>页面将新账号和浙大通行证进行关联。
 			</div>
-			<hr />
+			<hr/>
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<button id="register-button" type="submit" class="btn btn-primary">注册并激活账号</button>
 			<button id="register-temp-button" type="submit" class="btn btn-warning">注册临时账号</button>
@@ -76,7 +74,9 @@
 	<ul>
 		<li>用户名最大长度为10个字符，并且大部分非标准英文键盘产生的字符（如汉字）都算作两个字符。</li>
 		<li>请不要注册政治相关、侮辱他人、具有误导性等不良账号名，管理团队将有权对此类账号进行封禁。</li>
-		<li><strong>为了保护你的隐私，我们建议你不要使用你的学工号、真实姓名等个人信息作为账号名。</strong></li>
+		<li>
+			<strong>为了保护你的隐私，我们建议你不要使用你的学工号、真实姓名等个人信息作为账号名。</strong>
+		</li>
 		<li>账号注册后，用户名将不能更改，因此请谨慎选择你的名称。</li>
 	</ul>
 </div>
@@ -101,7 +101,7 @@
 </div>
 
 @section Scripts{
-	
+
 	@await Html.PartialAsync("_ValidationScriptsPartial")
 
 	<script>
@@ -133,7 +133,7 @@
 			}
 		}
 
-		$(function () {
+		$(function() {
 
 			switchSkipState();
 
