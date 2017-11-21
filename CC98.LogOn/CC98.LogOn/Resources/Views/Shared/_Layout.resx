@@ -131,7 +131,7 @@
     <value>注册</value>
   </data>
   <data name="ResetPasswordLinkText" xml:space="preserve">
-    <value>找回密码</value>
+    <value>重置密码</value>
   </data>
   <data name="SiteTitle" xml:space="preserve">
     <value>CC98 账户管理系统</value>
