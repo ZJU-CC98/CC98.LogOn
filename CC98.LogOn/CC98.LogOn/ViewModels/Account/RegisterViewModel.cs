@@ -13,7 +13,7 @@ namespace CC98.LogOn.ViewModels.Account
         /// </summary>
         [Required]
         [StringLength(10)]
-        [RegularExpression(@"\w+")]
+        [RegularExpression(@"\w+", ErrorMessage = "用户名不能包含空白、标点符号和其它特殊字符")]
         [DataType(DataType.Text)]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
