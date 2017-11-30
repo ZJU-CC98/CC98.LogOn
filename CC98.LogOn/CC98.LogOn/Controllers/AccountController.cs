@@ -21,8 +21,8 @@ namespace CC98.LogOn.Controllers
 	/// <summary>
 	///     提供用户账户相关操作。
 	/// </summary>
-	[Route("[action]")]
 	[RequireHttps]
+    [Route("[action]")]
 	public class AccountController : Controller
 	{
 		public AccountController(CC98IdentityDbContext identityDbContext,

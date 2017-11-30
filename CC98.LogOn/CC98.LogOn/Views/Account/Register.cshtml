@@ -43,20 +43,20 @@
 				}
 				else
 				{
-					<div class="form-text text-warning">
+					<div class="alert alert-warning">
 						系统目前限制每个浙大通行证最多可以绑定<strong>@CC98DataService.MaxActivationCount</strong> 个 CC98 账号。你当前登录的浙大通行证账号绑定数量已经达到上限，无法用于激活新账号。你在不激活的情况下继续注册账号，或者<a asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">更换浙大通行证账号</a>。
 					</div>
 				}
 			}
 			else
 			{
-				<div class="form-text text-warning">
+				<div class="alert alert-warning">
 					你当前没有登录浙大通行证账号，新账号将无法自动激活。你可以在不激活的情况下继续注册账号，或者<a asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">登录浙大通行证账号</a>。
 
 				</div>
 			}
 
-			<div class="form-text text-warning" id="not-bind-warning">
+			<div class="alert alert-warning" id="not-bind-warning">
 				注意：未绑定浙大通行证的账号将不能在论坛中进行大多数交流活动，包括发帖、回帖、给他人发送站内短消息等，由于没有其它方式确认注册者的身份，未绑定的账号也无法自助找回密码。你可以在稍后通过<q>激活账号</q>页面将新账号和浙大通行证进行关联。
 			</div>
 			<hr/>

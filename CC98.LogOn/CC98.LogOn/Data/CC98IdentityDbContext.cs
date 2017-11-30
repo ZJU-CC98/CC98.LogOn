@@ -77,7 +77,7 @@ namespace CC98.LogOn.Data
 
 			var command = connnection.CreateCommand();
 			command.CommandType = CommandType.StoredProcedure;
-			command.CommandText = "BindUserAsync";
+			command.CommandText = "BindUser";
 			command.Parameters.AddWithValue("@userId", userId);
 			command.Parameters.AddWithValue("@bindId", bindId);
 			command.Parameters.AddWithValue("@userName", userName);
