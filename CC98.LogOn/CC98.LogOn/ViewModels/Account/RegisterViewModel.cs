@@ -39,6 +39,7 @@ namespace CC98.LogOn.ViewModels.Account
 		///     获取或设置新账户的性别。
 		/// </summary>
 		[Display(Name = "性别")]
+		[Required(ErrorMessage = "必须选择一个性别")]
 		public Gender Gender { get; set; }
 
 		/// <summary>
