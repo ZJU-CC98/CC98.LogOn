@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,12 +18,6 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用于进行网络通讯的 HTTP 客户端对象。
 		/// </summary>
 		private HttpClient HttpClient { get; } = new HttpClient();
-
-		/// <summary>
-		/// 获取用户详细信息的 URL 地址。该字段为常量。
-		/// </summary>
-		private const string GetUserDetailUri = "https://zuinfo.zju.edu.cn/v2/getUserDetails.zf";
-
 		/// <summary>
 		/// 使用浙大通行证服务所需的应用名称。
 		/// </summary>
@@ -32,8 +27,19 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// </summary>
 		public string AppSecret { get; set; }
 
+		/// <summary>
+		/// 通过后台接口向浙大通行证服务器检索给定用户的详细信息。
+		/// </summary>
+		/// <param name="userId">要检索的用户的标识（学工号）。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
+		/// <returns>表示异步操作的任务。操作结果包含 <paramref name="userId"/> 所给定的用户的详细信息。</returns>
+		/// <remarks>该方法在浙大通行证后端具有 IP 白名单限定。</remarks>
 		public async Task<ZjuInfoUserInfo> GetUserInfoAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
 		{
+
+			// 操作的 URL 地址。
+			const string uri = "https://zuinfo.zju.edu.cn/v2/getUserDetails.zf";
+
 			var postData = new Dictionary<string, string>
 			{
 				["appkey"] = AppKey,
@@ -41,7 +47,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 				["username"] = userId
 			};
 
-			var response = await HttpClient.PostAsync(GetUserDetailUri, new FormUrlEncodedContent(postData), cancellationToken);
+			var response = await HttpClient.PostAsync(uri, new FormUrlEncodedContent(postData), cancellationToken);
 			response.EnsureSuccessStatusCode();
 
 			var data = await response.Content.ReadAsStringAsync();
@@ -49,8 +55,52 @@ namespace CC98.LogOn.ZjuInfoAuth
 
 			return responseObj.UserInfo;
 		}
+
+		public async Task ModifyPassswordAsync(string userId, string newPassword, string userCertificateId, CancellationToken cancellationToken = default(CancellationToken))
+		{
+			const string uri = "https://zuinfo.zju.edu.cn/v2/modifyPwd.zf";
+
+			var postData = new Dictionary<string, string>
+			{
+				["appkey"] = AppKey,
+				["appsecret"] = AppSecret,
+				["username"] = userId,
+				["newpassword"] = newPassword,
+				["encryptStr"] = GetModifyPasswordEncryptString(userId, userCertificateId)
+			};
+
+			var response = await HttpClient.PostAsync(uri, new FormUrlEncodedContent(postData), cancellationToken);
+			response.EnsureSuccessStatusCode();
+		}
+
+		/// <summary>
+		/// 用于计算用户修改密码时加密串的方法。
+		/// </summary>
+		/// <param name="userId">用户的标识（学工号。）</param>
+		/// <param name="userCertificateId">用户的证件号码。</param>
+		/// <returns>修改密码时使用的加密串。</returns>
+		private static string GetModifyPasswordEncryptString(string userId, string userCertificateId)
+		{
+			var str = userId + userCertificateId;
+
+			using (var md5 = MD5.Create())
+			{
+				var hash = md5.ComputeHash(Encoding.ASCII.GetBytes(str));
+				var sb = new StringBuilder();
+
+				foreach (var b in hash)
+				{
+					sb.AppendFormat("{0:X2}", b);
+				}
+
+				return sb.ToString();
+			}
+		}
 	}
 
+	/// <summary>
+	/// 定义浙大通行证详细信息接口返回的数据结构。
+	/// </summary>
 	internal class ZjuInfoUserDetailResponse
 	{
 		/// <summary>
