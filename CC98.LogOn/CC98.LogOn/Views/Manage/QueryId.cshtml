@@ -1,0 +1,39 @@
+﻿@using CC98.LogOn.ViewModels.Manage
+@model CC98.LogOn.ViewModels.Manage.QueryIdViewModel
+@{
+	ViewBag.Title = "查询账号信息";
+}
+
+<form asp-controller="Manage" asp-action="QueryId" asp-antiforgery="true" method="post">
+	<div class="row justify-content-center">
+		<div class="col-12 col-sm-8 col-md-6">
+			<div class="form-group">
+				<label asp-for="Id">输入要查询的账号：</label>
+				<input asp-for="Id" type="text" class="form-control" />
+				<span asp-validation-for="Id" class="text-danger"></span>
+				<small class="form-text text-muted">在上方输入你要查询的 CC98 账号或者当事人学号。</small>
+			</div>
+
+			<div clas="form-group">
+				<div class="form-check form-check-inline">
+					<label class="form-check-label">
+						<input class="form-check-input" type="radio" asp-for="Type" value="@QueryIdType.AccountId" /> 查询该 CC98 账号的信息
+					</label>
+				</div>
+
+				<div class="form-check form-check-inline">
+					<label class="form-check-label">
+						<input class="form-check-input" type="radio" asp-for="Type" value="@QueryIdType.SchoolId" /> 查询该学工号的信息
+					</label>
+				</div>
+			</div>
+			
+			<hr />
+
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<button type="submit" class="btn btn-primary">执行查询</button>
+			<button type="reset" class="btn btn-secondary">清空内容</button>
+
+		</div>		
+	</div>
+</form>

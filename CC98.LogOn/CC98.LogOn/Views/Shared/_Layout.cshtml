@@ -67,6 +67,13 @@
 						<a class="nav-link" asp-controller="Account" asp-action="ResetPassword">@ViewLocalizer.Html.ResetPasswordLinkText</a>
 					</li>
 
+					<li class="nav-item dropdown" asp-authorize-policy="@Policies.QueryAccount">
+						<a class="nav-link dropdown-toggle" href="#" id="manage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理</a>
+						<div class="dropdown-menu" aria-labelledby="manage-dropdown">
+							<a class="dropdown-item" asp-controller="Manage" asp-action="QueryId" asp-authorize-policy="@Policies.QueryId">查询学号信息</a>
+						</div>
+					</li>
+
 				</ul>
 				@await Html.PartialAsync("_LogOnPartial")
 			</div>

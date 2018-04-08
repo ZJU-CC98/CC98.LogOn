@@ -1,0 +1,37 @@
+﻿@model CC98.LogOn.ViewModels.Manage.QueryIdResultModel
+@{
+	ViewBag.Title = "学工号查询结果";
+}
+
+<h4 class="text-center">
+	<span>被检索的学工号是：<strong>@Model.SchoolId</strong></span>
+</h4>
+
+<hr />
+
+<div class="lead text-center">关联的 CC98 账号</div>
+<hr />
+
+@if (Model.Users.Length != 0)
+{
+	<div class="alert alert-info">下表列出了该学工号目前关联的所有 CC98 账号。</div>
+	@await Html.PartialAsync("_CC98UserList", Model.Users)
+}
+else
+{
+	<p class="text-center text-muted">该学工号没有关联任何 CC98 账号。</p>
+}
+
+<div class="lead text-center">浙大通行证详细信息</div>
+<hr />
+
+<div class="alert alert-info">下表列出了该学工号所关联的浙大通行证的详细信息。</div>
+
+@if (Model.ZjuUserInfo != null)
+{
+	@await Html.PartialAsync("_ZjuInfoDetail", Model.ZjuUserInfo)
+}
+else
+{
+	<p class="text-center text-muted">未能检索到该学工号的浙大通行证账号。请联系管理员。</p>
+}

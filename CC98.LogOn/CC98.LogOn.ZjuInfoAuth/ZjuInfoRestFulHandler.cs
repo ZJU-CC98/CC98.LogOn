@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -82,88 +81,5 @@ namespace CC98.LogOn.ZjuInfoAuth
 			// 操作结果
 			return AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(identity), null, Scheme.Name));
 		}
-	}
-
-	/// <summary>
-	///     表示浙大通行证进行身份验证时产生的结果。
-	/// </summary>
-	internal class ZjuInfoRestFulAuthenticationResult
-	{
-		/// <summary>
-		///     错误代码。如果为 0 表示未发生错误。
-		/// </summary>
-		[JsonProperty("errorcode")]
-		public int ErrorCode { get; set; }
-
-		/// <summary>
-		///     错误描述信息。
-		/// </summary>
-		[JsonProperty("errormsg")]
-		public string ErrorMessage { get; set; }
-
-		/// <summary>
-		///     成功时返回的令牌对象。
-		/// </summary>
-		[JsonProperty("token")]
-		public string Token { get; set; }
-	}
-
-	/// <inheritdoc />
-	/// <summary>
-	///     定义浙大统一身份认证 RestFul 的相关选项。
-	/// </summary>
-	public class ZjuInfoRestFulAuthenticationOptions : AuthenticationSchemeOptions
-	{
-		public ZjuInfoRestFulAuthenticationOptions()
-		{
-			AuthenticationEndpoint = ZjuInfoRestFulDefaults.AuthenticationEndpoint;
-			ProfileEndpoint = ZjuInfoRestFulDefaults.ProfileEndpoint;
-			BackChannel = new HttpClient();
-
-			ClaimActions.ConfigureZjuInfoClaims();
-		}
-
-		/// <summary>
-		///     获取或设置用于执行身份验证的终结点地址。
-		/// </summary>
-		public string AuthenticationEndpoint { get; set; }
-
-		/// <summary>
-		///     获取或设置用于检索用户信息的终结点地址。
-		/// </summary>
-		public string ProfileEndpoint { get; set; }
-
-		/// <summary>
-		///     获取或设置用于访问服务的应用程序标识。
-		/// </summary>
-		public string AppKey { get; set; }
-
-		/// <summary>
-		///     获取或设置用于访问服务的应用程序机密。
-		/// </summary>
-		public string AppSecret { get; set; }
-
-		/// <summary>
-		///     身份验证使用的后台处理程序。
-		/// </summary>
-		public HttpClient BackChannel { get; set; }
-
-		public ClaimActionCollection ClaimActions { get; } = new ClaimActionCollection();
-	}
-
-	/// <summary>
-	///     提供 <see cref="ZjuInfoRestFulAuthenticationOptions" /> 对象的默认值。该类型为静态类型。
-	/// </summary>
-	public static class ZjuInfoRestFulDefaults
-	{
-		/// <summary>
-		///     获取 <see cref="ZjuInfoRestFulAuthenticationOptions.AuthenticationEndpoint" /> 属性的默认值。该字段为常量。
-		/// </summary>
-		public const string AuthenticationEndpoint = "http://zuinfo.zju.edu.cn/v2/identify.zf";
-
-		/// <summary>
-		///     获取 <see cref="ZjuInfoRestFulAuthenticationOptions.ProfileEndpoint" /> 属性的默认值。该字段为常量。
-		/// </summary>
-		public const string ProfileEndpoint = "http://zuinfo.zju.edu.cn/v2/session.zf";
 	}
 }

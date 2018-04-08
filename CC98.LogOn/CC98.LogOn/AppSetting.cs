@@ -14,5 +14,10 @@
 		///     获取或设置相对路径头像的基路径。
 		/// </summary>
 		public string BaseUriForPortrait { get; set; }
+
+		/// <summary>
+		/// 获取或设置具有管理权限的账号标识。
+		/// </summary>
+		public string[] QueryAccounts { get; set; }
 	}
 }

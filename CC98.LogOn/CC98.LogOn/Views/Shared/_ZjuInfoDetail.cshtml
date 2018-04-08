@@ -1,0 +1,221 @@
+﻿@model CC98.LogOn.ZjuInfoAuth.ZjuInfoUserInfo
+
+<table class="table">
+	<tbody>
+		<tr>
+			<th>学工号</th>
+			<td>@Model.Id</td>
+			<th>姓名</th>
+			<td>@Model.Name</td>
+		</tr>
+		<tr>
+			<th>性别</th>
+			<td>@Model.Gender（代码：@Model.GenderCode.ToString("D")）</td>
+			<th>出生日期</th>
+			<td>@Model.Birthday.ToString("D")</td>
+		</tr>
+		<tr>
+			<th>证件类型</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.CertificateType))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.CertificateType（代码：@Model.CertificateTypeCode）</span>
+				}
+			</td>
+			<th>证件号码</th>
+			<td>@Model.CertificateCode</td>
+		</tr>
+		<tr>
+			<th>国籍</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.Nationality))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Nationality（代码：@Model.NationalityCode）</span>
+				}
+			</td>
+			<th>民族</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.Ethnicity))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Ethnicity（代码：@Model.EthnicityCode）</span>
+				}
+			</td>
+		</tr>
+		<tr>
+			<th>出生地</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.BirthPlace))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.BirthPlace</span>
+				}
+			</td>
+			<th>政治面貌</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.PoliticalStatus))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.PoliticalStatus（代码：@Model.PoliticalStatusCode）</span>
+				}
+			</td>
+		</tr>
+		<tr>
+			<th>用户类型</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.Type))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Type（代码：@Model.TypeCode）</span>
+				}
+			</td>
+			<th>所在机构</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.Orgnization))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Orgnization（代码：@Model.OrgnizationCode）</span>
+				}
+			</td>
+		</tr>
+
+		<tr>
+			<th>联系电话</th>
+			<td>
+
+				@if (string.IsNullOrEmpty(Model.PhoneNumber))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.PhoneNumber</span>
+				}
+			</td>
+			<th>电子邮箱</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.EmailAddress))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.EmailAddress</span>
+				}
+			</td>
+		</tr>
+
+		<tr>
+			<th>年级</th>
+			<td>
+				@if (Model.Grade == null)
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Grade.Value</span>
+				}
+			</td>
+			<th>班级</th>
+			<td>
+				@if (string.IsNullOrEmpty(Model.Class))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Class（代码：@Model.ClassCode）</span>
+				}
+			</td>
+		</tr>
+		<tr>
+			<th>专业</th>
+			<td>
+
+				@if (string.IsNullOrEmpty(Model.Major))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Major（代码：@Model.MajorCode）</span>
+				}
+			</td>
+			<th>学制</th>
+			<td>
+				@if (Model.LengthOfSchooling == null)
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.LengthOfSchooling.Value</span>
+				}
+			</td>
+		</tr>
+
+		<tr>
+			<th>入学时间</th>
+			<td>
+				@if (Model.EntranceTime == null)
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.EntranceTime.Value.ToString("D")</span>
+				}
+			</td>
+			<th>学籍状态</th>
+			<td>
+
+				@if (Model.SchoolStatus == null)
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.SchoolStatus.Value</span>
+				}
+			</td>
+		</tr>
+		<tr>
+			<th>职工状态</th>
+			<td>
+				@if (Model.StaffStatus == null)
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.StaffStatus.Value</span>
+				}
+			</td>
+		</tr>
+
+	</tbody>
+</table>

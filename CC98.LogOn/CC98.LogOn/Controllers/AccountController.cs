@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
@@ -8,6 +11,7 @@ using CC98.LogOn.ViewModels.Account;
 using CC98.LogOn.ZjuInfoAuth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,7 +26,7 @@ namespace CC98.LogOn.Controllers
 	///     提供用户账户相关操作。
 	/// </summary>
 	[RequireHttps]
-    [Route("[action]")]
+	[Route("[action]")]
 	public class AccountController : Controller
 	{
 		public AccountController(CC98IdentityDbContext identityDbContext,
@@ -114,8 +118,8 @@ namespace CC98.LogOn.Controllers
 			{
 				zjuInfoId = User.GetId();
 				var bindCount = await (from i in IdentityDbContext.Users
-					where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
-					select i).CountAsync();
+									   where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+									   select i).CountAsync();
 
 				if (bindCount >= AppSetting.MaxCC98AccountPerZjuInfoId)
 					ModelState.AddModelError("", "当前浙大通行证绑定的账户数量已经达到上限，无法激活新账号");
@@ -126,8 +130,8 @@ namespace CC98.LogOn.Controllers
 			}
 
 			var userExists = await (from i in IdentityDbContext.Users
-				where string.Equals(i.Name, userName, StringComparison.OrdinalIgnoreCase)
-				select i).AnyAsync();
+									where string.Equals(i.Name, userName, StringComparison.OrdinalIgnoreCase)
+									select i).AnyAsync();
 
 			if (userExists)
 				ModelState.AddModelError("", "该用户名已经存在，请换个用户名再试一次。");
@@ -184,8 +188,8 @@ namespace CC98.LogOn.Controllers
 				var passwordHash = CC98PasswordHashService.GetPasswordHash(model.CC98Password);
 
 				var user = await (from i in IdentityDbContext.Users
-					where i.Name == userName && i.PasswordHash == passwordHash
-					select i).FirstOrDefaultAsync();
+								  where i.Name == userName && i.PasswordHash == passwordHash
+								  select i).FirstOrDefaultAsync();
 
 				if (user == null)
 				{
@@ -248,9 +252,9 @@ namespace CC98.LogOn.Controllers
 				var userName = model.UserName;
 
 				var user = await (from i in IdentityDbContext.Users
-					where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
-					      && string.Equals(i.Name, userName, StringComparison.OrdinalIgnoreCase)
-					select i).FirstOrDefaultAsync();
+								  where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+										&& string.Equals(i.Name, userName, StringComparison.OrdinalIgnoreCase)
+								  select i).FirstOrDefaultAsync();
 
 				if (user == null)
 				{
@@ -288,7 +292,7 @@ namespace CC98.LogOn.Controllers
 		{
 			var authProperties = new AuthenticationProperties
 			{
-				RedirectUri = Url.Action("LogOnCallback", "Account", new {returnUrl})
+				RedirectUri = Url.Action("LogOnCallback", "Account", new { returnUrl })
 			};
 
 			return Challenge(authProperties, ZjuInfoOAuthDefaults.AuthenticationScheme);
@@ -303,7 +307,7 @@ namespace CC98.LogOn.Controllers
 		[HttpGet]
 		public async Task<IActionResult> LogOnCallback(string returnUrl)
 		{
-			var principal = await ExternalSignInManager.SignInFromExternalCookieAsync();
+			var principal = await ExternalSignInManager.GetExternalPrincipalAsync();
 
 			if (principal?.Identity == null)
 			{
@@ -311,9 +315,37 @@ namespace CC98.LogOn.Controllers
 				return RedirectToAction("Index", "Home");
 			}
 
+			// 获取当前通行证编号
+			var userId = principal.GetId();
+
+			// 根据权限设置添加新声明
+			var newClaims = new List<Claim>();
+
+			if (AppSetting.QueryAccounts.Contains(userId))
+			{
+				newClaims.Add(new Claim(ClaimTypes.Role, Policies.Roles.QueryIdOperators));
+			}
+
+			// 登录
+			await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, CloneWithClaims(principal, IdentityConstants.ApplicationScheme, newClaims));
+
 			if (Url.IsLocalUrl(returnUrl))
 				return Redirect(returnUrl);
 			return RedirectToAction("Index", "Home");
+		}
+
+		/// <summary>
+		/// 复制主体对象并添加必要的新声明。
+		/// </summary>
+		/// <param name="principal">要复制的主体对象。</param>
+		/// <param name="authenticatoinType">新标识的验证类型。</param>
+		/// <param name="claims">要添加到主体对象的新声明列表。</param>
+		/// <returns>新的主体对象。</returns>
+		private static ClaimsPrincipal CloneWithClaims(ClaimsPrincipal principal, string authenticatoinType, IEnumerable<Claim> claims)
+		{
+			var newIdentities = principal.Identities.Select(i =>
+				new ClaimsIdentity(i.Claims.Concat(claims), authenticatoinType, i.NameClaimType, i.RoleClaimType));
+			return new ClaimsPrincipal(newIdentities);
 		}
 
 		/// <summary>
@@ -340,8 +372,8 @@ namespace CC98.LogOn.Controllers
 			var zjuInfoId = User.GetId();
 
 			var accounts = from i in IdentityDbContext.Users
-				where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
-				select i;
+						   where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+						   select i;
 
 			return View(await accounts.ToArrayAsync());
 		}

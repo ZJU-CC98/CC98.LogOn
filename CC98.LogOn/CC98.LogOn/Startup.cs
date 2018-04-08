@@ -92,6 +92,17 @@ namespace CC98.LogOn
 				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 			});
 
+			// 用户角色
+			services.AddAuthorization(options =>
+			{
+				options.AddPolicy(Policies.Admin, builder => { builder.RequireRole(Policies.Roles.Adiminstrators); });
+				options.AddPolicy(Policies.QueryId,
+					builder => { builder.RequireRole(Policies.Roles.Adiminstrators, Policies.Roles.QueryIdOperators); });
+				options.AddPolicy(Policies.QueryAccount,
+					builder => builder.RequireRole(Policies.Roles.Adiminstrators, Policies.Roles.QueryIdOperators,
+						Policies.Roles.QueryAccountOperators));
+			});
+
 			services.AddExternalSignInManager();
 
 			//  分页器
