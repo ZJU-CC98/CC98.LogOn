@@ -1,3 +1,41 @@
+### 11.0.0 - 11.1.1 (fixing version mismatch cdn.js - npm)
+- **[BREAKING]** removes plugin of type cache. Can be replace by [i18next-chained-backend](https://github.com/i18next/i18next-chained-backend) example cache for localStorage [i18next-localstorage-backend](https://github.com/i18next/i18next-localstorage-backend#getting-started)
+- **[BREAKING]** removes the support for multiload (multiRead) in backends - will just use read per language-namespace. You can enable multiRead support in backends again by using [i18next-multiload-backend-adapter](https://github.com/i18next/i18next-multiload-backend-adapter)
+
+### 10.6.0
+- adds missingInterpolationHandler [1039](https://github.com/i18next/i18next/pull/1039)
+
+### 10.5.1
+- fixes call to getPluralFormsOfKey if called with unsupported language [1032](https://github.com/i18next/i18next/issues/1032)
+- Avoid mutating whitelist array. [1037](https://github.com/i18next/i18next/pull/1037)
+
+### 10.5.0
+- Adds options.silent to addResources and addResourceBundle [1024](https://github.com/i18next/i18next/pull/1024)
+
+### 10.4.1
+- forward options in backend.create saveMissing
+
+### 10.4.0
+- fixes combination of returnObject and context by returning original value for deep translation when lookup for inner returns a key (failed to translate proper) [1014](https://github.com/i18next/i18next/issues/1014)
+- *[EXPERIMENTAL]* additional you can pass `tDescription` to the `t` options or as a third param to calling `t` -> `t(key, defaultValue, tDescription);`. Those will get forwarded to the backend and can be submitted on saveMissing to provide contextual information for translators.
+
+### 10.3.0
+- new option saveMissingPlurals (default true) will enable submitting plural forms on saveMissing if t call is for plural (count passed in options).
+
+### 10.2.2
+- fixes Context and nested lost initial options [1009](https://github.com/i18next/i18next/issues/1009)
+
+### 10.2.1
+- optimize update output in log
+
+### 10.2.0
+- *[EXPERIMENTAL]* init option updateMissing: enable to update default values if different from translated value (only useful on initial development or when keeping code as source of truth not changing values outside of code)
+
+### 10.1.0
+- return boolean, number from translator
+- initial set language on translator if non set yet (after that only if loaded) [#998](https://github.com/i18next/i18next/issues/998)
+
+
 ### 10.0.7
 - support all overloadTranslationOptionHandler in getFixedT [react-i18next/issues/332](https://github.com/i18next/react-i18next/issues/332)
 

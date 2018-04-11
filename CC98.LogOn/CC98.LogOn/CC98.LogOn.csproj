@@ -20,17 +20,17 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
-		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
 		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="2.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.1" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.2" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
 		<PackageReference Include="Sakura.AspNetCore.Authentication.ExternalCookie" Version="2.1.0" />
 		<PackageReference Include="Sakura.AspNetCore.DynamicLocalizer" Version="2.0.1" />
 		<PackageReference Include="Sakura.AspNetCore.Mvc.ActionResultExceptionExtensions" Version="1.0.0" />
 		<PackageReference Include="Sakura.AspNetCore.Mvc.Messages" Version="1.0.3" />
 		<PackageReference Include="Sakura.AspNetCore.Mvc.PagedList" Version="2.0.12" />
-		<PackageReference Include="Sakura.AspNetCore.Mvc.TagHelpers" Version="1.3.5" />
+		<PackageReference Include="Sakura.AspNetCore.Mvc.TagHelpers" Version="1.3.6" />
 		<PackageReference Include="Sakura.AspNetCore.Mvc.TempDataExtensions" Version="1.0.1" />
 		<PackageReference Include="Sakura.AspNetCore.PagedList.Async" Version="1.0.0" />
 	</ItemGroup>

@@ -14,26 +14,28 @@
 
 	<environment names="Development">
 		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-		<link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" href="~/lib/font-awesome/web-fonts-with-css/css/fontawesome-all.css" />
 		<link rel="stylesheet" href="~/css/site.css" />
 	</environment>
 	<environment names="Staging,Production">
 
-		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-			  integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-			  crossorigin="anonymous"
-			  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-			  asp-fallback-test-class="sr-only"
-			  asp-fallback-test-property="position"
-			  asp-fallback-test-value="absolute" />
+		<link rel="stylesheet"
+		      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+		      integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+		      crossorigin="anonymous"
+		      asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+		      asp-fallback-test-class="sr-only"
+		      asp-fallback-test-property="position"
+		      asp-fallback-test-value="absolute" />
 
-		<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"
-			  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-			  crossorigin="anonymous"
-			  asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
-			  asp-fallback-test-class="fa"
-			  asp-fallback-test-property="display"
-			  asp-fallback-test-value="inline-block" />
+		<link rel="stylesheet"
+		      href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+		      integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
+		      crossorigin="anonymous"
+		      asp-fallback-href="~/lib/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css"
+		      asp-fallback-test-class="fa"
+		      asp-fallback-test-property="display"
+		      asp-fallback-test-value="inline-block" />
 
 		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 
@@ -95,23 +97,24 @@
 	</environment>
 	<environment names="Staging,Production">
 
-		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"
-				asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-				asp-fallback-test="window.jQuery"
-				integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
-				crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"
+		        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+		        crossorigin="anonymous"
+		        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+		        asp-fallback-test="window.jQuery"></script>
 
-		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
-				asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
-				asp-fallback-test="window.Popper"
-				integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-				crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/popper.js/1.14.2/umd/popper.min.js"
+		        integrity="sha384-AXEnX7PDLv+jdnMoormAUbt+QXfB3RKKzS6zZY474XEGvwG9uMHSCAsKGnslQULy"
+		        crossorigin="anonymous"
+		        asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
+		        asp-fallback-test="window.Popper"></script>
 
-		<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-				asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-				asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-				integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-				crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+		        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+		        crossorigin="anonymous"
+		        asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+		        asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
+
 		<script src="~/js/site.min.js" asp-append-version="true"></script>
 	</environment>
 

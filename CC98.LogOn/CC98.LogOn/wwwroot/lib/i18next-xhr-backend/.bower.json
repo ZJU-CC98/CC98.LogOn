@@ -18,15 +18,15 @@
     "karma.conf.js"
   ],
   "homepage": "https://github.com/i18next/i18next-xhr-backend",
-  "version": "1.5.0",
-  "_release": "1.5.0",
+  "version": "1.5.1",
+  "_release": "1.5.1",
   "_resolution": {
     "type": "version",
-    "tag": "v1.5.0",
-    "commit": "7995e42d34b2ad5b3bd090b2cf0a0226edc03dbd"
+    "tag": "v1.5.1",
+    "commit": "40797825193abc2a4775eacb3d365a38022717ba"
   },
   "_source": "https://github.com/i18next/i18next-xhr-backend.git",
-  "_target": "v1.5.0",
+  "_target": "v1.5.1",
   "_originalSource": "i18next-xhr-backend",
   "_direct": true
 }

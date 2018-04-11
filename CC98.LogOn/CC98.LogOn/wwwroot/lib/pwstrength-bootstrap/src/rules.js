@@ -54,7 +54,7 @@ try {
     };
 
     validation.wordInvalidChar = function (options, word, score) {
-        if (word.match(/[\s,',"]/)) {
+        if (options.common.invalidCharsRegExp.test(word)) {
             return score;
         }
         return 0;
@@ -145,6 +145,13 @@ try {
 
     validation.wordLetterNumberCharCombo = function (options, word, score) {
         return word.match(/([a-zA-Z0-9].*[!,@,#,$,%,\^,&,*,?,_,~])|([!,@,#,$,%,\^,&,*,?,_,~].*[a-zA-Z0-9])/) && score;
+    };
+
+    validation.wordIsACommonPassword = function (options, word, score) {
+        if ($.inArray(word, options.rules.commonPasswords) >= 0) {
+            return score;
+        }
+        return 0;
     };
 
     rulesEngine.validation = validation;

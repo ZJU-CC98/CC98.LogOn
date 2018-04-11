@@ -18,15 +18,15 @@
     "karma.conf.js"
   ],
   "homepage": "https://github.com/i18next/i18next-browser-languageDetector",
-  "version": "2.1.0",
-  "_release": "2.1.0",
+  "version": "2.2.0",
+  "_release": "2.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.0",
-    "commit": "a178695efc728ec8470b9869dd13d93498069930"
+    "tag": "v2.2.0",
+    "commit": "0aa7ad5c17937feb8a9c35aaf7121d0e93f75071"
   },
   "_source": "https://github.com/i18next/i18next-browser-languageDetector.git",
-  "_target": "v2.1.0",
+  "_target": "v2.2.0",
   "_originalSource": "i18next-browser-languagedetector",
   "_direct": true
 }

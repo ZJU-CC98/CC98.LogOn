@@ -1,6 +1,6 @@
 ﻿<environment names="Development">
 	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"></script>
 	<script src="~/lib/i18next/i18next.js"></script>
 	<script src="~/lib/i18next-xhr-backend/i18nextXHRBackend.js"></script>
 	<script src="~/lib/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.js"></script>
@@ -8,37 +8,37 @@
 </environment>
 <environment names="Staging,Production">
 	<script src="https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.min.js"
-	        asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
-	        asp-fallback-test="window.jQuery && window.jQuery.validator"
-	        crossorigin="anonymous"
-	        integrity="sha384-rZfj/ogBloos6wzLGpPkkOr/gpkBNLZ6b6yLy4o+ok+t/SAKlL5mvXLr0OXNi1Hp"></script>
-	<script src="https://cdn.bootcss.com/jquery-validation-unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"
-	        asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
-	        asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
-	        crossorigin="anonymous"
-	        integrity="sha384-JrXK+k53HACyavUKOsL+NkmSesD2P+73eDMrbTtTk0h4RmOF8hF8apPlkp26JlyH"></script>
-	<script src="https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js"
-	        asp-fallback-src="~/lib/i18next/i18next.min.js"
-	        asp-fallback-test="window.i18next"
-	        integrity="sha384-oiTLKEsa+VU4D8F6Rtarq8SLM9UU3Z0nZHAmSTv3PO2D1RxOwus5XmIoYGYKaS7o"
-	        crossorigin="anonymous"></script>
+			crossorigin="anonymous"
+			integrity="sha384-rZfj/ogBloos6wzLGpPkkOr/gpkBNLZ6b6yLy4o+ok+t/SAKlL5mvXLr0OXNi1Hp"
+			asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
+			asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
+	<script src="https://cdn.bootcss.com/jquery-validation-unobtrusive/3.2.9/jquery.validate.unobtrusive.min.js"
+			integrity="sha384-ifv0TYDWxBHzvAk2Z0n8R434FL1Rlv/Av18DXE43N/1rvHyOG4izKst0f2iSLdds"
+			crossorigin="anonymous"
+			asp-fallback-src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"
+			asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>
+	<script src="https://cdn.bootcss.com/i18next/11.1.1/i18next.min.js"
+			integrity="sha384-CRrDKhPi0vbRLp2YDQ6zsQDWN2i/0EGWaRFFFRWCa/dgtpBP4BvboIcANUttamTp"
+			crossorigin="anonymous"
+			asp-fallback-src="~/lib/i18next/i18next.min.js"
+			asp-fallback-test="window.i18next"></script>
 
-	<script src="https://cdn.bootcss.com/i18next-xhr-backend/1.5.0/i18nextXHRBackend.min.js"
-	        asp-fallback-src="~/lib/i18next/i18next.min.js"
-	        asp-fallback-test="window.i18nextXHRBackend"
-	        integrity="sha384-eIzvLKdw99yjINvPvMYQiQFD9tYnU9PxIt4DH/P+2biGfs2OyHLgkGsjGIUIg/Ph"
-	        crossorigin="anonymous"></script>
+	<script src="https://cdn.bootcss.com/i18next-xhr-backend/1.5.1/i18nextXHRBackend.min.js"
+			integrity="sha384-Bs2NZmsN+ceH5DyFA3YFTsqv6rAMQaOBSdNs0JHDBH1MCqk/7qmXMouRhsPZ3LkV"
+			crossorigin="anonymous"
+			asp-fallback-src="~/lib/i18next/i18next.min.js"
+			asp-fallback-test="window.i18nextXHRBackend"></script>
 
-	<script src="https://cdn.bootcss.com/i18next-browser-languagedetector/2.1.0/i18nextBrowserLanguageDetector.min.js"
-	        asp-fallback-src="~/lib/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"
-	        asp-fallback-test="window.i18nextBrowserLanguageDetector"
-	        integrity="sha384-fFh5R5gJH9jhvh2YwWCPP/HpdJFvK0yipuELbd6i/tHZ63YHw+RNPje+7PN7akB2"
-	        crossorigin="anonymous"></script>
+	<script src="https://cdn.bootcss.com/i18next-browser-languagedetector/2.2.0/i18nextBrowserLanguageDetector.min.js"
+			integrity="sha384-T7WbbW79QkRI5h4EOqAd/Tb4Bb0WI/VVoC6lXeE9zfYgxgej2qGuGnrj/8Sx6t8z"
+			crossorigin="anonymous"
+			asp-fallback-src="~/lib/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"
+			asp-fallback-test="window.i18nextBrowserLanguageDetector"></script>
 
-	<script src="https://cdn.bootcss.com/pwstrength-bootstrap/2.1.1/pwstrength-bootstrap.min.js"
-	        asp-fallback-src="~/lib/pwstrength-bootstrap/dist/pwstrength-bootstrap.min.js"
-	        integrity="sha384-SdQ8iFnS7oVtjXnj+nN4N/cWJ+DYxvHZN3ABzl+9my5UyoYPqal/DZ++N7ifgWrO"
-	        crossorigin="anonymous"></script>
+	<script src="https://cdn.bootcss.com/pwstrength-bootstrap/2.2.1/pwstrength-bootstrap.min.js"
+			integrity="sha384-snttg+HAyMm5jiuQqazENjhzi0kFiiFqXOJExZQmc0qBJNF1HGsMr55ZyzuHHXV3"
+			crossorigin="anonymous"
+			asp-fallback-src="~/lib/pwstrength-bootstrap/dist/pwstrength-bootstrap.min.js"></script>
 </environment>
 
 

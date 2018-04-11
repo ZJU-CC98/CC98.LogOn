@@ -470,14 +470,18 @@ var ResourceStore = function (_EventEmitter) {
   };
 
   ResourceStore.prototype.addResources = function addResources(lng, ns, resources) {
+    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : { silent: false };
+
     /* eslint no-restricted-syntax: 0 */
     for (var m in resources) {
       if (typeof resources[m] === 'string') this.addResource(lng, ns, m, resources[m], { silent: true });
     }
-    this.emit('added', lng, ns, resources);
+    if (!options.silent) this.emit('added', lng, ns, resources);
   };
 
   ResourceStore.prototype.addResourceBundle = function addResourceBundle(lng, ns, resources, deep, overwrite) {
+    var options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : { silent: false };
+
     var path = [lng, ns];
     if (lng.indexOf('.') > -1) {
       path = lng.split('.');
@@ -498,7 +502,7 @@ var ResourceStore = function (_EventEmitter) {
 
     setPath(this.data, path, pack);
 
-    this.emit('added', lng, ns, resources);
+    if (!options.silent) this.emit('added', lng, ns, resources);
   };
 
   ResourceStore.prototype.removeResourceBundle = function removeResourceBundle(lng, ns) {
@@ -594,13 +598,14 @@ var Translator = function (_EventEmitter) {
     };
   };
 
-  Translator.prototype.translate = function translate(keys) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  Translator.prototype.translate = function translate(keys, options) {
+    var _this2 = this;
 
-    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) !== 'object') {
+    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) !== 'object' && this.options.overloadTranslationOptionHandler) {
       /* eslint prefer-rest-params: 0 */
       options = this.options.overloadTranslationOptionHandler(arguments);
     }
+    if (!options) options = {};
 
     // non valid keys handling
     if (keys === undefined || keys === null || keys === '') return '';
@@ -633,17 +638,18 @@ var Translator = function (_EventEmitter) {
     // resolve from store
     var resolved = this.resolve(keys, options);
     var res = resolved && resolved.res;
-    var usedKey = resolved && resolved.usedKey || key;
+    var resUsedKey = resolved && resolved.usedKey || key;
 
     var resType = Object.prototype.toString.apply(res);
     var noObject = ['[object Number]', '[object Function]', '[object RegExp]'];
     var joinArrays = options.joinArrays !== undefined ? options.joinArrays : this.options.joinArrays;
 
     // object
-    if (res && typeof res !== 'string' && noObject.indexOf(resType) < 0 && !(joinArrays && resType === '[object Array]')) {
+    var handleAsObject = typeof res !== 'string' && typeof res !== 'boolean' && typeof res !== 'number';
+    if (res && handleAsObject && noObject.indexOf(resType) < 0 && !(joinArrays && resType === '[object Array]')) {
       if (!options.returnObjects && !this.options.returnObjects) {
         this.logger.warn('accessing an object - but returnObjects options is not enabled!');
-        return this.options.returnedObjectHandler ? this.options.returnedObjectHandler(usedKey, res, options) : 'key \'' + key + ' (' + this.language + ')\' returned an object instead of string.';
+        return this.options.returnedObjectHandler ? this.options.returnedObjectHandler(resUsedKey, res, options) : 'key \'' + key + ' (' + this.language + ')\' returned an object instead of string.';
       }
 
       // if we got a separator we loop over children - else we just return object as is
@@ -654,7 +660,9 @@ var Translator = function (_EventEmitter) {
         /* eslint no-restricted-syntax: 0 */
         for (var m in res) {
           if (Object.prototype.hasOwnProperty.call(res, m)) {
-            copy$$1[m] = this.translate('' + usedKey + keySeparator + m, _extends({}, options, { joinArrays: false, ns: namespaces }));
+            var deepKey = '' + resUsedKey + keySeparator + m;
+            copy$$1[m] = this.translate(deepKey, _extends({}, options, { joinArrays: false, ns: namespaces }));
+            if (copy$$1[m] === deepKey) copy$$1[m] = res[m]; // if nothing found use orginal value as fallback
           }
         }
         res = copy$$1;
@@ -666,7 +674,7 @@ var Translator = function (_EventEmitter) {
     } else {
       // string, empty or null
       var usedDefault = false;
-      var _usedKey = false;
+      var usedKey = false;
 
       // fallback value
       if (!this.isValidLookup(res) && options.defaultValue !== undefined) {
@@ -674,13 +682,14 @@ var Translator = function (_EventEmitter) {
         res = options.defaultValue;
       }
       if (!this.isValidLookup(res)) {
-        _usedKey = true;
+        usedKey = true;
         res = key;
       }
 
       // save missing
-      if (_usedKey || usedDefault) {
-        this.logger.log('missingKey', lng, namespace, key, res);
+      var updateMissing = options.defaultValue && options.defaultValue !== res && this.options.updateMissing;
+      if (usedKey || usedDefault || updateMissing) {
+        this.logger.log(updateMissing ? 'updateKey' : 'missingKey', lng, namespace, key, updateMissing ? options.defaultValue : res);
 
         var lngs = [];
         var fallbackLngs = this.languageUtils.getFallbackCodes(this.options.fallbackLng, options.lng || this.language);
@@ -694,25 +703,38 @@ var Translator = function (_EventEmitter) {
           lngs.push(options.lng || this.language);
         }
 
+        var send = function send(l, k) {
+          if (_this2.options.missingKeyHandler) {
+            _this2.options.missingKeyHandler(l, namespace, k, updateMissing ? options.defaultValue : res, updateMissing, options);
+          } else if (_this2.backendConnector && _this2.backendConnector.saveMissing) {
+            _this2.backendConnector.saveMissing(l, namespace, k, updateMissing ? options.defaultValue : res, updateMissing, options);
+          }
+          _this2.emit('missingKey', l, namespace, k, res);
+        };
+
         if (this.options.saveMissing) {
-          if (this.options.missingKeyHandler) {
-            this.options.missingKeyHandler(lngs, namespace, key, res);
-          } else if (this.backendConnector && this.backendConnector.saveMissing) {
-            this.backendConnector.saveMissing(lngs, namespace, key, res);
+          if (this.options.saveMissingPlurals && options.count) {
+            lngs.forEach(function (l) {
+              var plurals = _this2.pluralResolver.getPluralFormsOfKey(l, key);
+
+              plurals.forEach(function (p) {
+                return send([l], p);
+              });
+            });
+          } else {
+            send(lngs, key);
           }
         }
-
-        this.emit('missingKey', lngs, namespace, key, res);
       }
 
       // extend
       res = this.extendTranslation(res, keys, options);
 
       // append namespace if still key
-      if (_usedKey && res === key && this.options.appendNamespaceToMissingKey) res = namespace + ':' + key;
+      if (usedKey && res === key && this.options.appendNamespaceToMissingKey) res = namespace + ':' + key;
 
       // parseMissingKeyHandler
-      if (_usedKey && this.options.parseMissingKeyHandler) res = this.options.parseMissingKeyHandler(res);
+      if (usedKey && this.options.parseMissingKeyHandler) res = this.options.parseMissingKeyHandler(res);
     }
 
     // return
@@ -720,7 +742,7 @@ var Translator = function (_EventEmitter) {
   };
 
   Translator.prototype.extendTranslation = function extendTranslation(res, key, options) {
-    var _this2 = this;
+    var _this3 = this;
 
     if (options.interpolation) this.interpolator.init(_extends({}, options, { interpolation: _extends({}, this.options.interpolation, options.interpolation) }));
 
@@ -731,7 +753,7 @@ var Translator = function (_EventEmitter) {
 
     // nesting
     if (options.nest !== false) res = this.interpolator.nest(res, function () {
-      return _this2.translate.apply(_this2, arguments);
+      return _this3.translate.apply(_this3, arguments);
     }, options);
 
     if (options.interpolation) this.interpolator.reset();
@@ -740,7 +762,7 @@ var Translator = function (_EventEmitter) {
     var postProcess = options.postProcess || this.options.postProcess;
     var postProcessorNames = typeof postProcess === 'string' ? [postProcess] : postProcess;
 
-    if (res !== undefined && postProcessorNames && postProcessorNames.length && options.applyPostProcessor !== false) {
+    if (res !== undefined && res !== null && postProcessorNames && postProcessorNames.length && options.applyPostProcessor !== false) {
       res = postProcessor.handle(postProcessorNames, res, key, options, this);
     }
 
@@ -748,7 +770,7 @@ var Translator = function (_EventEmitter) {
   };
 
   Translator.prototype.resolve = function resolve(keys) {
-    var _this3 = this;
+    var _this4 = this;
 
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
@@ -759,35 +781,35 @@ var Translator = function (_EventEmitter) {
 
     // forEach possible key
     keys.forEach(function (k) {
-      if (_this3.isValidLookup(found)) return;
-      var extracted = _this3.extractFromKey(k, options);
+      if (_this4.isValidLookup(found)) return;
+      var extracted = _this4.extractFromKey(k, options);
       var key = extracted.key;
       usedKey = key;
       var namespaces = extracted.namespaces;
-      if (_this3.options.fallbackNS) namespaces = namespaces.concat(_this3.options.fallbackNS);
+      if (_this4.options.fallbackNS) namespaces = namespaces.concat(_this4.options.fallbackNS);
 
       var needsPluralHandling = options.count !== undefined && typeof options.count !== 'string';
       var needsContextHandling = options.context !== undefined && typeof options.context === 'string' && options.context !== '';
 
-      var codes = options.lngs ? options.lngs : _this3.languageUtils.toResolveHierarchy(options.lng || _this3.language);
+      var codes = options.lngs ? options.lngs : _this4.languageUtils.toResolveHierarchy(options.lng || _this4.language);
 
       namespaces.forEach(function (ns) {
-        if (_this3.isValidLookup(found)) return;
+        if (_this4.isValidLookup(found)) return;
 
         codes.forEach(function (code) {
-          if (_this3.isValidLookup(found)) return;
+          if (_this4.isValidLookup(found)) return;
 
           var finalKey = key;
           var finalKeys = [finalKey];
 
           var pluralSuffix = void 0;
-          if (needsPluralHandling) pluralSuffix = _this3.pluralResolver.getSuffix(code, options.count);
+          if (needsPluralHandling) pluralSuffix = _this4.pluralResolver.getSuffix(code, options.count);
 
           // fallback for plural if context not found
           if (needsPluralHandling && needsContextHandling) finalKeys.push(finalKey + pluralSuffix);
 
           // get key for context if needed
-          if (needsContextHandling) finalKeys.push(finalKey += '' + _this3.options.contextSeparator + options.context);
+          if (needsContextHandling) finalKeys.push(finalKey += '' + _this4.options.contextSeparator + options.context);
 
           // get key for plural if needed
           if (needsPluralHandling) finalKeys.push(finalKey += pluralSuffix);
@@ -796,8 +818,8 @@ var Translator = function (_EventEmitter) {
           var possibleKey = void 0;
           /* eslint no-cond-assign: 0 */
           while (possibleKey = finalKeys.pop()) {
-            if (!_this3.isValidLookup(found)) {
-              found = _this3.getResource(code, ns, possibleKey, options);
+            if (!_this4.isValidLookup(found)) {
+              found = _this4.getResource(code, ns, possibleKey, options);
             }
           }
         });
@@ -1049,13 +1071,30 @@ var PluralResolver = function () {
     return rule && rule.numbers.length > 1;
   };
 
-  PluralResolver.prototype.getSuffix = function getSuffix(code, count) {
+  PluralResolver.prototype.getPluralFormsOfKey = function getPluralFormsOfKey(code, key) {
     var _this = this;
+
+    var ret = [];
+
+    var rule = this.getRule(code);
+
+    if (!rule) return ret;
+
+    rule.numbers.forEach(function (n) {
+      var suffix = _this.getSuffix(code, n);
+      ret.push('' + key + suffix);
+    });
+
+    return ret;
+  };
+
+  PluralResolver.prototype.getSuffix = function getSuffix(code, count) {
+    var _this2 = this;
 
     var rule = this.getRule(code);
 
     if (rule) {
-      //if (rule.numbers.length === 1) return ''; // only singular
+      // if (rule.numbers.length === 1) return ''; // only singular
 
       var idx = rule.noAbs ? rule.plurals(count) : rule.plurals(Math.abs(count));
       var suffix = rule.numbers[idx];
@@ -1070,7 +1109,7 @@ var PluralResolver = function () {
       }
 
       var returnSuffix = function returnSuffix() {
-        return _this.options.prepend && suffix.toString() ? _this.options.prepend + suffix.toString() : suffix.toString();
+        return _this2.options.prepend && suffix.toString() ? _this2.options.prepend + suffix.toString() : suffix.toString();
       };
 
       // COMPATIBILITY JSON
@@ -1199,8 +1238,13 @@ var Interpolator = function () {
       value = handleFormat(match[1].trim());
       if (typeof value !== 'string') value = makeString(value);
       if (!value) {
-        this.logger.warn('missed to pass in variable ' + match[1] + ' for interpolating ' + str);
-        value = '';
+        if (typeof this.options.missingInterpolationHandler === 'function') {
+          var temp = this.options.missingInterpolationHandler(str, match);
+          value = typeof temp === 'string' ? temp : '';
+        } else {
+          this.logger.warn('missed to pass in variable ' + match[1] + ' for interpolating ' + str);
+          value = '';
+        }
       }
       value = this.escapeValue ? regexSafe(this.escape(value)) : regexSafe(value);
       str = str.replace(match[0], value);
@@ -1223,7 +1267,7 @@ var Interpolator = function () {
     clonedOptions.applyPostProcessor = false; // avoid post processing on nested lookup
 
     // if value is something like "myKey": "lorem $(anotherKey, { "count": {{aValueInOptions}} })"
-    function handleHasOptions(key) {
+    function handleHasOptions(key, inheritedOptions) {
       if (key.indexOf(',') < 0) return key;
 
       var p = key.split(',');
@@ -1234,6 +1278,8 @@ var Interpolator = function () {
 
       try {
         clonedOptions = JSON.parse(optionsString);
+
+        if (inheritedOptions) clonedOptions = _extends({}, inheritedOptions, clonedOptions);
       } catch (e) {
         this.logger.error('failed parsing options string in nesting for key ' + key, e);
       }
@@ -1243,7 +1289,7 @@ var Interpolator = function () {
 
     // regular escape on demand
     while (match = this.nestingRegexp.exec(str)) {
-      value = fc(handleHasOptions.call(this, match[1].trim()), clonedOptions);
+      value = fc(handleHasOptions.call(this, match[1].trim(), clonedOptions), clonedOptions);
 
       // is only the nesting key (key1 = '$(key2)') return the value without stringify
       if (value && match[0] === str && typeof value !== 'string') return value;
@@ -1423,7 +1469,6 @@ var Connector = function (_EventEmitter) {
       this.logger.warn('No backend was added via i18next.use. Will not load resources.');
       return callback && callback();
     }
-    var options = _extends({}, this.backend.options, this.options.backend);
 
     if (typeof languages === 'string') languages = this.languageUtils.toResolveHierarchy(languages);
     if (typeof namespaces === 'string') namespaces = [namespaces];
@@ -1434,33 +1479,9 @@ var Connector = function (_EventEmitter) {
       return null; // pendings will trigger callback
     }
 
-    // load with multi-load
-    if (options.allowMultiLoading && this.backend.readMulti) {
-      this.read(toLoad.toLoadLanguages, toLoad.toLoadNamespaces, 'readMulti', null, null, function (err, data) {
-        if (err) _this5.logger.warn('loading namespaces ' + toLoad.toLoadNamespaces.join(', ') + ' for languages ' + toLoad.toLoadLanguages.join(', ') + ' via multiloading failed', err);
-        if (!err && data) _this5.logger.log('successfully loaded namespaces ' + toLoad.toLoadNamespaces.join(', ') + ' for languages ' + toLoad.toLoadLanguages.join(', ') + ' via multiloading', data);
-
-        toLoad.toLoad.forEach(function (name) {
-          var _name$split3 = name.split('|'),
-              _name$split4 = slicedToArray(_name$split3, 2),
-              l = _name$split4[0],
-              n = _name$split4[1];
-
-          var bundle = getPath(data, [l, n]);
-          if (bundle) {
-            _this5.loaded(name, err, bundle);
-          } else {
-            var error = 'loading namespace ' + n + ' for language ' + l + ' via multiloading failed';
-            _this5.loaded(name, error);
-            _this5.logger.error(error);
-          }
-        });
-      });
-    } else {
-      toLoad.toLoad.forEach(function (name) {
-        _this5.loadOne(name);
-      });
-    }
+    toLoad.toLoad.forEach(function (name) {
+      _this5.loadOne(name);
+    });
   };
 
   Connector.prototype.reload = function reload(languages, namespaces) {
@@ -1469,37 +1490,15 @@ var Connector = function (_EventEmitter) {
     if (!this.backend) {
       this.logger.warn('No backend was added via i18next.use. Will not load resources.');
     }
-    var options = _extends({}, this.backend.options, this.options.backend);
 
     if (typeof languages === 'string') languages = this.languageUtils.toResolveHierarchy(languages);
     if (typeof namespaces === 'string') namespaces = [namespaces];
 
-    // load with multi-load
-    if (options.allowMultiLoading && this.backend.readMulti) {
-      this.read(languages, namespaces, 'readMulti', null, null, function (err, data) {
-        if (err) _this6.logger.warn('reloading namespaces ' + namespaces.join(', ') + ' for languages ' + languages.join(', ') + ' via multiloading failed', err);
-        if (!err && data) _this6.logger.log('successfully reloaded namespaces ' + namespaces.join(', ') + ' for languages ' + languages.join(', ') + ' via multiloading', data);
-
-        languages.forEach(function (l) {
-          namespaces.forEach(function (n) {
-            var bundle = getPath(data, [l, n]);
-            if (bundle) {
-              _this6.loaded(l + '|' + n, err, bundle);
-            } else {
-              var error = 'reloading namespace ' + n + ' for language ' + l + ' via multiloading failed';
-              _this6.loaded(l + '|' + n, error);
-              _this6.logger.error(error);
-            }
-          });
-        });
+    languages.forEach(function (l) {
+      namespaces.forEach(function (n) {
+        _this6.loadOne(l + '|' + n, 're');
       });
-    } else {
-      languages.forEach(function (l) {
-        namespaces.forEach(function (n) {
-          _this6.loadOne(l + '|' + n, 're');
-        });
-      });
-    }
+    });
   };
 
   Connector.prototype.loadOne = function loadOne(name) {
@@ -1507,10 +1506,10 @@ var Connector = function (_EventEmitter) {
 
     var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
-    var _name$split5 = name.split('|'),
-        _name$split6 = slicedToArray(_name$split5, 2),
-        lng = _name$split6[0],
-        ns = _name$split6[1];
+    var _name$split3 = name.split('|'),
+        _name$split4 = slicedToArray(_name$split3, 2),
+        lng = _name$split4[0],
+        ns = _name$split4[1];
 
     this.read(lng, ns, 'read', null, null, function (err, data) {
       if (err) _this7.logger.warn(prefix + 'loading namespace ' + ns + ' for language ' + lng + ' failed', err);
@@ -1520,74 +1519,16 @@ var Connector = function (_EventEmitter) {
     });
   };
 
-  Connector.prototype.saveMissing = function saveMissing(languages, namespace, key, fallbackValue) {
-    if (this.backend && this.backend.create) this.backend.create(languages, namespace, key, fallbackValue);
+  Connector.prototype.saveMissing = function saveMissing(languages, namespace, key, fallbackValue, isUpdate) {
+    var options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
+
+    if (this.backend && this.backend.create) {
+      this.backend.create(languages, namespace, key, fallbackValue, null /* unused callback */, _extends({}, options, { isUpdate: isUpdate }));
+    }
 
     // write to store to avoid resending
     if (!languages || !languages[0]) return;
     this.store.addResource(languages[0], namespace, key, fallbackValue);
-  };
-
-  return Connector;
-}(EventEmitter);
-
-var Connector$1 = function (_EventEmitter) {
-  inherits(Connector, _EventEmitter);
-
-  function Connector(cache, store, services) {
-    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-    classCallCheck(this, Connector);
-
-    var _this = possibleConstructorReturn(this, _EventEmitter.call(this));
-
-    _this.cache = cache;
-    _this.store = store;
-    _this.services = services;
-    _this.options = options;
-    _this.logger = baseLogger.create('cacheConnector');
-
-    if (_this.cache && _this.cache.init) _this.cache.init(services, options.cache, options);
-    return _this;
-  }
-
-  /* eslint consistent-return: 0 */
-
-
-  Connector.prototype.load = function load(languages, namespaces, callback) {
-    var _this2 = this;
-
-    if (!this.cache) return callback && callback();
-    var options = _extends({}, this.cache.options, this.options.cache);
-
-    var loadLngs = typeof languages === 'string' ? this.services.languageUtils.toResolveHierarchy(languages) : languages;
-
-    if (options.enabled) {
-      this.cache.load(loadLngs, function (err, data) {
-        if (err) _this2.logger.error('loading languages ' + loadLngs.join(', ') + ' from cache failed', err);
-        if (data) {
-          /* eslint no-restricted-syntax: 0 */
-          for (var l in data) {
-            if (Object.prototype.hasOwnProperty.call(data, l)) {
-              for (var n in data[l]) {
-                if (Object.prototype.hasOwnProperty.call(data[l], n)) {
-                  if (n !== 'i18nStamp') {
-                    var bundle = data[l][n];
-                    if (bundle) _this2.store.addResourceBundle(l, n, bundle);
-                  }
-                }
-              }
-            }
-          }
-        }
-        if (callback) callback();
-      });
-    } else if (callback) {
-      callback();
-    }
-  };
-
-  Connector.prototype.save = function save() {
-    if (this.cache && this.options.cache && this.options.cache.enabled) this.cache.save(this.store.data);
   };
 
   return Connector;
@@ -1615,8 +1556,11 @@ function get$1() {
     contextSeparator: '_',
 
     saveMissing: false, // enable to send missing values
+    updateMissing: false, // enable to update default values if different from translated value (only useful on initial development, or when keeping code as source of truth)
     saveMissingTo: 'fallback', // 'current' || 'all'
+    saveMissingPlurals: true, // will save all forms not only singular key
     missingKeyHandler: false, // function(lng, ns, key, fallbackValue) -> override if prefer on handling
+    missingInterpolationHandler: false, // function(str, match)
 
     postProcess: false, // string or array of postProcessor names
     returnNull: true, // allows null value as valid translation
@@ -1628,7 +1572,10 @@ function get$1() {
     appendNamespaceToMissingKey: false,
     appendNamespaceToCIMode: false,
     overloadTranslationOptionHandler: function handle(args) {
-      return { defaultValue: args[1] };
+      var ret = {};
+      if (args[1]) ret.defaultValue = args[1];
+      if (args[2]) ret.tDescription = args[2];
+      return ret;
     },
 
     interpolation: {
@@ -1662,7 +1609,9 @@ function transformOptions(options) {
   if (typeof options.fallbackNS === 'string') options.fallbackNS = [options.fallbackNS];
 
   // extend whitelist with cimode
-  if (options.whitelist && options.whitelist.indexOf('cimode') < 0) options.whitelist.push('cimode');
+  if (options.whitelist && options.whitelist.indexOf('cimode') < 0) {
+    options.whitelist = options.whitelist.concat(['cimode']);
+  }
 
   return options;
 }
@@ -1731,9 +1680,6 @@ var I18n = function (_EventEmitter) {
       var s = this.services;
       s.logger = baseLogger;
       s.resourceStore = this.store;
-      s.resourceStore.on('added removed', function (lng, ns) {
-        s.cacheConnector.save();
-      });
       s.languageUtils = lu;
       s.pluralResolver = new PluralResolver(lu, { prepend: this.options.pluralSeparator, compatibilityJSON: this.options.compatibilityJSON, simplifyPluralSuffix: this.options.simplifyPluralSuffix });
       s.interpolator = new Interpolator(this.options);
@@ -1748,20 +1694,6 @@ var I18n = function (_EventEmitter) {
         _this2.emit.apply(_this2, [event].concat(args));
       });
 
-      s.backendConnector.on('loaded', function (loaded) {
-        s.cacheConnector.save();
-      });
-
-      s.cacheConnector = new Connector$1(createClassOnDemand(this.modules.cache), s.resourceStore, s, this.options);
-      // pipe events from backendConnector
-      s.cacheConnector.on('*', function (event) {
-        for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-          args[_key2 - 1] = arguments[_key2];
-        }
-
-        _this2.emit.apply(_this2, [event].concat(args));
-      });
-
       if (this.modules.languageDetector) {
         s.languageDetector = createClassOnDemand(this.modules.languageDetector);
         s.languageDetector.init(s, this.options.detection, this.options);
@@ -1770,8 +1702,8 @@ var I18n = function (_EventEmitter) {
       this.translator = new Translator(this.services, this.options);
       // pipe events from translator
       this.translator.on('*', function (event) {
-        for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-          args[_key3 - 1] = arguments[_key3];
+        for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          args[_key2 - 1] = arguments[_key2];
         }
 
         _this2.emit.apply(_this2, [event].concat(args));
@@ -1848,9 +1780,7 @@ var I18n = function (_EventEmitter) {
         });
       }
 
-      this.services.cacheConnector.load(toLoad, this.options.ns, function () {
-        _this3.services.backendConnector.load(toLoad, _this3.options.ns, callback);
-      });
+      this.services.backendConnector.load(toLoad, this.options.ns, callback);
     } else {
       callback(null);
     }
@@ -1865,10 +1795,6 @@ var I18n = function (_EventEmitter) {
   I18n.prototype.use = function use(module) {
     if (module.type === 'backend') {
       this.modules.backend = module;
-    }
-
-    if (module.type === 'cache') {
-      this.modules.cache = module;
     }
 
     if (module.type === 'logger' || module.log && module.warn && module.error) {
@@ -1910,6 +1836,7 @@ var I18n = function (_EventEmitter) {
       if (l) {
         _this4.language = l;
         _this4.languages = _this4.services.languageUtils.toResolveHierarchy(l);
+        if (!_this4.translator.language) _this4.translator.changeLanguage(l);
 
         if (_this4.services.languageDetector) _this4.services.languageDetector.cacheUserLanguage(l);
       }
@@ -1932,8 +1859,8 @@ var I18n = function (_EventEmitter) {
     var _this5 = this;
 
     var fixedT = function fixedT(key, opts) {
-      for (var _len4 = arguments.length, rest = Array(_len4 > 2 ? _len4 - 2 : 0), _key4 = 2; _key4 < _len4; _key4++) {
-        rest[_key4 - 2] = arguments[_key4];
+      for (var _len3 = arguments.length, rest = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+        rest[_key3 - 2] = arguments[_key3];
       }
 
       var options = _extends({}, opts);
@@ -2031,8 +1958,8 @@ var I18n = function (_EventEmitter) {
     });
     clone.translator = new Translator(clone.services, clone.options);
     clone.translator.on('*', function (event) {
-      for (var _len5 = arguments.length, args = Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
-        args[_key5 - 1] = arguments[_key5];
+      for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+        args[_key4 - 1] = arguments[_key4];
       }
 
       clone.emit.apply(clone, [event].concat(args));
