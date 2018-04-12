@@ -193,26 +193,26 @@
 			<th>学籍状态</th>
 			<td>
 
-				@if (Model.SchoolStatus == null)
+				@if (string.IsNullOrEmpty(Model.SchoolStatus))
 				{
 					<span class="text-muted">未提供</span>
 				}
 				else
 				{
-					<span>@Model.SchoolStatus.Value</span>
+					<span>@Model.SchoolStatus（代码：@Model.SchoolStatusCode）</span>
 				}
 			</td>
 		</tr>
 		<tr>
 			<th>职工状态</th>
 			<td>
-				@if (Model.StaffStatus == null)
+				@if (string.IsNullOrEmpty(Model.StaffStatus))
 				{
 					<span class="text-muted">未提供</span>
 				}
 				else
 				{
-					<span>@Model.StaffStatus.Value</span>
+					<span>@Model.StaffStatus（代码：@Model.StaffStatusCode）</span>
 				}
 			</td>
 		</tr>

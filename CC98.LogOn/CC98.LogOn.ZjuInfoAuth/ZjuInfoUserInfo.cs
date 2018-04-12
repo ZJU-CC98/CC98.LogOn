@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace CC98.LogOn.ZjuInfoAuth
@@ -36,7 +37,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户所在的单位的代码。
 		/// </summary>
 		[JsonProperty("JGDM")]
-		public int OrgnizationCode { get; set; }
+		public int? OrgnizationCode { get; set; }
 
 		/// <summary>
 		/// 用户所在的单位的名称。
@@ -48,7 +49,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 表示用户类型的代码。
 		/// </summary>
 		[JsonProperty("YHLX")]
-		public int TypeCode { get; set; }
+		public int? TypeCode { get; set; }
 
 		/// <summary>
 		/// 用户类型的描述。
@@ -60,7 +61,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的证件类型。
 		/// </summary>
 		[JsonProperty("ZJLX")]
-		public int CertificateTypeCode { get; set; }
+		public int? CertificateTypeCode { get; set; }
 
 		/// <summary>
 		/// 用户的证件类型描述。
@@ -78,7 +79,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的政治面貌代码。
 		/// </summary>
 		[JsonProperty("ZZMMDM")]
-		public int PoliticalStatusCode { get; set; }
+		public int? PoliticalStatusCode { get; set; }
 
 		/// <summary>
 		/// 用户的政治面貌。
@@ -90,7 +91,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的国籍代码。
 		/// </summary>
 		[JsonProperty("GJ")]
-		public int NationalityCode { get; set; }
+		public int? NationalityCode { get; set; }
 
 		/// <summary>
 		/// 用户的国籍。
@@ -102,7 +103,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的民族代码。
 		/// </summary>
 		[JsonProperty("MZDM")]
-		public int EthnicityCode { get; set; }
+		public int? EthnicityCode { get; set; }
 
 		/// <summary>
 		/// 用户的民族。
@@ -114,7 +115,6 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的出生日期。
 		/// </summary>
 		[JsonProperty("CSRQ")]
-		[JsonConverter(typeof(UnixTimeStampToDateTimeConverter))]
 		public DateTime Birthday { get; set; }
 
 		/// <summary>
@@ -139,7 +139,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的班级代码 。
 		/// </summary>
 		[JsonProperty("BH")]
-		public int ClassCode { get; set; }
+		public int? ClassCode { get; set; }
 
 		/// <summary>
 		/// 用户的班级。
@@ -151,7 +151,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的专业代码。
 		/// </summary>
 		[JsonProperty("ZYDM")]
-		public int MajorCode { get; set; }
+		public int? MajorCode { get; set; }
 
 		/// <summary>
 		/// 用户的专业。
@@ -160,10 +160,16 @@ namespace CC98.LogOn.ZjuInfoAuth
 		public string Major { get; set; }
 
 		/// <summary>
-		/// 用户的学籍状态。
+		/// 用户的学籍状态代码。
 		/// </summary>
 		[JsonProperty("XJZT")]
-		public int? SchoolStatus { get; set; }
+		public int? SchoolStatusCode { get; set; }
+
+		/// <summary>
+		/// 用户的学籍状态。
+		/// </summary>
+		[JsonProperty("XJZTMC")]
+		public string SchoolStatus { get; set; }
 
 		/// <summary>
 		/// 用户的出生地。
@@ -181,13 +187,18 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的入学时间。
 		/// </summary>
 		[JsonProperty("RXSJ")]
-		[JsonConverter(typeof(UnixTimeStampToDateTimeConverter))]
 		public DateTime? EntranceTime { get; set; }
+
+		/// <summary>
+		/// 用户的职工状态代码。
+		/// </summary>
+		[JsonProperty("ZGZT")]
+		public int? StaffStatusCode { get; set; }
 
 		/// <summary>
 		/// 用户的职工状态。
 		/// </summary>
-		[JsonProperty("ZGZT")]
-		public int? StaffStatus { get; set; }
+		[JsonProperty("ZGZTMC")]
+		public string StaffStatus { get; set; }
 	}
 }
