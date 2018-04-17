@@ -15,12 +15,14 @@ namespace CC98.LogOn.ViewModels.Manage
 		/// 获取或设置用户要查询的账号或者学号。
 		/// </summary>
 		[Required]
+		[Display(Name = "账号")]
 		public string Id { get; set; }
 
 		/// <summary>
 		/// 获取或设置用户输入的账号的类型。
 		/// </summary>
 		[Required]
+		[Display(Name = "查询类型")]
 		public QueryIdType Type { get; set; }
 	}
 }

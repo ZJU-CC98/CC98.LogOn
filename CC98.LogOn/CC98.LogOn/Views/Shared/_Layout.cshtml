@@ -20,22 +20,22 @@
 	<environment names="Staging,Production">
 
 		<link rel="stylesheet"
-		      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-		      integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-		      crossorigin="anonymous"
-		      asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-		      asp-fallback-test-class="sr-only"
-		      asp-fallback-test-property="position"
-		      asp-fallback-test-value="absolute" />
+			  href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+			  integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+			  crossorigin="anonymous"
+			  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+			  asp-fallback-test-class="sr-only"
+			  asp-fallback-test-property="position"
+			  asp-fallback-test-value="absolute" />
 
 		<link rel="stylesheet"
-		      href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
-		      integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
-		      crossorigin="anonymous"
-		      asp-fallback-href="~/lib/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css"
-		      asp-fallback-test-class="fa"
-		      asp-fallback-test-property="display"
-		      asp-fallback-test-value="inline-block" />
+			  href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+			  integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
+			  crossorigin="anonymous"
+			  asp-fallback-href="~/lib/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css"
+			  asp-fallback-test-class="fa"
+			  asp-fallback-test-property="display"
+			  asp-fallback-test-value="inline-block" />
 
 		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 
@@ -72,7 +72,12 @@
 					<li class="nav-item dropdown" asp-authorize-policy="@Policies.QueryAccount">
 						<a class="nav-link dropdown-toggle" href="#" id="manage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理</a>
 						<div class="dropdown-menu" aria-labelledby="manage-dropdown">
-							<a class="dropdown-item" asp-controller="Manage" asp-action="QueryId" asp-authorize-policy="@Policies.QueryId">查询学号信息</a>
+							<a class="dropdown-item" asp-controller="Manage" asp-action="QueryAccount" asp-authorize-policy="@Policies.QueryAccount">查询账号</a>
+							<a class="dropdown-item" asp-controller="Manage" asp-action="QueryId" asp-authorize-policy="@Policies.QueryId">查询学号</a>
+							<authorize policy="@Policies.Admin">
+								<hr />
+								<a class="dropdown-item" asp-controller="Manage" asp-action="Account">高级账号管理</a>
+							</authorize>
 						</div>
 					</li>
 
@@ -98,22 +103,22 @@
 	<environment names="Staging,Production">
 
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"
-		        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
-		        crossorigin="anonymous"
-		        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-		        asp-fallback-test="window.jQuery"></script>
+				integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+				crossorigin="anonymous"
+				asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+				asp-fallback-test="window.jQuery"></script>
 
 		<script src="https://cdn.bootcss.com/popper.js/1.14.2/umd/popper.min.js"
-		        integrity="sha384-AXEnX7PDLv+jdnMoormAUbt+QXfB3RKKzS6zZY474XEGvwG9uMHSCAsKGnslQULy"
-		        crossorigin="anonymous"
-		        asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
-		        asp-fallback-test="window.Popper"></script>
+				integrity="sha384-AXEnX7PDLv+jdnMoormAUbt+QXfB3RKKzS6zZY474XEGvwG9uMHSCAsKGnslQULy"
+				crossorigin="anonymous"
+				asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
+				asp-fallback-test="window.Popper"></script>
 
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-		        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-		        crossorigin="anonymous"
-		        asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-		        asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
+				integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+				crossorigin="anonymous"
+				asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+				asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
 
 		<script src="~/js/site.min.js" asp-append-version="true"></script>
 	</environment>

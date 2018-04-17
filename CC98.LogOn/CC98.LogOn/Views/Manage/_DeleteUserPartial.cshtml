@@ -1,0 +1,29 @@
+﻿@model CC98.LogOn.ViewModels.Manage.DeleteUserInputModel
+
+<form asp-controller="Manage" asp-action="ChangeActivationInfo" asp-antiforgery="true" method="post" data-ajax="true" data-ajax-success="handleAjaxSuccess" data-ajax-failure="handleAjaxFailure" data-redirect-uri="@Url.Action("Account", "Manage")">
+	<input type="hidden" asp-for="CC98UserName" />
+	<div id="delete-user-modal" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">删除账户</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-text">
+						<p>使用这个对话框可以永久删除一个用户账户。</p>
+						<p>注意：由于考虑到服务器性能影响，这个操作并不会自动清理账户遗留的任何其他信息，例如账户在论坛的发言和短消息。因此，建议你只对刚创建而没有实际在论坛活动过的账户使用这个功能。</p>
+						<p>删除账户是不可逆的。由于系统数据之间存在一些关联，删除账户可能会因为各种原因失败。如果遇到这个问题，请联系管理员。</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<p class="text-danger error-target"></p>
+					<button type="submit" class="btn btn-danger">删除账户</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

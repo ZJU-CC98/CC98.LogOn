@@ -1,0 +1,28 @@
+﻿@model CC98.LogOn.ViewModels.Manage.AccountViewModel
+@{
+	ViewBag.Title = "账号管理";
+}
+
+<div class="alert alert-info">本页面可用于对 CC98 账号进行高级管理操作，包括修改绑定信息、重置密码和删除账号。要执行这些管理操作，请首先在下方输入要管理的用户名并进入用户信息展示和管理页面。</div>
+
+<form asp-controller="Manage" asp-action="Account" method="get">
+	<div class="row justify-content-center">
+		<div class="col-12 col-sm-8 col-md-6">
+			<div class="form-group">
+				<label asp-for="Name">输入要管理的账号：</label>
+				<input asp-for="Name" type="text" class="form-control" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+				<small class="form-text text-muted">在上方输入你要管理的 CC98 账号。</small>
+			</div>
+			<hr />
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<button type="submit" class="btn btn-primary">进入账号管理界面</button>
+			<button type="reset" class="btn btn-secondary">清空内容</button>
+
+		</div>
+	</div>
+</form>
+
+@section Scripts{
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+}

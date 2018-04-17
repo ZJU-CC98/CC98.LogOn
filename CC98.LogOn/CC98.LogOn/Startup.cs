@@ -121,6 +121,7 @@ namespace CC98.LogOn
 			services.Configure<AppSetting>(Configuration.GetSection("AppSetting"));
 
 			services.AddSingleton<CC98DataService>();
+			services.AddSingleton<CC98PasswordHashService>();
 		}
 
 		/// <summary>

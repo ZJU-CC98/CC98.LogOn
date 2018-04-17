@@ -1,0 +1,45 @@
+﻿@using CC98.LogOn.ViewModels.Manage
+@model CC98.LogOn.ViewModels.Manage.AccountResultModel
+@{
+	ViewBag.Title = string.Format(CultureInfo.CurrentUICulture, "账号详细信息 - {0}", Model.CC98UserInfo.Name);
+}
+
+@await Html.PartialAsync("_CC98UserList", new[] { Model.CC98UserInfo })
+
+<hr />
+@if (string.IsNullOrEmpty(Model.CC98UserInfo.RegisterZjuInfoId))
+{
+	<p class="text-center text-muted">这个账号目前没有关联有效的浙大通行证</p>
+}
+else
+{
+	<h2 class="text-center lead">@string.Format(CultureInfo.CurrentUICulture, "关联浙大通行证信息 - {0}", Model.CC98UserInfo.RegisterZjuInfoId)</h2>
+	<hr />
+
+	if (Model.ZjuUserInfo == null)
+	{
+		<p class="text-center text-muted">无法查询到该账号关联的浙大通行证信息</p>
+	}
+	else
+	{
+		<div class="alert alert-info">下表列出了这个 CC98 账号关联到的浙大通行证账号的详细数据，仅供参考。</div>
+		@await Html.PartialAsync("_ZjuInfoDetail", Model.ZjuUserInfo)
+	}
+}
+
+<hr />
+
+<div class="text-center">
+	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#change-activation-info-modal">修改激活和绑定信息</button>
+	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#reset-password-modal">重置密码</button>
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-user-modal">删除账户</button>
+</div>
+
+@await Html.PartialAsync("_ChangeActivationInfoPartial", new ChangeActivationInputModel { CC98UserName = Model.CC98UserInfo.Name, IsActivated = Model.CC98UserInfo.IsVerified, ZjuInfoId = Model.CC98UserInfo.RegisterZjuInfoId })
+@await Html.PartialAsync("_ResetPasswordPartial", new ResetPasswordInputModel { CC98UserName = Model.CC98UserInfo.Name })
+@await Html.PartialAsync("_DeleteUserPartial", new DeleteUserInputModel { CC98UserName = Model.CC98UserInfo.Name })
+
+@section Scripts{
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+	@await Html.PartialAsync("_AjaxPartial")
+}

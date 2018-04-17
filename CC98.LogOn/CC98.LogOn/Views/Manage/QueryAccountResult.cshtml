@@ -1,0 +1,16 @@
+﻿@model CC98.LogOn.ViewModels.Manage.QueryAccountResultModel
+@{
+	ViewBag.Title = string.Format(CultureInfo.CurrentUICulture, "账号绑定详情 - {0}", Model.QueryUserName);
+}
+
+<div class="alert alert-info">下表列出了和 CC98 账号 <strong>@Model.QueryUserName</strong> 使用同一浙大通行证绑定的所有账号的信息。</div>
+
+@if (Model.Users.Any())
+{
+	@await Html.PartialAsync("_CC98UserList", Model.Users)
+}
+else
+{
+	<p class="text-center text-muted">没有找到任何相关的 CC98 账号</p>
+}
+

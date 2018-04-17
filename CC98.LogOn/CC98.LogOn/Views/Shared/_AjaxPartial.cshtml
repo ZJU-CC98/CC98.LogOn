@@ -9,3 +9,22 @@
 			asp-fallback-src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
 
 </environment>
+
+<script>
+
+	function handleAjaxSuccess() {
+		var redirectUri = $(this).data('redirect-uri');
+
+		if (redirectUri) {
+			window.location.href = redirectUri;
+		} else {
+			window.location.reload();
+		}
+	}
+
+	function handleAjaxFailure(xhr) {
+		var errorTarget = $('.error-target', $(this));
+		$(errorTarget).text(xhr.responseText);
+	}
+
+</script>

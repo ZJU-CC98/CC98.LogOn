@@ -1,0 +1,26 @@
+﻿@model CC98.LogOn.ViewModels.Manage.QueryAccountViewModel
+@{
+	ViewBag.Title = "查询同一浙大通行证的绑定账号";
+}
+
+<form asp-controller="Manage" asp-action="QueryAccount" method="get">
+	<div class="row justify-content-center">
+		<div class="col-12 col-sm-8 col-md-6">
+			<div class="form-group">
+				<label asp-for="Name">输入要查询的账号：</label>
+				<input asp-for="Name" type="text" class="form-control" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+				<small class="form-text text-muted">在上方输入你要查询的 CC98 账号。</small>
+			</div>
+			<hr />
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<button type="submit" class="btn btn-primary">执行查询</button>
+			<button type="reset" class="btn btn-secondary">清空内容</button>
+
+		</div>
+	</div>
+</form>
+
+@section Scripts{
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+}

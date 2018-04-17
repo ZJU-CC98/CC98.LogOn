@@ -1,0 +1,49 @@
+﻿@model CC98.LogOn.ViewModels.Manage.ChangeActivationInputModel
+
+<form asp-controller="Manage" asp-action="ChangeActivationInfo" asp-antiforgery="true" method="post" data-ajax="true" data-ajax-success="handleAjaxSuccess" data-ajax-failure="handleAjaxFailure" data-redirect-uri="@Url.Action("Account", "Manage", new {name = Model.CC98UserName})">
+	<input type="hidden" asp-for="CC98UserName" />
+	<div id="change-activation-info-modal" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">修改激活和绑定信息</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-text">
+						<p>使用这个对话框可以修改这个账号的激活状态和绑定的浙大通行证。浙大通行证信息是可选的，留空也可以激活账号。</p>
+						<p>通行证账号数量限制不影响本次激活，但如果激活后该通行证关联的账号总数超过限制，之后用户仍然无法自助激活新账号。</p>
+						<p>如果你取消激活，则关联的浙大通行证信息将会被自动抹除。</p>
+					</div>
+					<hr />
+					<div class="form-group">
+						<label asp-for="IsActivated">激活状态</label>
+						<div>
+							<div class="btn-group btn-group-toggle" data-toggle="buttons">
+								<label class="btn btn-secondary" asp-conditional-class-active="@Model.IsActivated">
+									<input type="radio" autocomplete="off" asp-for="IsActivated" value="true"> 已激活
+								</label>
+								<label class="btn btn-secondary" asp-conditional-class-active="@(!Model.IsActivated)">
+									<input type="radio" autocomplete="off" asp-for="IsActivated" value="false"> 未激活
+								</label>
+							</div>
+						</div>
+						<small>设置这个账号的激活状态。</small>
+					</div>
+					<div class="form-group">
+						<label asp-for="ZjuInfoId">绑定的浙大通行证</label>
+						<input type="text" asp-for="ZjuInfoId" class="form-control" />
+						<small>设置这个账号绑定的浙大通行证。</small>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<p class="text-danger error-target"></p>
+					<button type="submit" class="btn btn-warning">修改激活信息</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

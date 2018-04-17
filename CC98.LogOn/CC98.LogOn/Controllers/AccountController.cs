@@ -318,20 +318,72 @@ namespace CC98.LogOn.Controllers
 			// 获取当前通行证编号
 			var userId = principal.GetId();
 
-			// 根据权限设置添加新声明
-			var newClaims = new List<Claim>();
-
-			if (AppSetting.QueryAccounts.Contains(userId))
-			{
-				newClaims.Add(new Claim(ClaimTypes.Role, Policies.Roles.QueryIdOperators));
-			}
+			// 提取权限设置
+			var roles = await GetSpecialRolesForIdAsync(userId);
 
 			// 登录
-			await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, CloneWithClaims(principal, IdentityConstants.ApplicationScheme, newClaims));
+			await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, CloneWithClaims(principal, IdentityConstants.ApplicationScheme, roles.Select(i => new Claim(ClaimTypes.Role, i, ClaimValueTypes.String))));
 
 			if (Url.IsLocalUrl(returnUrl))
 				return Redirect(returnUrl);
 			return RedirectToAction("Index", "Home");
+		}
+
+		/// <summary>
+		/// 获取给定用户标识的所有特殊角色。
+		/// </summary>
+		/// <param name="userId">用户标识对象。</param>
+		/// <returns>包含所有特殊角色的集合。</returns>
+		private async Task<IEnumerable<string>> GetSpecialRolesForIdAsync(string userId)
+		{
+			var userTitles = (await IdentityDbContext.GetZjuInfoRelatedUserTitlesAsync(userId)).Select(i => i.Name).Distinct()
+				.ToArray();
+
+			var result = new List<string>();
+
+			if (HasPermission(userId, userTitles, AppSetting.Permissions.Admin))
+			{
+				result.Add(Policies.Roles.Adiminstrators);
+			}
+
+			if (HasPermission(userId, userTitles, AppSetting.Permissions.QueryId))
+			{
+				result.Add(Policies.Roles.QueryIdOperators);
+			}
+
+			if (HasPermission(userId, userTitles, AppSetting.Permissions.QueryAccount))
+			{
+				result.Add(Policies.Roles.QueryAccountOperators);
+			}
+
+			return result.ToArray();
+		}
+
+		/// <summary>
+		/// 判断给定的用户是否具有给定的权限。
+		/// </summary>
+		/// <param name="userId">用户的标识。</param>
+		/// <param name="userTitles">用户所属的头衔组。</param>
+		/// <param name="permissionSetting">定义单个权限的设置。</param>
+		/// <returns>如果用户具有该权限，返回 <c>true</c>；否则返回 <c>false</c>。</returns>
+		private bool HasPermission(string userId, string[] userTitles, PermissionSetting permissionSetting)
+		{
+			if (permissionSetting == null)
+			{
+				return false;
+			}
+
+			if (permissionSetting.Ids.NotNullAndContains(userId))
+			{
+				return true;
+			}
+
+			if (permissionSetting.Groups.IsIntersectedWith(userTitles))
+			{
+				return true;
+			}
+
+			return false;
 		}
 
 		/// <summary>
