@@ -12,7 +12,16 @@
 			<th>性别</th>
 			<td>@Model.Gender（代码：@Model.GenderCode.ToString("D")）</td>
 			<th>出生日期</th>
-			<td>@Model.Birthday.ToString("D")</td>
+			<td>
+				@if (Model.Birthday == null)
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Birthday.Value.ToString("D")</span>
+				}
+			</td>
 		</tr>
 		<tr>
 			<th>证件类型</th>

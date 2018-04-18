@@ -120,7 +120,7 @@ namespace CC98.LogOn
 			// 应用程序配置
 			services.Configure<AppSetting>(Configuration.GetSection("AppSetting"));
 
-			services.AddSingleton<CC98DataService>();
+			services.AddTransient<CC98DataService>();
 			services.AddSingleton<CC98PasswordHashService>();
 		}
 

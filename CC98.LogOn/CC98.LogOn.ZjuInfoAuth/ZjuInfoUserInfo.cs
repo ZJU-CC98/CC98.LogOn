@@ -115,7 +115,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// 用户的出生日期。
 		/// </summary>
 		[JsonProperty("CSRQ")]
-		public DateTime Birthday { get; set; }
+		public DateTime? Birthday { get; set; }
 
 		/// <summary>
 		/// 用户的联系电话。
