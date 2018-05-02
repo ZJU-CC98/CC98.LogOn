@@ -1,3 +1,15 @@
+### 11.2.3
+- Remove unnecessary warning when value is empty string [1046](https://github.com/i18next/i18next/pull/1046)
+
+### 11.2.2
+- adds used key to call parse of i18nFormat
+
+### 11.2.1
+- fixes for i18nFormat plugin
+
+### 11.2.0
+- allows new plugin of type 'i18nFormat' to override i18next format with eg. ICU format
+
 ### 11.0.0 - 11.1.1 (fixing version mismatch cdn.js - npm)
 - **[BREAKING]** removes plugin of type cache. Can be replace by [i18next-chained-backend](https://github.com/i18next/i18next-chained-backend) example cache for localStorage [i18next-localstorage-backend](https://github.com/i18next/i18next-localstorage-backend#getting-started)
 - **[BREAKING]** removes the support for multiload (multiRead) in backends - will just use read per language-namespace. You can enable multiRead support in backends again by using [i18next-multiload-backend-adapter](https://github.com/i18next/i18next-multiload-backend-adapter)

@@ -2,24 +2,26 @@
   "name": "asp.net",
   "private": true,
   "dependencies": {
-    "bootstrap": "v4.1.0",
+    "bootstrap": "v4.1.1",
     "jquery": "3.3.1",
     "jquery-validation": "1.17.0",
     "jquery-validation-unobtrusive": "v3.2.9",
     "jquery-ajax-unobtrusive": "v3.2.5",
-    "font-awesome": "5.0.10",
+    "font-awesome": "5.0.11",
     "pwstrength-bootstrap": "2.2.1",
     "popper.js": "v1.14.3",
     "i18next-xhr-backend": "v1.5.1",
-    "i18next-browser-languagedetector": "v2.2.0"
+    "i18next-browser-languagedetector": "v2.2.0",
+    "i18next": "v11.2.3"
   },
   "resolutions": {
-    "font-awesome": "5.0.10",
+    "font-awesome": "5.0.11",
     "i18next-browser-languagedetector": "v2.2.0",
     "i18next-xhr-backend": "v1.5.1",
     "jquery-ajax-unobtrusive": "v3.2.5",
     "jquery-validation-unobtrusive": "v3.2.9",
     "popper.js": "v1.14.3",
-    "pwstrength-bootstrap": "2.2.1"
+    "pwstrength-bootstrap": "2.2.1",
+    "bootstrap": "v4.1.1"
   }
 }
