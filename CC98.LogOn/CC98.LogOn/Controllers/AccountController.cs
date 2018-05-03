@@ -102,7 +102,7 @@ namespace CC98.LogOn.Controllers
 			string zjuInfoId = null;
 
 			// HACK: 后台检测用户名是否合法
-			if (!Regex.IsMatch(userName, @"\w+", RegexOptions.Compiled | RegexOptions.Singleline))
+			if (!Regex.IsMatch(userName, @"^\w+$", RegexOptions.Compiled | RegexOptions.Singleline))
 			{
 				ModelState.AddModelError("", "用户名中不能包含标点符号、空白和其它不非文字类字符。");
 			}
