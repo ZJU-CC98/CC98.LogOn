@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
@@ -99,6 +100,12 @@ namespace CC98.LogOn.Controllers
 		{
 			var userName = model.UserName ?? string.Empty;
 			string zjuInfoId = null;
+
+			// HACK: 后台检测用户名是否合法
+			if (!Regex.IsMatch(userName, @"\w+", RegexOptions.Compiled | RegexOptions.Singleline))
+			{
+				ModelState.AddModelError("", "用户名中不能包含标点符号、空白和其它不非文字类字符。");
+			}
 
 			// 用户名字符长度检测
 			var charCount = 0;

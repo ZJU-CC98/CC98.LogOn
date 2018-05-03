@@ -13,7 +13,8 @@ namespace CC98.LogOn.ViewModels.Account
 		/// </summary>
 		[Required(ErrorMessage = "必须输入用户名")]
 		[StringLength(10)]
-		[RegularExpression(@"\w+", ErrorMessage = "用户名不能包含空白、标点符号和其它特殊字符")]
+		// HACK JS 正则表达式对于 \w 的限制过于严格，不接受中文字符，因此取消前台验证
+		//[RegularExpression(@"\w+", ErrorMessage = "用户名不能包含空白、标点符号和其它特殊字符")]
 		[DataType(DataType.Text)]
 		[Display(Name = "用户名")]
 		public string UserName { get; set; }
