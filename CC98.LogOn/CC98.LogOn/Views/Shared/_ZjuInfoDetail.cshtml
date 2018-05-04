@@ -10,7 +10,21 @@
 		</tr>
 		<tr>
 			<th>性别</th>
-			<td>@Model.Gender（代码：@Model.GenderCode.ToString("D")）</td>
+			<td>
+				@if (Model.GenderCode == null)
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.Gender</span>
+				}
+
+				@if (Model.GenderCode != null)
+				{
+					<span class="badge badge-info">@Model.GenderCode.Value.ToString("D")</span>
+				}
+			</td>
 			<th>出生日期</th>
 			<td>
 				@if (Model.Birthday == null)
@@ -32,11 +46,25 @@
 				}
 				else
 				{
-					<span>@Model.CertificateType（代码：@Model.CertificateTypeCode）</span>
+					<span>@Model.CertificateType</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.CertificateCode))
+				{
+					<span class="badge badge-info">@Model.CertificateTypeCode</span>
 				}
 			</td>
 			<th>证件号码</th>
-			<td>@Model.CertificateCode</td>
+			<td>
+				@if (string.IsNullOrEmpty(Model.CertificateCode))
+				{
+					<span class="text-muted">未提供</span>
+				}
+				else
+				{
+					<span>@Model.CertificateCode</span>
+				}
+			</td>
 		</tr>
 		<tr>
 			<th>国籍</th>
@@ -47,7 +75,12 @@
 				}
 				else
 				{
-					<span>@Model.Nationality（代码：@Model.NationalityCode）</span>
+					<span>@Model.Nationality</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.NationalityCode))
+				{
+					<span class="badge badge-info">@Model.NationalityCode</span>
 				}
 			</td>
 			<th>民族</th>
@@ -58,7 +91,12 @@
 				}
 				else
 				{
-					<span>@Model.Ethnicity（代码：@Model.EthnicityCode）</span>
+					<span>@Model.Ethnicity</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.EthnicityCode))
+				{
+					<span class="badge badge-info">@Model.EthnicityCode</span>
 				}
 			</td>
 		</tr>
@@ -82,7 +120,12 @@
 				}
 				else
 				{
-					<span>@Model.PoliticalStatus（代码：@Model.PoliticalStatusCode）</span>
+					<span>@Model.PoliticalStatus</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.PoliticalStatusCode))
+				{
+					<span class="badge badge-info">@Model.PoliticalStatusCode</span>
 				}
 			</td>
 		</tr>
@@ -95,7 +138,12 @@
 				}
 				else
 				{
-					<span>@Model.Type（代码：@Model.TypeCode）</span>
+					<span>@Model.Type</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.TypeCode))
+				{
+					<span class="badge badge-info">@Model.TypeCode</span>
 				}
 			</td>
 			<th>所在机构</th>
@@ -106,7 +154,12 @@
 				}
 				else
 				{
-					<span>@Model.Orgnization（代码：@Model.OrgnizationCode）</span>
+					<span>@Model.Orgnization</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.OrgnizationCode))
+				{
+					<span class="badge badge-info">@Model.OrgnizationCode</span>
 				}
 			</td>
 		</tr>
@@ -157,7 +210,12 @@
 				}
 				else
 				{
-					<span>@Model.Class（代码：@Model.ClassCode）</span>
+					<span>@Model.Class</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.ClassCode))
+				{
+					<span class="badge badge-info">@Model.ClassCode</span>
 				}
 			</td>
 		</tr>
@@ -171,7 +229,12 @@
 				}
 				else
 				{
-					<span>@Model.Major（代码：@Model.MajorCode）</span>
+					<span>@Model.Major</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.MajorCode))
+				{
+					<span class="badge badge-info">@Model.MajorCode</span>
 				}
 			</td>
 			<th>学制</th>
@@ -208,7 +271,12 @@
 				}
 				else
 				{
-					<span>@Model.SchoolStatus（代码：@Model.SchoolStatusCode）</span>
+					<span>@Model.SchoolStatus</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.SchoolStatusCode))
+				{
+					<span class="badge badge-info">@Model.SchoolStatusCode</span>
 				}
 			</td>
 		</tr>
@@ -221,7 +289,12 @@
 				}
 				else
 				{
-					<span>@Model.StaffStatus（代码：@Model.StaffStatusCode）</span>
+					<span>@Model.StaffStatus</span>
+				}
+
+				@if (!string.IsNullOrEmpty(Model.StaffStatusCode))
+				{
+					<span class="badge badge-info">@Model.StaffStatusCode</span>
 				}
 			</td>
 		</tr>

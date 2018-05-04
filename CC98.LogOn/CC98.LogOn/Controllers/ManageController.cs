@@ -143,8 +143,16 @@ namespace CC98.LogOn.Controllers
 			{
 				SchoolId = schoolId,
 				Users = cc98Ids,
-				ZjuUserInfo = await GetUserInfoAsync(schoolId)
 			};
+
+			try
+			{
+				resultModel.ZjuUserInfo = await GetUserInfoAsync(schoolId);
+			}
+			catch (Exception)
+			{
+				// ignored
+			}
 
 			return View("QueryIdResult", resultModel);
 
