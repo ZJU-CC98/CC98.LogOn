@@ -10,7 +10,7 @@
 
 @if (Model.Any())
 {
-	ViewBag.ShowResetPassword = true;
+	ViewBag.ManagementMode = ManagementMode.Self;
 	@await Html.PartialAsync("_CC98UserList", Model.ToArray())
 }
 else

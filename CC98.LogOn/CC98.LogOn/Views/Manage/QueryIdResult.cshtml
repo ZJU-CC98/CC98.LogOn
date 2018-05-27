@@ -1,4 +1,6 @@
-﻿@model CC98.LogOn.ViewModels.Manage.QueryIdResultModel
+﻿@using Microsoft.AspNetCore.Authorization
+@model CC98.LogOn.ViewModels.Manage.QueryIdResultModel
+@inject IAuthorizationService AuthorizationService
 @{
 	ViewBag.Title = "学工号查询结果";
 }
@@ -14,6 +16,9 @@
 
 @if (Model.Users.Length != 0)
 {
+	var isAdmin = (await AuthorizationService.AuthorizeAsync(User, Policies.Admin)).Succeeded;
+	ViewBag.ManagementMode = isAdmin ? ManagementMode.Admin : ManagementMode.None;
+
 	<div class="alert alert-info">下表列出了该学工号目前关联的所有 CC98 账号。</div>
 	@await Html.PartialAsync("_CC98UserList", Model.Users)
 }

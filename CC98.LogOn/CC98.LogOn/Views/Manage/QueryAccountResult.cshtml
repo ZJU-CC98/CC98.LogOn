@@ -1,4 +1,6 @@
-﻿@model CC98.LogOn.ViewModels.Manage.QueryAccountResultModel
+﻿@using Microsoft.AspNetCore.Authorization
+@model CC98.LogOn.ViewModels.Manage.QueryAccountResultModel
+@inject IAuthorizationService AuthorizationService
 @{
 	ViewBag.Title = string.Format(CultureInfo.CurrentUICulture, "账号绑定详情 - {0}", Model.QueryUserName);
 }
@@ -7,6 +9,9 @@
 
 @if (Model.Users.Any())
 {
+	var isAdmin = (await AuthorizationService.AuthorizeAsync(User, Policies.Admin)).Succeeded;
+	ViewBag.ManagementMode = isAdmin ? ManagementMode.Admin : ManagementMode.None;
+
 	@await Html.PartialAsync("_CC98UserList", Model.Users)
 }
 else
