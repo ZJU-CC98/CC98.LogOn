@@ -1,4 +1,5 @@
 ﻿using CC98.LogOn.Data;
+using Sakura.AspNetCore;
 
 namespace CC98.LogOn.ViewModels.Manage
 {
@@ -15,6 +16,6 @@ namespace CC98.LogOn.ViewModels.Manage
 		/// <summary>
 		/// 被查询的账号关联的其他账号信息。
 		/// </summary>
-		public CC98User[] Users { get; set; }
+		public IPagedList<CC98User> Users { get; set; }
 	}
 }

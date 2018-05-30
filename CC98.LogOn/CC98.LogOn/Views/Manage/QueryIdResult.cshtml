@@ -14,7 +14,7 @@
 <div class="lead text-center">关联的 CC98 账号</div>
 <hr />
 
-@if (Model.Users.Length != 0)
+@if (Model.Users.Any())
 {
 	var isAdmin = (await AuthorizationService.AuthorizeAsync(User, Policies.Admin)).Succeeded;
 	ViewBag.ManagementMode = isAdmin ? ManagementMode.Admin : ManagementMode.None;

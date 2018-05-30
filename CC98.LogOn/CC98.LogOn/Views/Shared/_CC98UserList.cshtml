@@ -1,10 +1,10 @@
 ﻿@inject CC98.LogOn.Services.CC98DataService CC98DataService
-@model CC98User[]
+@model IPagedList<CC98User>
 @{
 	var mode = (ManagementMode?)ViewBag.ManagementMode ?? ManagementMode.None;
 }
 
-@if (Model.Length <= 6)
+@if (Model.TotalCount <= 6)
 {
 	<div class="row justify-content-center">
 		<div class="card-deck-wrapper">
@@ -118,7 +118,7 @@ else
 							}
 							else
 							{
-								<a asp-controller="Manage" asp-action="ResetPassword" asp-route-name="@item.Name" class="btn btn-sm btn-danger">重置密码</a>
+								<a asp-controller="Manage" asp-action="Account" asp-route-name="@item.Name" class="btn btn-sm btn-danger">账号管理</a>
 							}
 						</td>
 					}
@@ -126,4 +126,9 @@ else
 			}
 		</tbody>
 	</table>
+
+	if (Model.TotalPage > 1)
+	{
+		<pager />
+	}
 }

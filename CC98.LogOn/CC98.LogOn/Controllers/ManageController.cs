@@ -53,7 +53,7 @@ namespace CC98.LogOn.Controllers
 		/// <returns>操作结果。</returns>
 		[HttpGet]
 		[Authorize(Policies.QueryAccount)]
-		public async Task<IActionResult> QueryAccount(QueryAccountViewModel model)
+		public async Task<IActionResult> QueryAccount(QueryAccountViewModel model, int page = 1)
 		{
 			// 显示查询界面
 			if (!ModelState.IsValid)
@@ -85,7 +85,7 @@ namespace CC98.LogOn.Controllers
 
 			var items = await (from i in DbContext.Users
 							   where i.RegisterZjuInfoId == zjuId
-							   select i).ToArrayAsync();
+							   select i).ToPagedListAsync(20, page);
 
 			var result = new QueryAccountResultModel
 			{
@@ -103,7 +103,7 @@ namespace CC98.LogOn.Controllers
 		/// <returns>操作结果。</returns>
 		[HttpGet]
 		[Authorize(Policies.QueryId)]
-		public async Task<IActionResult> QueryId(QueryIdViewModel model)
+		public async Task<IActionResult> QueryId(QueryIdViewModel model, int page = 1)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -137,7 +137,7 @@ namespace CC98.LogOn.Controllers
 
 			var cc98Ids = await (from i in DbContext.Users
 								 where i.RegisterZjuInfoId == schoolId
-								 select i).ToArrayAsync();
+								 select i).ToPagedListAsync(20, page);
 
 			var resultModel = new QueryIdResultModel
 			{

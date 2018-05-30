@@ -426,7 +426,7 @@ namespace CC98.LogOn.Controllers
 		/// <returns>²Ù×÷½á¹û¡£</returns>
 		[HttpGet]
 		[Authorize]
-		public async Task<IActionResult> My()
+		public async Task<IActionResult> My(int page = 1)
 		{
 			var zjuInfoId = User.GetId();
 
@@ -434,7 +434,7 @@ namespace CC98.LogOn.Controllers
 						   where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
 						   select i;
 
-			return View(await accounts.ToArrayAsync());
+			return View(await accounts.ToPagedListAsync(20, page));
 		}
 
 		/// <summary>

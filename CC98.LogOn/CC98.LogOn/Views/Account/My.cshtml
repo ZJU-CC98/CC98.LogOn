@@ -1,5 +1,5 @@
 ﻿@using CC98.LogOn.Services
-@model IEnumerable<CC98User>
+@model IPagedList<CC98User>
 @inject CC98DataService CC98DataService
 @inject CC98IdentityDbContext DbContext
 @{
@@ -11,7 +11,7 @@
 @if (Model.Any())
 {
 	ViewBag.ManagementMode = ManagementMode.Self;
-	@await Html.PartialAsync("_CC98UserList", Model.ToArray())
+	@await Html.PartialAsync("_CC98UserList", Model)
 }
 else
 {
