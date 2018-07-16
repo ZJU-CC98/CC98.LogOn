@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Sakura.AspNetCore;
 using Sakura.AspNetCore.Authentication;
@@ -343,6 +344,12 @@ namespace CC98.LogOn.Controllers
 		/// <returns>包含所有特殊角色的集合。</returns>
 		private async Task<IEnumerable<string>> GetSpecialRolesForIdAsync(string userId)
 		{
+			// 没有任何权限设置
+			if (AppSetting.Permissions == null)
+			{
+				return Enumerable.Empty<string>();
+			}
+
 			var userTitles = (await IdentityDbContext.GetZjuInfoRelatedUserTitlesAsync(userId)).Select(i => i.Name).Distinct()
 				.ToArray();
 
