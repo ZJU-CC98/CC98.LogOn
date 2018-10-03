@@ -7,103 +7,26 @@ export interface IconLookup {
 }
 
 export interface IconDefinition extends IconLookup {
-  icon: any[];
+  icon: [
+    number, // width
+    number, // height
+    string[], // ligatures
+    string, // unicode
+    string // svgPathData
+  ];
 }
 
 export interface IconPack {
   [key: string]: IconDefinition;
 }
-export type IconName = 'address-book' | 
-  'address-card' | 
-  'arrow-alt-circle-down' | 
-  'arrow-alt-circle-left' | 
-  'arrow-alt-circle-right' | 
-  'arrow-alt-circle-up' | 
-  'bell' | 
-  'bell-slash' | 
-  'bookmark' | 
-  'building' | 
-  'calendar' | 
-  'calendar-alt' | 
-  'calendar-check' | 
-  'calendar-minus' | 
-  'calendar-plus' | 
-  'calendar-times' | 
-  'caret-square-down' | 
-  'caret-square-left' | 
-  'caret-square-right' | 
-  'caret-square-up' | 
-  'chart-bar' | 
-  'check-circle' | 
-  'check-square' | 
-  'circle' | 
-  'clipboard' | 
-  'clock' | 
-  'clone' | 
-  'closed-captioning' | 
-  'comment' | 
-  'comment-alt' | 
-  'comment-dots' | 
-  'comments' | 
-  'compass' | 
-  'copy' | 
-  'copyright' | 
-  'credit-card' | 
-  'dot-circle' | 
-  'edit' | 
-  'envelope' | 
-  'envelope-open' | 
-  'eye-slash' | 
-  'file' | 
-  'file-alt' | 
-  'file-archive' | 
-  'file-audio' | 
-  'file-code' | 
-  'file-excel' | 
-  'file-image' | 
-  'file-pdf' | 
-  'file-powerpoint' | 
-  'file-video' | 
-  'file-word' | 
-  'flag' | 
-  'folder' | 
-  'folder-open' | 
-  'font-awesome-logo-full' | 
-  'frown' | 
-  'futbol' | 
-  'gem' | 
-  'hand-lizard' | 
-  'hand-paper' | 
-  'hand-peace' | 
-  'hand-point-down' | 
-  'hand-point-left' | 
-  'hand-point-right' | 
-  'hand-point-up' | 
-  'hand-pointer' | 
-  'hand-rock' | 
-  'hand-scissors' | 
-  'hand-spock' | 
-  'handshake' | 
-  'hdd' | 
-  'heart' | 
-  'hospital' | 
-  'hourglass' | 
-  'id-badge' | 
-  'id-card' | 
-  'image' | 
-  'images' | 
-  'keyboard' | 
-  'lemon' | 
-  'life-ring' | 
-  'lightbulb' | 
-  'list-alt' | 
-  '500px' | 
+export type IconName = '500px' | 
   'accessible-icon' | 
   'accusoft' | 
   'adn' | 
   'adversal' | 
   'affiliatetheme' | 
   'algolia' | 
+  'alipay' | 
   'amazon' | 
   'amazon-pay' | 
   'amilia' | 
@@ -156,9 +79,13 @@ export type IconName = 'address-book' |
   'codepen' | 
   'codiepie' | 
   'connectdevelop' | 
+  'contao' | 
+  'cpanel' | 
+  'ad' | 
   'address-book' | 
   'address-card' | 
   'adjust' | 
+  'air-freshener' | 
   'align-center' | 
   'align-justify' | 
   'align-left' | 
@@ -175,7 +102,11 @@ export type IconName = 'address-book' |
   'angle-left' | 
   'angle-right' | 
   'angle-up' | 
+  'angry' | 
+  'ankh' | 
+  'apple-alt' | 
   'archive' | 
+  'archway' | 
   'arrow-alt-circle-down' | 
   'arrow-alt-circle-left' | 
   'arrow-alt-circle-right' | 
@@ -194,7 +125,11 @@ export type IconName = 'address-book' |
   'assistive-listening-systems' | 
   'asterisk' | 
   'at' | 
+  'atlas' | 
+  'atom' | 
   'audio-description' | 
+  'award' | 
+  'backspace' | 
   'backward' | 
   'balance-scale' | 
   'ban' | 
@@ -213,93 +148,130 @@ export type IconName = 'address-book' |
   'beer' | 
   'bell' | 
   'bell-slash' | 
+  'bezier-curve' | 
+  'bible' | 
   'bicycle' | 
   'binoculars' | 
   'birthday-cake' | 
+  'blender' | 
   'blind' | 
   'bold' | 
   'bolt' | 
   'bomb' | 
+  'bone' | 
+  'bong' | 
   'book' | 
+  'book-open' | 
+  'book-reader' | 
   'bookmark' | 
   'bowling-ball' | 
   'box' | 
   'box-open' | 
   'boxes' | 
   'braille' | 
+  'brain' | 
   'briefcase' | 
   'briefcase-medical' | 
+  'broadcast-tower' | 
+  'broom' | 
+  'brush' | 
   'bug' | 
   'building' | 
   'bullhorn' | 
   'bullseye' | 
   'burn' | 
   'bus' | 
+  'bus-alt' | 
+  'business-time' | 
   'calculator' | 
+  'calendar' | 
+  'address-book' | 
+  'address-card' | 
+  'angry' | 
+  'arrow-alt-circle-down' | 
+  'arrow-alt-circle-left' | 
+  'arrow-alt-circle-right' | 
+  'arrow-alt-circle-up' | 
+  'bell' | 
+  'bell-slash' | 
+  'bookmark' | 
+  'building' | 
   'calendar' | 
   'calendar-alt' | 
   'calendar-check' | 
   'calendar-minus' | 
   'calendar-plus' | 
   'calendar-times' | 
-  'camera' | 
-  'camera-retro' | 
-  'capsules' | 
-  'car' | 
-  'caret-down' | 
-  'caret-left' | 
-  'caret-right' | 
   'caret-square-down' | 
   'caret-square-left' | 
   'caret-square-right' | 
   'caret-square-up' | 
-  'caret-up' | 
-  'cart-arrow-down' | 
-  'cart-plus' | 
-  'certificate' | 
-  'chart-area' | 
   'chart-bar' | 
-  'chart-line' | 
-  'chart-pie' | 
-  'check' | 
   'check-circle' | 
   'check-square' | 
-  'map' | 
-  'meh' | 
-  'minus-square' | 
-  'money-bill-alt' | 
-  'moon' | 
-  'newspaper' | 
-  'object-group' | 
-  'object-ungroup' | 
-  'paper-plane' | 
-  'pause-circle' | 
-  'play-circle' | 
-  'plus-square' | 
-  'question-circle' | 
-  'registered' | 
-  'save' | 
-  'share-square' | 
-  'smile' | 
-  'snowflake' | 
-  'square' | 
-  'star' | 
-  'star-half' | 
-  'sticky-note' | 
-  'stop-circle' | 
-  'sun' | 
-  'thumbs-down' | 
-  'thumbs-up' | 
-  'times-circle' | 
-  'trash-alt' | 
-  'user' | 
-  'user-circle' | 
-  'window-close' | 
-  'window-maximize' | 
-  'window-minimize' | 
-  'window-restore' | 
-  'contao' | 
-  'cpanel' | 
+  'circle' | 
+  'clipboard' | 
+  'clock' | 
+  'clone' | 
+  'closed-captioning' | 
+  'comment' | 
+  'comment-alt' | 
+  'comment-dots' | 
+  'comments' | 
+  'compass' | 
+  'copy' | 
+  'copyright' | 
+  'credit-card' | 
+  'dizzy' | 
+  'dot-circle' | 
+  'edit' | 
+  'envelope' | 
+  'envelope-open' | 
+  'eye' | 
+  'eye-slash' | 
+  'file' | 
+  'file-alt' | 
+  'file-archive' | 
+  'file-audio' | 
+  'file-code' | 
+  'file-excel' | 
+  'file-image' | 
+  'file-pdf' | 
+  'file-powerpoint' | 
+  'file-video' | 
+  'file-word' | 
+  'flag' | 
+  'flushed' | 
+  'folder' | 
+  'folder-open' | 
+  'font-awesome-logo-full' | 
+  'frown' | 
+  'frown-open' | 
+  'futbol' | 
+  'gem' | 
+  'grimace' | 
+  'grin' | 
+  'grin-alt' | 
+  'grin-beam' | 
+  'grin-beam-sweat' | 
+  'grin-hearts' | 
+  'grin-squint' | 
+  'grin-squint-tears' | 
+  'grin-stars' | 
+  'grin-tears' | 
+  'grin-tongue' | 
+  'grin-tongue-squint' | 
+  'grin-tongue-wink' | 
+  'grin-wink' | 
+  'hand-lizard' | 
+  'hand-paper' | 
+  'hand-peace' | 
+  'hand-point-down' | 
+  'hand-point-left' | 
+  'hand-point-right' | 
+  'hand-point-up' | 
+  'hand-pointer' | 
+  'hand-rock' | 
   'creative-commons' | 
   'creative-commons-by' | 
   'creative-commons-nc' | 
@@ -338,6 +310,7 @@ export type IconName = 'address-book' |
   'ebay' | 
   'edge' | 
   'elementor' | 
+  'ello' | 
   'ember' | 
   'empire' | 
   'envira' | 
@@ -351,6 +324,7 @@ export type IconName = 'address-book' |
   'facebook-square' | 
   'firefox' | 
   'first-order' | 
+  'first-order-alt' | 
   'firstdraft' | 
   'flickr' | 
   'flipboard' | 
@@ -367,13 +341,48 @@ export type IconName = 'address-book' |
   'foursquare' | 
   'free-code-camp' | 
   'freebsd' | 
+  'fulcrum' | 
+  'galactic-republic' | 
+  'galactic-senate' | 
   'get-pocket' | 
   'gg' | 
   'gg-circle' | 
-  'git' | 
-  'git-square' | 
-  'github' | 
-  'github-alt' | 
+  'calendar-alt' | 
+  'calendar-check' | 
+  'calendar-minus' | 
+  'calendar-plus' | 
+  'calendar-times' | 
+  'camera' | 
+  'camera-retro' | 
+  'cannabis' | 
+  'capsules' | 
+  'car' | 
+  'car-alt' | 
+  'car-battery' | 
+  'car-crash' | 
+  'car-side' | 
+  'caret-down' | 
+  'caret-left' | 
+  'caret-right' | 
+  'caret-square-down' | 
+  'caret-square-left' | 
+  'caret-square-right' | 
+  'caret-square-up' | 
+  'caret-up' | 
+  'cart-arrow-down' | 
+  'cart-plus' | 
+  'certificate' | 
+  'chalkboard' | 
+  'chalkboard-teacher' | 
+  'charging-station' | 
+  'chart-area' | 
+  'chart-bar' | 
+  'chart-line' | 
+  'chart-pie' | 
+  'check' | 
+  'check-circle' | 
+  'check-double' | 
+  'check-square' | 
   'chess' | 
   'chess-bishop' | 
   'chess-board' | 
@@ -391,8 +400,10 @@ export type IconName = 'address-book' |
   'chevron-right' | 
   'chevron-up' | 
   'child' | 
+  'church' | 
   'circle' | 
   'circle-notch' | 
+  'city' | 
   'clipboard' | 
   'clipboard-check' | 
   'clipboard-list' | 
@@ -402,89 +413,113 @@ export type IconName = 'address-book' |
   'cloud' | 
   'cloud-download-alt' | 
   'cloud-upload-alt' | 
+  'cocktail' | 
   'code' | 
   'code-branch' | 
   'coffee' | 
   'cog' | 
   'cogs' | 
+  'coins' | 
   'columns' | 
   'comment' | 
   'comment-alt' | 
+  'comment-dollar' | 
   'comment-dots' | 
   'comment-slash' | 
   'comments' | 
+  'comments-dollar' | 
+  'compact-disc' | 
   'compass' | 
   'compress' | 
+  'concierge-bell' | 
+  'cookie' | 
+  'cookie-bite' | 
   'copy' | 
   'copyright' | 
   'couch' | 
   'credit-card' | 
   'crop' | 
+  'crop-alt' | 
+  'cross' | 
   'crosshairs' | 
+  'crow' | 
+  'crown' | 
   'cube' | 
   'cubes' | 
   'cut' | 
   'database' | 
   'deaf' | 
   'desktop' | 
-  'diagnoses' | 
-  'dna' | 
-  'dollar-sign' | 
-  'dolly' | 
-  'dolly-flatbed' | 
-  'donate' | 
-  'dot-circle' | 
-  'dove' | 
-  'download' | 
-  'edit' | 
-  'eject' | 
-  'ellipsis-h' | 
-  'ellipsis-v' | 
-  'envelope' | 
-  'envelope-open' | 
-  'envelope-square' | 
-  'eraser' | 
-  'euro-sign' | 
-  'exchange-alt' | 
-  'exclamation' | 
-  'exclamation-circle' | 
-  'exclamation-triangle' | 
-  'expand' | 
-  'expand-arrows-alt' | 
-  'external-link-alt' | 
-  'external-link-square-alt' | 
-  'eye' | 
-  'eye-dropper' | 
-  'eye-slash' | 
-  'fast-backward' | 
-  'fast-forward' | 
-  'fax' | 
-  'female' | 
-  'fighter-jet' | 
-  'file' | 
-  'file-alt' | 
-  'file-archive' | 
-  'file-audio' | 
-  'file-code' | 
-  'file-excel' | 
-  'file-image' | 
-  'file-medical' | 
-  'file-medical-alt' | 
-  'file-pdf' | 
-  'file-powerpoint' | 
-  'file-video' | 
-  'file-word' | 
-  'film' | 
-  'filter' | 
-  'fire' | 
-  'fire-extinguisher' | 
-  'first-aid' | 
-  'flag' | 
-  'flag-checkered' | 
-  'flask' | 
-  'folder' | 
-  'folder-open' | 
-  'font' | 
+  'dharmachakra' | 
+  'hand-scissors' | 
+  'hand-spock' | 
+  'handshake' | 
+  'hdd' | 
+  'heart' | 
+  'hospital' | 
+  'hourglass' | 
+  'id-badge' | 
+  'id-card' | 
+  'image' | 
+  'images' | 
+  'keyboard' | 
+  'kiss' | 
+  'kiss-beam' | 
+  'kiss-wink-heart' | 
+  'laugh' | 
+  'laugh-beam' | 
+  'laugh-squint' | 
+  'laugh-wink' | 
+  'lemon' | 
+  'life-ring' | 
+  'lightbulb' | 
+  'list-alt' | 
+  'map' | 
+  'meh' | 
+  'meh-blank' | 
+  'meh-rolling-eyes' | 
+  'minus-square' | 
+  'money-bill-alt' | 
+  'moon' | 
+  'newspaper' | 
+  'object-group' | 
+  'object-ungroup' | 
+  'paper-plane' | 
+  'pause-circle' | 
+  'play-circle' | 
+  'plus-square' | 
+  'question-circle' | 
+  'registered' | 
+  'sad-cry' | 
+  'sad-tear' | 
+  'save' | 
+  'share-square' | 
+  'smile' | 
+  'smile-beam' | 
+  'smile-wink' | 
+  'snowflake' | 
+  'square' | 
+  'star' | 
+  'star-half' | 
+  'sticky-note' | 
+  'stop-circle' | 
+  'sun' | 
+  'surprise' | 
+  'thumbs-down' | 
+  'thumbs-up' | 
+  'times-circle' | 
+  'tired' | 
+  'trash-alt' | 
+  'user' | 
+  'user-circle' | 
+  'window-close' | 
+  'window-maximize' | 
+  'window-minimize' | 
+  'window-restore' | 
+  'git' | 
+  'git-square' | 
+  'github' | 
+  'github-alt' | 
   'github-square' | 
   'gitkraken' | 
   'gitlab' | 
@@ -508,9 +543,11 @@ export type IconName = 'address-book' |
   'gulp' | 
   'hacker-news' | 
   'hacker-news-square' | 
+  'hackerrank' | 
   'hips' | 
   'hire-a-helper' | 
   'hooli' | 
+  'hornbill' | 
   'hotjar' | 
   'houzz' | 
   'html5' | 
@@ -522,12 +559,14 @@ export type IconName = 'address-book' |
   'itunes' | 
   'itunes-note' | 
   'java' | 
+  'jedi-order' | 
   'jenkins' | 
   'joget' | 
   'joomla' | 
   'js' | 
   'js-square' | 
   'jsfiddle' | 
+  'kaggle' | 
   'keybase' | 
   'keycdn' | 
   'kickstarter' | 
@@ -542,30 +581,190 @@ export type IconName = 'address-book' |
   'linkedin' | 
   'linkedin-in' | 
   'linode' | 
+  'diagnoses' | 
+  'dice' | 
+  'dice-five' | 
+  'dice-four' | 
+  'dice-one' | 
+  'dice-six' | 
+  'dice-three' | 
+  'dice-two' | 
+  'digital-tachograph' | 
+  'directions' | 
+  'divide' | 
+  'dizzy' | 
+  'dna' | 
+  'dollar-sign' | 
+  'dolly' | 
+  'dolly-flatbed' | 
+  'donate' | 
+  'door-closed' | 
+  'door-open' | 
+  'dot-circle' | 
+  'dove' | 
+  'download' | 
+  'drafting-compass' | 
+  'draw-polygon' | 
+  'drum' | 
+  'drum-steelpan' | 
+  'dumbbell' | 
+  'edit' | 
+  'eject' | 
+  'ellipsis-h' | 
+  'ellipsis-v' | 
+  'envelope' | 
+  'envelope-open' | 
+  'envelope-open-text' | 
+  'envelope-square' | 
+  'equals' | 
+  'eraser' | 
+  'euro-sign' | 
+  'exchange-alt' | 
+  'exclamation' | 
+  'exclamation-circle' | 
+  'exclamation-triangle' | 
+  'expand' | 
+  'expand-arrows-alt' | 
+  'external-link-alt' | 
+  'external-link-square-alt' | 
+  'eye' | 
+  'eye-dropper' | 
+  'eye-slash' | 
+  'fast-backward' | 
+  'fast-forward' | 
+  'fax' | 
+  'feather' | 
+  'feather-alt' | 
+  'female' | 
+  'fighter-jet' | 
+  'file' | 
+  'file-alt' | 
+  'file-archive' | 
+  'file-audio' | 
+  'file-code' | 
+  'file-contract' | 
+  'file-download' | 
+  'file-excel' | 
+  'file-export' | 
+  'file-image' | 
+  'file-import' | 
+  'file-invoice' | 
+  'file-invoice-dollar' | 
+  'file-medical' | 
+  'file-medical-alt' | 
+  'file-pdf' | 
+  'file-powerpoint' | 
+  'file-prescription' | 
+  'file-signature' | 
+  'file-upload' | 
+  'file-video' | 
+  'file-word' | 
+  'fill' | 
+  'fill-drip' | 
+  'film' | 
+  'filter' | 
+  'fingerprint' | 
+  'fire' | 
+  'fire-extinguisher' | 
+  'first-aid' | 
+  'fish' | 
+  'flag' | 
+  'flag-checkered' | 
+  'flask' | 
+  'flushed' | 
+  'folder' | 
+  'folder-minus' | 
+  'folder-open' | 
+  'folder-plus' | 
+  'font' | 
+  'font-awesome-logo-full' | 
+  'football-ball' | 
+  'forward' | 
+  'frog' | 
+  'frown' | 
   'linux' | 
   'lyft' | 
   'magento' | 
+  'mailchimp' | 
+  'mandalorian' | 
+  'markdown' | 
   'mastodon' | 
   'maxcdn' | 
   'medapps' | 
   'medium' | 
   'medium-m' | 
   'medrt' | 
-  'font-awesome-logo-full' | 
-  'football-ball' | 
-  'forward' | 
-  'frown' | 
+  'meetup' | 
+  'megaport' | 
+  'microsoft' | 
+  'mix' | 
+  'mixcloud' | 
+  'mizuni' | 
+  'modx' | 
+  'monero' | 
+  'napster' | 
+  'neos' | 
+  'nimblr' | 
+  'nintendo-switch' | 
+  'node' | 
+  'node-js' | 
+  'npm' | 
+  'ns8' | 
+  'nutritionix' | 
+  'odnoklassniki' | 
+  'odnoklassniki-square' | 
+  'old-republic' | 
+  'opencart' | 
+  'openid' | 
+  'opera' | 
+  'optin-monster' | 
+  'osi' | 
+  'page4' | 
+  'pagelines' | 
+  'palfed' | 
+  'patreon' | 
+  'paypal' | 
+  'periscope' | 
+  'phabricator' | 
+  'frown-open' | 
+  'funnel-dollar' | 
   'futbol' | 
   'gamepad' | 
+  'gas-pump' | 
   'gavel' | 
   'gem' | 
   'genderless' | 
   'gift' | 
   'glass-martini' | 
+  'glass-martini-alt' | 
+  'glasses' | 
   'globe' | 
+  'globe-africa' | 
+  'globe-americas' | 
+  'globe-asia' | 
   'golf-ball' | 
+  'gopuram' | 
   'graduation-cap' | 
+  'greater-than' | 
+  'greater-than-equal' | 
+  'grimace' | 
+  'grin' | 
+  'grin-alt' | 
+  'grin-beam' | 
+  'grin-beam-sweat' | 
+  'grin-hearts' | 
+  'grin-squint' | 
+  'grin-squint-tears' | 
+  'grin-stars' | 
+  'grin-tears' | 
+  'grin-tongue' | 
+  'grin-tongue-squint' | 
+  'grin-tongue-wink' | 
+  'grin-wink' | 
+  'grip-horizontal' | 
+  'grip-vertical' | 
   'h-square' | 
+  'hamsa' | 
   'hand-holding' | 
   'hand-holding-heart' | 
   'hand-holding-usd' | 
@@ -584,17 +783,24 @@ export type IconName = 'address-book' |
   'hands-helping' | 
   'handshake' | 
   'hashtag' | 
+  'haykal' | 
   'hdd' | 
   'heading' | 
   'headphones' | 
+  'headphones-alt' | 
+  'headset' | 
   'heart' | 
   'heartbeat' | 
+  'helicopter' | 
+  'highlighter' | 
   'history' | 
   'hockey-puck' | 
   'home' | 
   'hospital' | 
   'hospital-alt' | 
   'hospital-symbol' | 
+  'hot-tub' | 
+  'hotel' | 
   'hourglass' | 
   'hourglass-end' | 
   'hourglass-half' | 
@@ -608,15 +814,107 @@ export type IconName = 'address-book' |
   'inbox' | 
   'indent' | 
   'industry' | 
+  'infinity' | 
   'info' | 
   'info-circle' | 
   'italic' | 
+  'jedi' | 
+  'phoenix-framework' | 
+  'phoenix-squadron' | 
+  'php' | 
+  'pied-piper' | 
+  'pied-piper-alt' | 
+  'pied-piper-hat' | 
+  'pied-piper-pp' | 
+  'pinterest' | 
+  'pinterest-p' | 
+  'pinterest-square' | 
+  'playstation' | 
+  'product-hunt' | 
+  'pushed' | 
+  'python' | 
+  'qq' | 
+  'quinscape' | 
+  'quora' | 
+  'r-project' | 
+  'ravelry' | 
+  'react' | 
+  'readme' | 
+  'rebel' | 
+  'red-river' | 
+  'reddit' | 
+  'reddit-alien' | 
+  'reddit-square' | 
+  'rendact' | 
+  'renren' | 
+  'replyd' | 
+  'researchgate' | 
+  'resolving' | 
+  'rev' | 
+  'rocketchat' | 
+  'rockrms' | 
+  'safari' | 
+  'sass' | 
+  'schlix' | 
+  'scribd' | 
+  'searchengin' | 
+  'sellcast' | 
+  'sellsy' | 
+  'servicestack' | 
+  'shirtsinbulk' | 
+  'shopware' | 
+  'simplybuilt' | 
+  'sistrix' | 
+  'sith' | 
+  'skyatlas' | 
+  'skype' | 
+  'slack' | 
+  'slack-hash' | 
+  'slideshare' | 
+  'snapchat' | 
+  'snapchat-ghost' | 
+  'snapchat-square' | 
+  'soundcloud' | 
+  'speakap' | 
+  'spotify' | 
+  'squarespace' | 
+  'stack-exchange' | 
+  'stack-overflow' | 
+  'staylinked' | 
+  'steam' | 
+  'steam-square' | 
+  'steam-symbol' | 
+  'sticker-mule' | 
+  'strava' | 
+  'stripe' | 
+  'stripe-s' | 
+  'studiovinari' | 
+  'stumbleupon' | 
+  'stumbleupon-circle' | 
+  'superpowers' | 
+  'joint' | 
+  'journal-whills' | 
+  'kaaba' | 
   'key' | 
   'keyboard' | 
+  'khanda' | 
+  'kiss' | 
+  'kiss-beam' | 
+  'kiss-wink-heart' | 
+  'kiwi-bird' | 
+  'landmark' | 
   'language' | 
   'laptop' | 
+  'laptop-code' | 
+  'laugh' | 
+  'laugh-beam' | 
+  'laugh-squint' | 
+  'laugh-wink' | 
+  'layer-group' | 
   'leaf' | 
   'lemon' | 
+  'less-than' | 
+  'less-than-equal' | 
   'level-down-alt' | 
   'level-up-alt' | 
   'life-ring' | 
@@ -635,228 +933,73 @@ export type IconName = 'address-book' |
   'long-arrow-alt-right' | 
   'long-arrow-alt-up' | 
   'low-vision' | 
+  'luggage-cart' | 
   'magic' | 
   'magnet' | 
+  'mail-bulk' | 
   'male' | 
   'map' | 
+  'map-marked' | 
+  'map-marked-alt' | 
   'map-marker' | 
   'map-marker-alt' | 
   'map-pin' | 
   'map-signs' | 
+  'marker' | 
   'mars' | 
   'mars-double' | 
   'mars-stroke' | 
   'mars-stroke-h' | 
   'mars-stroke-v' | 
+  'medal' | 
   'medkit' | 
   'meh' | 
+  'meh-blank' | 
+  'meh-rolling-eyes' | 
+  'memory' | 
+  'menorah' | 
   'mercury' | 
-  'meetup' | 
-  'microsoft' | 
-  'mix' | 
-  'mixcloud' | 
-  'mizuni' | 
-  'modx' | 
-  'monero' | 
-  'napster' | 
-  'nintendo-switch' | 
-  'node' | 
-  'node-js' | 
-  'npm' | 
-  'ns8' | 
-  'nutritionix' | 
-  'odnoklassniki' | 
-  'odnoklassniki-square' | 
-  'opencart' | 
-  'openid' | 
-  'opera' | 
-  'optin-monster' | 
-  'osi' | 
-  'page4' | 
-  'pagelines' | 
-  'palfed' | 
-  'patreon' | 
-  'paypal' | 
-  'periscope' | 
-  'phabricator' | 
-  'phoenix-framework' | 
-  'php' | 
-  'pied-piper' | 
-  'pied-piper-alt' | 
-  'pied-piper-hat' | 
-  'pied-piper-pp' | 
-  'pinterest' | 
-  'pinterest-p' | 
-  'pinterest-square' | 
-  'playstation' | 
-  'product-hunt' | 
-  'pushed' | 
-  'python' | 
-  'qq' | 
-  'quinscape' | 
-  'quora' | 
-  'r' | 
-  'ravelry' | 
-  'react' | 
-  'readme' | 
-  'rebel' | 
-  'red-river' | 
-  'reddit' | 
-  'reddit-alien' | 
-  'reddit-square' | 
-  'rendact' | 
-  'renren' | 
-  'replyd' | 
-  'researchgate' | 
-  'resolving' | 
-  'rocketchat' | 
-  'rockrms' | 
-  'safari' | 
-  'sass' | 
-  'schlix' | 
-  'scribd' | 
-  'searchengin' | 
-  'sellcast' | 
   'microchip' | 
   'microphone' | 
+  'microphone-alt' | 
+  'microphone-alt-slash' | 
   'microphone-slash' | 
+  'microscope' | 
   'minus' | 
   'minus-circle' | 
   'minus-square' | 
   'mobile' | 
   'mobile-alt' | 
+  'money-bill' | 
   'money-bill-alt' | 
+  'money-bill-wave' | 
+  'money-bill-wave-alt' | 
+  'money-check' | 
+  'money-check-alt' | 
+  'monument' | 
   'moon' | 
+  'mortar-pestle' | 
+  'mosque' | 
   'motorcycle' | 
   'mouse-pointer' | 
   'music' | 
   'neuter' | 
   'newspaper' | 
+  'not-equal' | 
   'notes-medical' | 
   'object-group' | 
   'object-ungroup' | 
-  'outdent' | 
-  'paint-brush' | 
-  'pallet' | 
-  'paper-plane' | 
-  'paperclip' | 
-  'parachute-box' | 
-  'paragraph' | 
-  'paste' | 
-  'pause' | 
-  'pause-circle' | 
-  'paw' | 
-  'pen-square' | 
-  'pencil-alt' | 
-  'people-carry' | 
-  'percent' | 
-  'phone' | 
-  'phone-slash' | 
-  'phone-square' | 
-  'phone-volume' | 
-  'piggy-bank' | 
-  'pills' | 
-  'plane' | 
-  'play' | 
-  'play-circle' | 
-  'plug' | 
-  'plus' | 
-  'plus-circle' | 
-  'plus-square' | 
-  'podcast' | 
-  'poo' | 
-  'portrait' | 
-  'pound-sign' | 
-  'power-off' | 
-  'prescription-bottle' | 
-  'prescription-bottle-alt' | 
-  'print' | 
-  'procedures' | 
-  'puzzle-piece' | 
-  'qrcode' | 
-  'question' | 
-  'question-circle' | 
-  'quidditch' | 
-  'quote-left' | 
-  'quote-right' | 
-  'random' | 
-  'recycle' | 
-  'redo' | 
-  'redo-alt' | 
-  'registered' | 
-  'reply' | 
-  'reply-all' | 
-  'retweet' | 
-  'ribbon' | 
-  'road' | 
-  'rocket' | 
-  'rss' | 
-  'rss-square' | 
-  'ruble-sign' | 
-  'rupee-sign' | 
-  'save' | 
-  'search' | 
-  'search-minus' | 
-  'search-plus' | 
-  'seedling' | 
-  'server' | 
-  'share' | 
-  'share-alt' | 
-  'share-alt-square' | 
-  'share-square' | 
-  'shekel-sign' | 
-  'shield-alt' | 
-  'ship' | 
-  'shipping-fast' | 
-  'shopping-bag' | 
-  'shopping-basket' | 
-  'shopping-cart' | 
-  'shower' | 
-  'sign' | 
-  'sign-in-alt' | 
-  'sign-language' | 
-  'sign-out-alt' | 
-  'signal' | 
-  'sitemap' | 
-  'sliders-h' | 
-  'smile' | 
-  'smoking' | 
-  'sellsy' | 
-  'servicestack' | 
-  'shirtsinbulk' | 
-  'simplybuilt' | 
-  'sistrix' | 
-  'skyatlas' | 
-  'skype' | 
-  'slack' | 
-  'slack-hash' | 
-  'slideshare' | 
-  'snapchat' | 
-  'snapchat-ghost' | 
-  'snapchat-square' | 
-  'soundcloud' | 
-  'speakap' | 
-  'spotify' | 
-  'stack-exchange' | 
-  'stack-overflow' | 
-  'staylinked' | 
-  'steam' | 
-  'steam-square' | 
-  'steam-symbol' | 
-  'sticker-mule' | 
-  'strava' | 
-  'stripe' | 
-  'stripe-s' | 
-  'studiovinari' | 
-  'stumbleupon' | 
-  'stumbleupon-circle' | 
-  'superpowers' | 
+  'oil-can' | 
+  'om' | 
   'supple' | 
   'teamspeak' | 
   'telegram' | 
   'telegram-plane' | 
   'tencent-weibo' | 
+  'the-red-yeti' | 
+  'themeco' | 
   'themeisle' | 
+  'trade-federation' | 
   'trello' | 
   'tripadvisor' | 
   'tumblr' | 
@@ -883,6 +1026,7 @@ export type IconName = 'address-book' |
   'vk' | 
   'vnv' | 
   'vuejs' | 
+  'weebly' | 
   'weibo' | 
   'weixin' | 
   'whatsapp' | 
@@ -890,13 +1034,158 @@ export type IconName = 'address-book' |
   'whmcs' | 
   'wikipedia-w' | 
   'windows' | 
+  'wix' | 
+  'wolf-pack-battalion' | 
   'wordpress' | 
   'wordpress-simple' | 
   'wpbeginner' | 
   'wpexplorer' | 
   'wpforms' | 
   'xbox' | 
+  'xing' | 
+  'xing-square' | 
+  'y-combinator' | 
+  'yahoo' | 
+  'yandex' | 
+  'yandex-international' | 
+  'yelp' | 
+  'yoast' | 
+  'youtube' | 
+  'youtube-square' | 
+  'zhihu' | 
+  'outdent' | 
+  'paint-brush' | 
+  'paint-roller' | 
+  'palette' | 
+  'pallet' | 
+  'paper-plane' | 
+  'paperclip' | 
+  'parachute-box' | 
+  'paragraph' | 
+  'parking' | 
+  'passport' | 
+  'pastafarianism' | 
+  'paste' | 
+  'pause' | 
+  'pause-circle' | 
+  'paw' | 
+  'peace' | 
+  'pen' | 
+  'pen-alt' | 
+  'pen-fancy' | 
+  'pen-nib' | 
+  'pen-square' | 
+  'pencil-alt' | 
+  'pencil-ruler' | 
+  'people-carry' | 
+  'percent' | 
+  'percentage' | 
+  'phone' | 
+  'phone-slash' | 
+  'phone-square' | 
+  'phone-volume' | 
+  'piggy-bank' | 
+  'pills' | 
+  'place-of-worship' | 
+  'plane' | 
+  'plane-arrival' | 
+  'plane-departure' | 
+  'play' | 
+  'play-circle' | 
+  'plug' | 
+  'plus' | 
+  'plus-circle' | 
+  'plus-square' | 
+  'podcast' | 
+  'poll' | 
+  'poll-h' | 
+  'poo' | 
+  'poop' | 
+  'portrait' | 
+  'pound-sign' | 
+  'power-off' | 
+  'pray' | 
+  'praying-hands' | 
+  'prescription' | 
+  'prescription-bottle' | 
+  'prescription-bottle-alt' | 
+  'print' | 
+  'procedures' | 
+  'project-diagram' | 
+  'puzzle-piece' | 
+  'qrcode' | 
+  'question' | 
+  'question-circle' | 
+  'quidditch' | 
+  'quote-left' | 
+  'quote-right' | 
+  'quran' | 
+  'random' | 
+  'receipt' | 
+  'recycle' | 
+  'redo' | 
+  'redo-alt' | 
+  'registered' | 
+  'reply' | 
+  'reply-all' | 
+  'retweet' | 
+  'ribbon' | 
+  'road' | 
+  'robot' | 
+  'rocket' | 
+  'route' | 
+  'rss' | 
+  'rss-square' | 
+  'ruble-sign' | 
+  'ruler' | 
+  'ruler-combined' | 
+  'ruler-horizontal' | 
+  'ruler-vertical' | 
+  'rupee-sign' | 
+  'sad-cry' | 
+  'sad-tear' | 
+  'save' | 
+  'school' | 
+  'screwdriver' | 
+  'search' | 
+  'search-dollar' | 
+  'search-location' | 
+  'search-minus' | 
+  'search-plus' | 
+  'seedling' | 
+  'server' | 
+  'shapes' | 
+  'share' | 
+  'share-alt' | 
+  'share-alt-square' | 
+  'share-square' | 
+  'shekel-sign' | 
+  'shield-alt' | 
+  'ship' | 
+  'shipping-fast' | 
+  'shoe-prints' | 
+  'shopping-bag' | 
+  'shopping-basket' | 
+  'shopping-cart' | 
+  'shower' | 
+  'shuttle-van' | 
+  'sign' | 
+  'sign-in-alt' | 
+  'sign-language' | 
+  'sign-out-alt' | 
+  'signal' | 
+  'signature' | 
+  'sitemap' | 
+  'skull' | 
+  'sliders-h' | 
+  'smile' | 
+  'smile-beam' | 
+  'smile-wink' | 
+  'smoking' | 
+  'smoking-ban' | 
   'snowflake' | 
+  'socks' | 
+  'solar-panel' | 
   'sort' | 
   'sort-alpha-down' | 
   'sort-alpha-up' | 
@@ -906,12 +1195,21 @@ export type IconName = 'address-book' |
   'sort-numeric-down' | 
   'sort-numeric-up' | 
   'sort-up' | 
+  'spa' | 
   'space-shuttle' | 
   'spinner' | 
+  'splotch' | 
+  'spray-can' | 
   'square' | 
   'square-full' | 
+  'square-root-alt' | 
+  'stamp' | 
   'star' | 
+  'star-and-crescent' | 
   'star-half' | 
+  'star-half-alt' | 
+  'star-of-david' | 
+  'star-of-life' | 
   'step-backward' | 
   'step-forward' | 
   'stethoscope' | 
@@ -919,13 +1217,23 @@ export type IconName = 'address-book' |
   'stop' | 
   'stop-circle' | 
   'stopwatch' | 
+  'store' | 
+  'store-alt' | 
+  'stream' | 
   'street-view' | 
   'strikethrough' | 
+  'stroopwafel' | 
   'subscript' | 
   'subway' | 
   'suitcase' | 
+  'suitcase-rolling' | 
   'sun' | 
   'superscript' | 
+  'surprise' | 
+  'swatchbook' | 
+  'swimmer' | 
+  'swimming-pool' | 
+  'synagogue' | 
   'sync' | 
   'sync-alt' | 
   'syringe' | 
@@ -940,12 +1248,15 @@ export type IconName = 'address-book' |
   'tape' | 
   'tasks' | 
   'taxi' | 
+  'teeth' | 
+  'teeth-open' | 
   'terminal' | 
   'text-height' | 
   'text-width' | 
   'th' | 
   'th-large' | 
   'th-list' | 
+  'theater-masks' | 
   'thermometer' | 
   'thermometer-empty' | 
   'thermometer-full' | 
@@ -959,9 +1270,16 @@ export type IconName = 'address-book' |
   'times' | 
   'times-circle' | 
   'tint' | 
+  'tint-slash' | 
+  'tired' | 
   'toggle-off' | 
   'toggle-on' | 
+  'toolbox' | 
+  'tooth' | 
+  'torah' | 
+  'torii-gate' | 
   'trademark' | 
+  'traffic-light' | 
   'train' | 
   'transgender' | 
   'transgender-alt' | 
@@ -971,10 +1289,14 @@ export type IconName = 'address-book' |
   'trophy' | 
   'truck' | 
   'truck-loading' | 
+  'truck-monster' | 
   'truck-moving' | 
+  'truck-pickup' | 
+  'tshirt' | 
   'tty' | 
   'tv' | 
   'umbrella' | 
+  'umbrella-beach' | 
   'underline' | 
   'undo' | 
   'undo-alt' | 
@@ -999,16 +1321,6 @@ export type IconName = 'address-book' |
   'user-md' | 
   'user-minus' | 
   'user-ninja' | 
-  'xing' | 
-  'xing-square' | 
-  'y-combinator' | 
-  'yahoo' | 
-  'yandex' | 
-  'yandex-international' | 
-  'yelp' | 
-  'yoast' | 
-  'youtube' | 
-  'youtube-square' | 
   'user-plus' | 
   'user-secret' | 
   'user-shield' | 
@@ -1020,6 +1332,7 @@ export type IconName = 'address-book' |
   'users-cog' | 
   'utensil-spoon' | 
   'utensils' | 
+  'vector-square' | 
   'venus' | 
   'venus-double' | 
   'venus-mars' | 
@@ -1027,12 +1340,16 @@ export type IconName = 'address-book' |
   'vials' | 
   'video' | 
   'video-slash' | 
+  'vihara' | 
   'volleyball-ball' | 
   'volume-down' | 
   'volume-off' | 
   'volume-up' | 
+  'walking' | 
+  'wallet' | 
   'warehouse' | 
   'weight' | 
+  'weight-hanging' | 
   'wheelchair' | 
   'wifi' | 
   'window-close' | 
@@ -1040,7 +1357,9 @@ export type IconName = 'address-book' |
   'window-minimize' | 
   'window-restore' | 
   'wine-glass' | 
+  'wine-glass-alt' | 
   'won-sign' | 
   'wrench' | 
   'x-ray' | 
-  'yen-sign';
+  'yen-sign' | 
+  'yin-yang';

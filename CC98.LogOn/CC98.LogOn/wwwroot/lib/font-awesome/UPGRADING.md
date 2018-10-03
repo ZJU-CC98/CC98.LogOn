@@ -6,6 +6,74 @@ This guide is useful to figure out what you need to do between breaking changes.
 
 As always, [submit issues](https://github.com/FortAwesome/Font-Awesome/issues/new) that you run into with this guide or with these upgrades to us.
 
+## 5.3.0 to 5.3.1
+
+There are no breaking changes in this version upgrade.
+
+---
+
+## 5.x.x to 5.3.0
+
+Sass mixin syntax has been updated to address a bug.
+
+Use `@extend %fa-icon` to correctly maintain CSS order in output files.
+
+~~Old way:~~
+
+```
+.twitter {
+  @include fa-icon; /* incorrect */
+  @extend .fab;
+
+  &:before {
+    content: fa-content($fa-var-twitter);
+  }
+}
+```
+
+New way:
+
+```
+.twitter {
+  @extend %fa-icon; /* correct */
+  @extend .fab;
+
+  &:before {
+    content: fa-content($fa-var-twitter);
+  }
+}
+```
+
+---
+
+## 5.1.x to 5.2.x
+
+There are no breaking changes in this version upgrade.
+
+---
+
+## 5.1.0 to 5.1.1
+
+Less and Sass files incorrectly contained the "fa-" prefix for style files.
+These files have been renamed to be consistent with other files in the
+packages.
+
+If you are using the Less or Sass file styles individually you will need to
+correct the names in your builds.
+
+| Old filename                | New filename             |
+| --------------------------- | ------------------------ |
+| less/fa-solid.less          | less/solid.less          |
+| less/fa-regular.less        | less/regular.less        |
+| less/fa-light.less          | less/light.less          |
+| less/fa-brands.less         | less/brands.less         |
+| scss/fa-solid.scss          | scss/solid.scss          |
+| scss/fa-regular.scss        | scss/regular.scss        |
+| scss/fa-light.scss          | scss/light.scss          |
+| scss/fa-brands.scss         | scss/brands.scss         |
+
+---
+
 ## 5.0.x to 5.1.0
 
 ### New packages available for browser-only integration
@@ -30,12 +98,18 @@ account](https://fontawesome.com/account/services).
 
 The following packages have been renamed as part of 5.1.0 of Font Awesome.
 
-_All packages are in the [@fortawesome NPM scope](https://www.npmjs.com/search?q=scope:fortawesome&page=1&ranking=optimal)_
+_All packages are in the [@fortawesome NPM scope](https://www.npmjs.com/search?q=scope:fortawesome&ranking=optimal)_
 
 | Old package(1)            | New package            |
 |---------------------------|------------------------|
 | fontawesome-free-webfonts | fontawesome-free       |
 | fontawesome-pro-webfonts  | fontawesome-pro        |
+| fontawesome-free-solid    | free-solid-svg-icons   |
+| fontawesome-free-regular  | free-regular-svg-icons |
+| fontawesome-free-brands   | free-brands-svg-icons  |
+| fontawesome-pro-solid     | pro-solid-svg-icons    |
+| fontawesome-pro-regular   | pro-regular-svg-icons  |
+| fontawesome-pro-light     | pro-light-svg-icons    |
 
 (1) Old packages have now been deprecated. They are still available but will only receive high priority patch release fixes.
 
@@ -55,23 +129,26 @@ What does that mean?
 ~~Old way:~~
 
 ```javascript
-import fontawesome from '@fontawesome/fontawesome'
+import fontawesome from '@fortawesome/fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
 import faTwitter from '@fortawesome/fontawesome-free-brands/faTwitter'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 
-import fontaweome.library.add(solid, faTwitter)
+library.add(solid, faTwitter)
 ```
 
 New way:
 
 ```javascript
-import { library } from '@fontawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/fontawesome-free-solid'
+import { library, dom } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import library.add(fas, faTwitter)
+library.add(fas, faTwitter)
+
+// Kicks off the process of finding <i> tags and replacing with <svg>
+dom.watch()
 ```
 
 This is also a valid way to import icons that works if your tool does not support tree shaking:
@@ -113,6 +190,14 @@ rollup({
   ]
 })
 ```
+
+---
+
+## 5.0.11 to 5.0.12
+
+Due to a collision with the "r" glyph the R Project brand icon has been renamed to `r-project`.
+
+---
 
 ## 5.0.x to 5.0.6
 

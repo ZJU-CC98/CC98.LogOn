@@ -1,6 +1,6 @@
 /*!
 * jQuery Password Strength plugin for Twitter Bootstrap
-* Version: 2.2.1
+* Version: 3.0.1
 *
 * Copyright (c) 2008-2013 Tane Piper
 * Copyright (c) 2013 Alejandro Blanco
@@ -416,7 +416,7 @@ defaultOptions.rules.commonPasswords = [
 
 defaultOptions.ui = {};
 defaultOptions.ui.bootstrap2 = false;
-defaultOptions.ui.bootstrap4 = false;
+defaultOptions.ui.bootstrap3 = false;
 defaultOptions.ui.colorClasses = [
     "danger", "danger", "danger", "warning", "warning", "success"
 ];
@@ -613,16 +613,16 @@ var ui = {};
         }
 
         $.each(options.ui.colorClasses, function (idx, value) {
-            if (options.ui.bootstrap4) {
-                $bar.removeClass("bg-" + value);
-            } else {
+            if (options.ui.bootstrap2 || options.ui.bootstrap3) {
                 $bar.removeClass(cssPrefix + "bar-" + value);
+            } else {
+                $bar.removeClass("bg-" + value);
             }
         });
-        if (options.ui.bootstrap4) {
-            $bar.addClass("bg-" + options.ui.colorClasses[cssClass]);
-        } else {
+        if (options.ui.bootstrap2 || options.ui.bootstrap3) {
             $bar.addClass(cssPrefix + "bar-" + options.ui.colorClasses[cssClass]);
+        } else {
+            $bar.addClass("bg-" + options.ui.colorClasses[cssClass]);
         }
         $bar.css("width", percentage + '%');
     };
@@ -689,25 +689,44 @@ var ui = {};
             $el.find("+ .popover .popover-content").html(html);
         } else {
             // It's hidden
-            popover.options.content = html;
+            if (options.ui.bootstrap2 || options.ui.bootstrap3) {
+                popover.options.content = html;
+            } else {
+                popover.config.content = html;
+            }
             $el.popover("show");
         }
     };
 
     ui.updateFieldStatus = function (options, $el, cssClass, remove) {
-        var targetClass = options.ui.bootstrap2 ? ".control-group" : ".form-group",
-            $container = $el.parents(targetClass).first();
+        var $target = $el;
+
+        if (options.ui.bootstrap2) {
+            $target = $el.parents(".control-group").first();
+        } else if (options.ui.bootstrap3) {
+            $target = $el.parents(".form-group").first();
+        }
 
         $.each(statusClasses, function (idx, css) {
-            if (!options.ui.bootstrap2) { css = "has-" + css; }
-            $container.removeClass(css);
+            if (options.ui.bootstrap3) {
+                css = "has-" + css;
+            } else if (!options.ui.bootstrap2) { // BS4
+                if (css === "error") { css = "danger"; }
+                css = "border-" + css;
+            }
+            $target.removeClass(css);
         });
 
         if (remove) { return; }
 
         cssClass = statusClasses[Math.floor(cssClass / 2)];
-        if (!options.ui.bootstrap2) { cssClass = "has-" + cssClass; }
-        $container.addClass(cssClass);
+        if (options.ui.bootstrap3) {
+            cssClass = "has-" + cssClass;
+        } else if (!options.ui.bootstrap2) { // BS4
+            if (cssClass === "error") { cssClass = "danger"; }
+            cssClass = "border-" + cssClass;
+        }
+        $target.addClass(cssClass);
     };
 
     ui.percentage = function (options, score, maximun) {

@@ -178,7 +178,7 @@ defaultOptions.rules.commonPasswords = [
 
 defaultOptions.ui = {};
 defaultOptions.ui.bootstrap2 = false;
-defaultOptions.ui.bootstrap4 = false;
+defaultOptions.ui.bootstrap3 = false;
 defaultOptions.ui.colorClasses = [
     "danger", "danger", "danger", "warning", "warning", "success"
 ];

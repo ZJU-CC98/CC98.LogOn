@@ -250,6 +250,7 @@ var EventEmitter = function () {
       _this.observers[event] = _this.observers[event] || [];
       _this.observers[event].push(listener);
     });
+    return this;
   };
 
   EventEmitter.prototype.off = function off(event, listener) {
@@ -286,9 +287,7 @@ var EventEmitter = function () {
     if (this.observers['*']) {
       var _cloned = [].concat(this.observers['*']);
       _cloned.forEach(function (observer) {
-        var _ref;
-
-        observer.apply(observer, (_ref = [event]).concat.apply(_ref, args));
+        observer.apply(observer, [event].concat(args));
       });
     }
   };
@@ -414,6 +413,9 @@ var ResourceStore = function (_EventEmitter) {
 
     _this.data = data || {};
     _this.options = options;
+    if (_this.options.keySeparator === undefined) {
+      _this.options.keySeparator = '.';
+    }
     return _this;
   }
 
@@ -433,8 +435,7 @@ var ResourceStore = function (_EventEmitter) {
   ResourceStore.prototype.getResource = function getResource(lng, ns, key) {
     var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-    var keySeparator = options.keySeparator || this.options.keySeparator;
-    if (keySeparator === undefined) keySeparator = '.';
+    var keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
 
     var path = [lng, ns];
     if (key && typeof key !== 'string') path = path.concat(key);
@@ -527,6 +528,10 @@ var ResourceStore = function (_EventEmitter) {
     return this.getResource(lng, ns);
   };
 
+  ResourceStore.prototype.getDataByLanguage = function getDataByLanguage(lng) {
+    return this.data[lng];
+  };
+
   ResourceStore.prototype.toJSON = function toJSON() {
     return this.data;
   };
@@ -564,6 +569,10 @@ var Translator = function (_EventEmitter) {
     copy(['resourceStore', 'languageUtils', 'pluralResolver', 'interpolator', 'backendConnector', 'i18nFormat'], services, _this);
 
     _this.options = options;
+    if (_this.options.keySeparator === undefined) {
+      _this.options.keySeparator = '.';
+    }
+
     _this.logger = baseLogger.create('translator');
     return _this;
   }
@@ -582,7 +591,8 @@ var Translator = function (_EventEmitter) {
   Translator.prototype.extractFromKey = function extractFromKey(key, options) {
     var nsSeparator = options.nsSeparator || this.options.nsSeparator;
     if (nsSeparator === undefined) nsSeparator = ':';
-    var keySeparator = options.keySeparator || this.options.keySeparator || '.';
+
+    var keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
 
     var namespaces = options.ns || this.options.defaultNS;
     if (nsSeparator && key.indexOf(nsSeparator) > -1) {
@@ -613,7 +623,7 @@ var Translator = function (_EventEmitter) {
     if (typeof keys === 'string') keys = [keys];
 
     // separators
-    var keySeparator = options.keySeparator || this.options.keySeparator || '.';
+    var keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
 
     // get namespace(s)
 
@@ -654,7 +664,7 @@ var Translator = function (_EventEmitter) {
 
       // if we got a separator we loop over children - else we just return object as is
       // as having it set to false means no hierarchy so no lookup for nested values
-      if (options.keySeparator || this.options.keySeparator) {
+      if (keySeparator) {
         var copy$$1 = resType === '[object Array]' ? [] : {}; // apply child translation on a copy
 
         /* eslint no-restricted-syntax: 0 */
@@ -713,7 +723,8 @@ var Translator = function (_EventEmitter) {
         };
 
         if (this.options.saveMissing) {
-          if (this.options.saveMissingPlurals && options.count) {
+          var needsPluralHandling = options.count !== undefined && typeof options.count !== 'string';
+          if (this.options.saveMissingPlurals && needsPluralHandling) {
             lngs.forEach(function (l) {
               var plurals = _this2.pluralResolver.getPluralFormsOfKey(l, key);
 
@@ -745,8 +756,8 @@ var Translator = function (_EventEmitter) {
     var _this3 = this;
 
     if (this.i18nFormat && this.i18nFormat.parse) {
-      res = this.i18nFormat.parse(res, options, resolved.usedLng, resolved.usedNS, resolved.usedKey);
-    } else {
+      res = this.i18nFormat.parse(res, options, resolved.usedLng, resolved.usedNS, resolved.usedKey, { resolved: resolved });
+    } else if (!options.skipInterpolation) {
       // i18next.parsing
       if (options.interpolation) this.interpolator.init(_extends({}, options, { interpolation: _extends({}, this.options.interpolation, options.interpolation) }));
 
@@ -1131,9 +1142,9 @@ var PluralResolver = function () {
         if (suffix === 1) return '';
         if (typeof suffix === 'number') return '_plural_' + suffix.toString();
         return returnSuffix();
-      } else if ( /* v2 */this.options.compatibilityJSON === 'v2' || rule.numbers.length === 2 && rule.numbers[0] === 1) {
+      } else if ( /* v2 */this.options.compatibilityJSON === 'v2' && rule.numbers.length === 2 && rule.numbers[0] === 1) {
         return returnSuffix();
-      } else if ( /* v3 - gettext index */rule.numbers.length === 2 && rule.numbers[0] === 1) {
+      } else if ( /* v3 - gettext index */this.options.simplifyPluralSuffix && rule.numbers.length === 2 && rule.numbers[0] === 1) {
         return returnSuffix();
       }
       return this.options.prepend && idx.toString() ? this.options.prepend + idx.toString() : idx.toString();
@@ -1168,13 +1179,14 @@ var Interpolator = function () {
       this.format = options.interpolation && options.interpolation.format || function (value) {
         return value;
       };
-      this.escape = options.interpolation && options.interpolation.escape || escape;
     }
     if (!options.interpolation) options.interpolation = { escapeValue: true };
 
     var iOpts = options.interpolation;
 
+    this.escape = iOpts.escape !== undefined ? iOpts.escape : escape;
     this.escapeValue = iOpts.escapeValue !== undefined ? iOpts.escapeValue : true;
+    this.useRawValueToEscape = iOpts.useRawValueToEscape !== undefined ? iOpts.useRawValueToEscape : false;
 
     this.prefix = iOpts.prefix ? regexEscape(iOpts.prefix) : iOpts.prefixEscaped || '{{';
     this.suffix = iOpts.suffix ? regexEscape(iOpts.suffix) : iOpts.suffixEscaped || '}}';
@@ -1257,7 +1269,7 @@ var Interpolator = function () {
           this.logger.warn('missed to pass in variable ' + match[1] + ' for interpolating ' + str);
           value = '';
         }
-      } else if (typeof value !== 'string') {
+      } else if (typeof value !== 'string' && !this.useRawValueToEscape) {
         value = makeString(value);
       }
       value = this.escapeValue ? regexSafe(this.escape(value)) : regexSafe(value);
@@ -1411,8 +1423,6 @@ var Connector = function (_EventEmitter) {
   };
 
   Connector.prototype.loaded = function loaded(name, err, data) {
-    var _this3 = this;
-
     var _name$split = name.split('|'),
         _name$split2 = slicedToArray(_name$split, 2),
         lng = _name$split2[0],
@@ -1427,6 +1437,9 @@ var Connector = function (_EventEmitter) {
     // set loaded
     this.state[name] = err ? -1 : 2;
 
+    // consolidated loading done in this run - only emit once for a loaded namespace
+    var loaded = {};
+
     // callback if ready
     this.queue.forEach(function (q) {
       pushPath(q.loaded, [lng], ns);
@@ -1435,7 +1448,16 @@ var Connector = function (_EventEmitter) {
       if (err) q.errors.push(err);
 
       if (q.pending.length === 0 && !q.done) {
-        _this3.emit('loaded', q.loaded);
+        // only do once per loaded -> this.emit('loaded', q.loaded);
+        Object.keys(q.loaded).forEach(function (l) {
+          if (!loaded[l]) loaded[l] = [];
+          if (q.loaded[l].length) {
+            q.loaded[l].forEach(function (ns) {
+              if (loaded[l].indexOf(ns) < 0) loaded[l].push(ns);
+            });
+          }
+        });
+
         /* eslint no-param-reassign: 0 */
         q.done = true;
         if (q.errors.length) {
@@ -1446,6 +1468,9 @@ var Connector = function (_EventEmitter) {
       }
     });
 
+    // emit consolidated loaded event
+    this.emit('loaded', loaded);
+
     // remove done load requests
     this.queue = this.queue.filter(function (q) {
       return !q.done;
@@ -1455,7 +1480,7 @@ var Connector = function (_EventEmitter) {
   Connector.prototype.read = function read(lng, ns, fcName) {
     var tried = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
-    var _this4 = this;
+    var _this3 = this;
 
     var wait = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 250;
     var callback = arguments[5];
@@ -1465,7 +1490,7 @@ var Connector = function (_EventEmitter) {
     return this.backend[fcName](lng, ns, function (err, data) {
       if (err && data /* = retryFlag */ && tried < 5) {
         setTimeout(function () {
-          _this4.read.call(_this4, lng, ns, fcName, tried + 1, wait * 2, callback);
+          _this3.read.call(_this3, lng, ns, fcName, tried + 1, wait * 2, callback);
         }, wait);
         return;
       }
@@ -1477,7 +1502,7 @@ var Connector = function (_EventEmitter) {
 
 
   Connector.prototype.load = function load(languages, namespaces, callback) {
-    var _this5 = this;
+    var _this4 = this;
 
     if (!this.backend) {
       this.logger.warn('No backend was added via i18next.use. Will not load resources.');
@@ -1494,12 +1519,12 @@ var Connector = function (_EventEmitter) {
     }
 
     toLoad.toLoad.forEach(function (name) {
-      _this5.loadOne(name);
+      _this4.loadOne(name);
     });
   };
 
   Connector.prototype.reload = function reload(languages, namespaces) {
-    var _this6 = this;
+    var _this5 = this;
 
     if (!this.backend) {
       this.logger.warn('No backend was added via i18next.use. Will not load resources.');
@@ -1510,13 +1535,13 @@ var Connector = function (_EventEmitter) {
 
     languages.forEach(function (l) {
       namespaces.forEach(function (n) {
-        _this6.loadOne(l + '|' + n, 're');
+        _this5.loadOne(l + '|' + n, 're');
       });
     });
   };
 
   Connector.prototype.loadOne = function loadOne(name) {
-    var _this7 = this;
+    var _this6 = this;
 
     var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
@@ -1526,10 +1551,10 @@ var Connector = function (_EventEmitter) {
         ns = _name$split4[1];
 
     this.read(lng, ns, 'read', null, null, function (err, data) {
-      if (err) _this7.logger.warn(prefix + 'loading namespace ' + ns + ' for language ' + lng + ' failed', err);
-      if (!err && data) _this7.logger.log(prefix + 'loaded namespace ' + ns + ' for language ' + lng, data);
+      if (err) _this6.logger.warn(prefix + 'loading namespace ' + ns + ' for language ' + lng + ' failed', err);
+      if (!err && data) _this6.logger.log(prefix + 'loaded namespace ' + ns + ' for language ' + lng, data);
 
-      _this7.loaded(name, err, data);
+      _this6.loaded(name, err, data);
     });
   };
 
@@ -1591,7 +1616,6 @@ function get$1() {
       if (args[2]) ret.tDescription = args[2];
       return ret;
     },
-
     interpolation: {
       escapeValue: true,
       format: function format(value, _format, lng) {
@@ -1734,7 +1758,7 @@ var I18n = function (_EventEmitter) {
     }
 
     // append api
-    var storeApi = ['getResource', 'addResource', 'addResources', 'addResourceBundle', 'removeResourceBundle', 'hasResourceBundle', 'getResourceBundle'];
+    var storeApi = ['getResource', 'addResource', 'addResources', 'addResourceBundle', 'removeResourceBundle', 'hasResourceBundle', 'getResourceBundle', 'getDataByLanguage'];
     storeApi.forEach(function (fcName) {
       _this2[fcName] = function () {
         var _store;

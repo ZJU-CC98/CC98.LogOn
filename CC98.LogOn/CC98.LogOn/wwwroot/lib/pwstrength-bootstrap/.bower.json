@@ -1,6 +1,6 @@
 {
   "name": "pwstrength-bootstrap",
-  "version": "2.2.1",
+  "version": "3.0.1",
   "homepage": "https://github.com/ablanco/jquery.pwstrength.bootstrap",
   "authors": [
     "Alejandro Blanco <alejandro.b.e@gmail.com>"
@@ -11,7 +11,8 @@
     "jquery": ">=3.0.0",
     "bootstrap": ">=2.0.0",
     "zxcvbn": ">=4.2.0",
-    "i18next": ">=2.4.0"
+    "i18next": ">=2.4.0",
+    "popper.js": "^1.14.3"
   },
   "moduleType": [
     "globals"
@@ -35,14 +36,14 @@
     "Gruntfile.js",
     "package.json"
   ],
-  "_release": "2.2.1",
+  "_release": "3.0.1",
   "_resolution": {
     "type": "version",
-    "tag": "2.2.1",
-    "commit": "d85d216836b5556c33be317d4bf88fab8d29e0b5"
+    "tag": "3.0.1",
+    "commit": "74e2bd39f38164d3857999637115bb2badd33de8"
   },
   "_source": "https://github.com/ablanco/jquery.pwstrength.bootstrap.git",
-  "_target": "2.2.1",
+  "_target": "3.0.1",
   "_originalSource": "pwstrength-bootstrap",
   "_direct": true
 }

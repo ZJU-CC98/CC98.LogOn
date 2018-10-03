@@ -1,6 +1,6 @@
 {
   "name": "pwstrength-bootstrap",
-  "version": "2.2.1",
+  "version": "3.0.1",
   "homepage": "https://github.com/ablanco/jquery.pwstrength.bootstrap",
   "authors": [
     "Alejandro Blanco <alejandro.b.e@gmail.com>"
@@ -11,7 +11,8 @@
     "jquery": ">=3.0.0",
     "bootstrap": ">=2.0.0",
     "zxcvbn": ">=4.2.0",
-    "i18next": ">=2.4.0"
+    "i18next": ">=2.4.0",
+    "popper.js": "^1.14.3"
   },
   "moduleType": [
     "globals"
