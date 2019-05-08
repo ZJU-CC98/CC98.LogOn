@@ -1,0 +1,46 @@
+{
+	"version": "1.0",
+	"defaultProvider": "cdnjs",
+	"libraries": [
+		{
+			"library": "font-awesome@5.8.2",
+			"destination": "wwwroot/lib/font-aswsome/"
+		},
+		{
+			"library": "jquery@3.4.1",
+			"destination": "wwwroot/lib/jquery/"
+		},
+		{
+			"library": "jquery-validate@1.19.0",
+			"destination": "wwwroot/lib/jquery-validate/"
+		},
+		{
+			"library": "jquery-validation-unobtrusive@3.2.11",
+			"destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+		},
+		{
+			"library": "popper.js@1.15.0",
+			"destination": "wwwroot/lib/popper.js/"
+		},
+		{
+			"library": "twitter-bootstrap@4.3.1",
+			"destination": "wwwroot/lib/bootstrap/"
+		},
+		{
+			"library": "i18next@15.1.0",
+			"destination": "wwwroot/lib/i18next/"
+		},
+		{
+			"library": "i18next-xhr-backend@2.0.1",
+			"destination": "wwwroot/lib/i18next-xhr-backend/"
+		},
+		{
+			"library": "i18next-browser-languagedetector@3.0.1",
+			"destination": "wwwroot/lib/i18next-browser-languagedetector/"
+		},
+		{
+			"library": "pwstrength-bootstrap@3.0.4",
+			"destination": "wwwroot/lib/pwstrength-bootstrap/"
+		}
+	]
+}

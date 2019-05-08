@@ -132,21 +132,14 @@ namespace CC98.LogOn
 		/// <param name="env">宿主环境对象。</param>
 		/// <param name="loggerFactory">日志工厂对象。</param>
 		[UsedImplicitly]
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			// 添加控制台输出
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-
-			// 添加调试窗口输出
-			loggerFactory.AddDebug();
 
 			// 根据是否属于调试模式，分别启用错误处理
 			if (env.IsDevelopment())
 			{
 				// 详细开发错误页面
 				app.UseDeveloperExceptionPage();
-				// 浏览器同步功能
-				app.UseBrowserLink();
 			}
 			else
 			{
@@ -178,9 +171,6 @@ namespace CC98.LogOn
 
 			// 启用身份验证服务
 			app.UseAuthentication();
-
-			// HTTPS 支持
-			app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
 
 			// MVC 路由配置
 			app.UseMvc(routes =>
