@@ -79,9 +79,9 @@ namespace CC98.LogOn.Data
 		/// <returns>表示异步操作的任务。</returns>
 		public async Task BindUserAsync(int userId, string bindId, string userName, string password, string ip)
 		{
-			var connnection = (SqlConnection)Database.GetDbConnection();
+			var connection = (SqlConnection)Database.GetDbConnection();
 
-			var command = connnection.CreateCommand();
+			var command = connection.CreateCommand();
 			command.CommandType = CommandType.StoredProcedure;
 			command.CommandText = "BindUser";
 			command.Parameters.AddWithValue("@userId", userId);
@@ -89,7 +89,7 @@ namespace CC98.LogOn.Data
 			command.Parameters.AddWithValue("@userName", userName);
 			command.Parameters.AddWithValue("@bindPassword", password);
 			command.Parameters.AddWithValue("@ip", ip);
-			await connnection.OpenAsync();
+			await connection.OpenAsync();
 			await command.ExecuteNonQueryAsync();
 		}
 
