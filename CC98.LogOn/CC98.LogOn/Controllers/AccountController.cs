@@ -130,7 +130,7 @@ namespace CC98.LogOn.Controllers
 									   select i).CountAsync();
 
 				if (bindCount >= AppSetting.MaxCC98AccountPerZjuInfoId)
-					ModelState.AddModelError("", "当前浙大通行证绑定的账户数量已经达到上限，无法激活新账号");
+					ModelState.AddModelError("", "当前浙大通行证绑定的账户数量已经达到上限，无法激活新账号。");
 			}
 			else if (model.BindToZjuInfoId)
 			{
@@ -150,7 +150,7 @@ namespace CC98.LogOn.Controllers
 				{
 					var newUserId = await IdentityDbContext.CreateAccountAsync(model.UserName,
 						CC98PasswordHashService.GetPasswordHash(model.Password), model.Gender,
-						HttpContext.Connection.RemoteIpAddress.ToString(), zjuInfoId);
+						HttpContext.Connection.RemoteIpAddress.ToString(), model.BindToZjuInfoId ? zjuInfoId : null);
 
 					if (newUserId != -1)
 					{
