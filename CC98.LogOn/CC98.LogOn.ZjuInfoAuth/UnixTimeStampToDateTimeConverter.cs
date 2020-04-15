@@ -1,41 +1,22 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CC98.LogOn.ZjuInfoAuth
 {
 	/// <summary>
 	/// 提供从 Linux 时间戳转换到当前时间的转换器。
 	/// </summary>
-	public class UnixTimeStampToDateTimeConverter : JsonConverter
+	public class UnixTimeStampToDateTimeConverter : JsonConverter<DateTimeOffset>
 	{
-		/// <summary>
-		/// Unix 时间戳开始时间
-		/// </summary>
-		private static readonly DateTime StartTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-		/// <inheritdoc />
-		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+		public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 		{
-			var realValue = (DateTime)value;
-			writer.WriteRawValue((realValue - StartTime).TotalMilliseconds.ToString("F"));
+			return DateTimeOffset.FromUnixTimeMilliseconds(reader.GetInt64());
 		}
 
-		/// <inheritdoc />
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
 		{
-			if (reader.Value == null)
-			{
-				return null;
-			}
-
-			var realValue = (long)reader.Value;
-			return StartTime.AddMilliseconds(realValue);
-		}
-
-		/// <inheritdoc />
-		public override bool CanConvert(Type objectType)
-		{
-			return objectType == typeof(DateTime);
+			writer.WriteNumberValue(value.ToUnixTimeMilliseconds());
 		}
 	}
 }

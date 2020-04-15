@@ -1,7 +1,5 @@
-﻿@using Microsoft.ApplicationInsights.AspNetCore
-@using Microsoft.Extensions.Hosting
+﻿@using Microsoft.Extensions.Hosting
 @using Sakura.AspNetCore.Localization
-@inject JavaScriptSnippet JavaScriptSnippet
 @inject IDynamicViewLocalizer ViewLocalizer
 @inject IDynamicHtmlLocalizer<Startup> Startup
 <!DOCTYPE html>
@@ -43,7 +41,6 @@
 		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 
 	</environment>
-	@Html.Raw(JavaScriptSnippet.FullScript)
 	@await RenderSectionAsync("Head", false)
 </head>
 <body>

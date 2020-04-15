@@ -48,8 +48,6 @@ namespace CC98.LogOn
 		[UsedImplicitly]
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddApplicationInsightsTelemetry();
-
 			services.AddDbContext<CC98IdentityDbContext>(options =>
 				options.UseSqlServer(Configuration["ConnectionStrings:CC98IdentityDbContext"]));
 

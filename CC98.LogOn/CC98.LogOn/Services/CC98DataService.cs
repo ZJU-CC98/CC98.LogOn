@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
 using Microsoft.EntityFrameworkCore;
@@ -38,35 +39,62 @@ namespace CC98.LogOn.Services
 		///     获取给定浙大通行证账号激活的账号数量。
 		/// </summary>
 		/// <param name="zjuInfoId">浙大通行证账号。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>表示异步操作的方法。操作结果返回激活数量。</returns>
-		public Task<int> GetActivatedUserCountAsync(string zjuInfoId)
+		public Task<int> GetActivatedUserCountAsync(string zjuInfoId, CancellationToken cancellationToken = default)
 		{
 			return (from i in DbContext.Users
-				where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
-				select i).CountAsync();
+					where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+					select i).CountAsync(cancellationToken);
 		}
 
 		/// <summary>
 		///     获取给定浙大通行证账号激活的账号。
 		/// </summary>
 		/// <param name="zjuInfoId">浙大通行证账号。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>表示异步操作的方法。操作结果返回激活数量。</returns>
-		public async Task<IEnumerable<CC98User>> GetActivatedUsersAsync(string zjuInfoId)
+		public async Task<IEnumerable<CC98User>> GetActivatedUsersAsync(string zjuInfoId, CancellationToken cancellationToken = default)
 		{
 			return await (from i in DbContext.Users
-				where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
-				select i).ToArrayAsync();
+						  where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+						  select i).ToArrayAsync(cancellationToken);
 		}
 
 		/// <summary>
 		///     获取一个值，指示给定的账号是否还可以进行激活。
 		/// </summary>
 		/// <param name="zjuInfoId">浙大通行证账号。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>表示异步操作的方法。操作结果返回一个值，表示是否还能激活账号。</returns>
-		public async Task<bool> CanActivateUsersAsync(string zjuInfoId)
+		public async Task<bool> CanActivateUsersAsync(string zjuInfoId, CancellationToken cancellationToken = default)
 		{
-			var count = await GetActivatedUserCountAsync(zjuInfoId);
+			// 检测账户是否被锁定。
+			var isLocked = await IsLockedAsync(zjuInfoId, cancellationToken);
+
+			if (isLocked)
+			{
+				return false;
+			}
+
+			var count = await GetActivatedUserCountAsync(zjuInfoId, cancellationToken);
 			return count < AppSetting.MaxCC98AccountPerZjuInfoId;
+		}
+
+		/// <summary>
+		/// 获取一个值，指示给定的账户是否被锁定。
+		/// </summary>
+		/// <param name="zjuInfoId">浙大通行证信息。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
+		/// <returns>表示异步操作的方法。操作结果返回一个值，表示账户是否被锁定。</returns>
+		public Task<bool> IsLockedAsync(string zjuInfoId, CancellationToken cancellationToken = default)
+		{
+			var item = 
+				from i in DbContext.ZjuAccountLockDownRecords
+					   where i.ZjuAccountId == zjuInfoId
+					   select i;
+
+			return item.AnyAsync(cancellationToken);
 		}
 
 		/// <summary>

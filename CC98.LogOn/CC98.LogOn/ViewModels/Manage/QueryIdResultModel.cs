@@ -27,5 +27,10 @@ namespace CC98.LogOn.ViewModels.Manage
 		/// 获取或设置学工号关联的浙大通行证的详细信息。
 		/// </summary>
 		public ZjuInfoUserInfo ZjuUserInfo { get; set; }
+
+		/// <summary>
+		/// 获取或设置一个值，指示该学号是否被锁定。
+		/// </summary>
+		public bool IsLocked { get; set; }
 	}
 }

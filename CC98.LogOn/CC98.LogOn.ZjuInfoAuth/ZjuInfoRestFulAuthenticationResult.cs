@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace CC98.LogOn.ZjuInfoAuth
 {
@@ -10,19 +10,19 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// <summary>
 		///     错误代码。如果为 0 表示未发生错误。
 		/// </summary>
-		[JsonProperty("errorcode")]
+		[JsonPropertyName("errorcode")]
 		public int ErrorCode { get; set; }
 
 		/// <summary>
 		///     错误描述信息。
 		/// </summary>
-		[JsonProperty("errormsg")]
+		[JsonPropertyName("errormsg")]
 		public string ErrorMessage { get; set; }
 
 		/// <summary>
 		///     成功时返回的令牌对象。
 		/// </summary>
-		[JsonProperty("token")]
+		[JsonPropertyName("token")]
 		public string Token { get; set; }
 	}
 }

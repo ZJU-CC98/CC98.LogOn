@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace CC98.LogOn.ZjuInfoAuth
 {
@@ -34,7 +34,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>表示异步操作的任务。操作结果包含 <paramref name="userId"/> 所给定的用户的详细信息。</returns>
 		/// <remarks>该方法在浙大通行证后端具有 IP 白名单限定。</remarks>
-		public async Task<ZjuInfoUserInfo> GetUserInfoAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+		public async Task<ZjuInfoUserInfo> GetUserInfoAsync(string userId, CancellationToken cancellationToken = default)
 		{
 
 			// 操作的 URL 地址。
@@ -50,13 +50,21 @@ namespace CC98.LogOn.ZjuInfoAuth
 			var response = await HttpClient.PostAsync(uri, new FormUrlEncodedContent(postData), cancellationToken);
 			response.EnsureSuccessStatusCode();
 
-			var data = await response.Content.ReadAsStringAsync();
-			var responseObj = JsonConvert.DeserializeObject<ZjuInfoUserDetailResponse>(data);
+			await using var data = await response.Content.ReadAsStreamAsync();
+			var responseObj = await JsonSerializer.DeserializeAsync<ZjuInfoUserDetailResponse>(data, cancellationToken: cancellationToken);
 
 			return responseObj.UserInfo;
 		}
 
-		public async Task ModifyPassswordAsync(string userId, string newPassword, string userCertificateId, CancellationToken cancellationToken = default(CancellationToken))
+		/// <summary>
+		/// 通过后台结构修改浙大通行证密码。
+		/// </summary>
+		/// <param name="userId">要修改密码的用户的标识（学工号）。</param>
+		/// <param name="newPassword">要修改的新密码。</param>
+		/// <param name="userCertificateId">用户的身份证件号码。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
+		/// <returns>表示异步操作的任务。</returns>
+		public async Task ModifyPasswordAsync(string userId, string newPassword, string userCertificateId, CancellationToken cancellationToken = default)
 		{
 			const string uri = "https://zuinfo.zju.edu.cn/v2/modifyPwd.zf";
 
@@ -83,18 +91,16 @@ namespace CC98.LogOn.ZjuInfoAuth
 		{
 			var str = userId + userCertificateId;
 
-			using (var md5 = MD5.Create())
+			using var md5 = MD5.Create();
+			var hash = md5.ComputeHash(Encoding.ASCII.GetBytes(str));
+			var sb = new StringBuilder();
+
+			foreach (var b in hash)
 			{
-				var hash = md5.ComputeHash(Encoding.ASCII.GetBytes(str));
-				var sb = new StringBuilder();
-
-				foreach (var b in hash)
-				{
-					sb.AppendFormat("{0:X2}", b);
-				}
-
-				return sb.ToString();
+				sb.AppendFormat("{0:X2}", b);
 			}
+
+			return sb.ToString();
 		}
 
 		/// <inheritdoc />

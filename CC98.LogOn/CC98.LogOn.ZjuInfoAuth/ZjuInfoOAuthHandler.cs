@@ -2,13 +2,13 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace CC98.LogOn.ZjuInfoAuth
 {
@@ -35,7 +35,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		public override async Task<bool> HandleRequestAsync()
 		{
 			if (await ShouldHandleRequestAsync() && !Request.QueryString.HasValue && Options.RedirectPath != null &&
-			    Options.RedirectPath.HasValue)
+				Options.RedirectPath.HasValue)
 			{
 				Context.Response.Redirect(Options.RedirectPath.Value);
 				return true;
@@ -49,13 +49,13 @@ namespace CC98.LogOn.ZjuInfoAuth
 			AuthenticationProperties properties, OAuthTokenResponse tokens)
 		{
 			var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+			request.Headers.Authorization = new AuthenticationHeaderValue(tokens.TokenType, tokens.AccessToken);
 
 			var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 			if (!response.IsSuccessStatusCode)
 				throw new HttpRequestException($"获取浙大通行证个人信息时无法服务器无法正常响应。状态代码：{response.StatusCode}");
 
-			var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+			var payload = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync());
 			var regeneratedData = RebuildJsonObject(payload);
 
 			var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options,
@@ -70,18 +70,11 @@ namespace CC98.LogOn.ZjuInfoAuth
 		///     将服务器提供的 JSON 对象数据进行重新组合，以便于后续声明处理程序提取声明数据。
 		/// </summary>
 		/// <param name="data"></param>
-		protected static JObject RebuildJsonObject(JObject data)
+		private static JsonElement RebuildJsonObject(JsonDocument data)
 		{
-			var result = new JObject();
-
-			var attributeNode = data["attributes"];
-
-			foreach (var token in attributeNode)
-				if (token is JObject obj)
-					foreach (var prop in obj.Properties())
-						result[prop.Name] = prop.Value;
-
-			return result;
+			// 所有数据都放在 attributes 核心节点中
+			var attributeNode = data.RootElement.GetProperty("attributes");
+			return attributeNode;
 		}
 	}
 }

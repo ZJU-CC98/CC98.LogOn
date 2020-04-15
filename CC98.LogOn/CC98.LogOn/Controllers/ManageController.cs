@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
+using CC98.LogOn.Services;
 using CC98.LogOn.ViewModels.Manage;
 using CC98.LogOn.ZjuInfoAuth;
 using Microsoft.AspNetCore.Authorization;
@@ -47,13 +49,21 @@ namespace CC98.LogOn.Controllers
 		/// </summary>
 		private CC98PasswordHashService CC98PasswordHashService { get; }
 
+
+		/// <summary>
+		/// 提供 CC98 数据服务。
+		/// </summary>
+		private CC98DataService CC98DataService { get; set; }
+
 		/// <summary>
 		/// 查询账号。
 		/// </summary>
+		/// <param name="page">页码。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[HttpGet]
 		[Authorize(Policies.QueryAccount)]
-		public async Task<IActionResult> QueryAccount(QueryAccountViewModel model, int page = 1)
+		public async Task<IActionResult> QueryAccount(QueryAccountViewModel model, int page = 1, CancellationToken cancellationToken = default)
 		{
 			// 显示查询界面
 			if (!ModelState.IsValid)
@@ -67,7 +77,7 @@ namespace CC98.LogOn.Controllers
 			// 找不到学号
 			var cc98IdInfo = await (from i in DbContext.Users
 									where i.Name == userName
-									select i).FirstOrDefaultAsync();
+									select i).FirstOrDefaultAsync(cancellationToken);
 
 			if (cc98IdInfo == null)
 			{
@@ -85,7 +95,7 @@ namespace CC98.LogOn.Controllers
 
 			var items = await (from i in DbContext.Users
 							   where i.RegisterZjuInfoId == zjuId
-							   select i).ToPagedListAsync(20, page);
+							   select i).ToPagedListAsync(20, page, cancellationToken);
 
 			var result = new QueryAccountResultModel
 			{
@@ -100,11 +110,14 @@ namespace CC98.LogOn.Controllers
 		/// 执行查询学号操作。
 		/// </summary>
 		/// <param name="model">视图模型。</param>
+		/// <param name="page">关联到的 CC98 ID 的翻页页码。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[HttpGet]
 		[Authorize(Policies.QueryId)]
-		public async Task<IActionResult> QueryId(QueryIdViewModel model, int page = 1)
+		public async Task<IActionResult> QueryId(QueryIdViewModel model, int page = 1, CancellationToken cancellationToken = default)
 		{
+			// 数据无效
 			if (!ModelState.IsValid)
 			{
 				ModelState.Clear();
@@ -119,7 +132,7 @@ namespace CC98.LogOn.Controllers
 
 				var user = await (from i in DbContext.Users
 								  where i.Name == userName
-								  select i).FirstOrDefaultAsync();
+								  select i).FirstOrDefaultAsync(cancellationToken);
 				if (user == null)
 				{
 					ModelState.AddModelError("", "未找到具有给定名称的 CC98 账号。");
@@ -137,17 +150,18 @@ namespace CC98.LogOn.Controllers
 
 			var cc98Ids = await (from i in DbContext.Users
 								 where i.RegisterZjuInfoId == schoolId
-								 select i).ToPagedListAsync(20, page);
+								 select i).ToPagedListAsync(20, page, cancellationToken);
 
 			var resultModel = new QueryIdResultModel
 			{
 				SchoolId = schoolId,
 				Users = cc98Ids,
+				IsLocked = await CC98DataService.IsLockedAsync(schoolId, cancellationToken)
 			};
 
 			try
 			{
-				resultModel.ZjuUserInfo = await GetUserInfoAsync(schoolId);
+				resultModel.ZjuUserInfo = await GetUserInfoAsync(schoolId, cancellationToken);
 			}
 			catch (Exception)
 			{
@@ -161,10 +175,12 @@ namespace CC98.LogOn.Controllers
 		/// <summary>
 		/// 显示管理账号界面。
 		/// </summary>
+		/// <param name="model">数据模型。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[HttpGet]
 		[Authorize(Policies.Admin)]
-		public async Task<IActionResult> Account(AccountViewModel model)
+		public async Task<IActionResult> Account(AccountViewModel model, CancellationToken cancellationToken = default)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -176,7 +192,7 @@ namespace CC98.LogOn.Controllers
 
 			var cc98IdInfo = await (from i in DbContext.Users
 									where i.Name == userName
-									select i).FirstOrDefaultAsync();
+									select i).FirstOrDefaultAsync(cancellationToken);
 
 			if (cc98IdInfo == null)
 			{
@@ -187,7 +203,7 @@ namespace CC98.LogOn.Controllers
 			// 获取通行证信息
 			var zjuInfo = string.IsNullOrEmpty(cc98IdInfo.RegisterZjuInfoId)
 				? null
-				: await GetUserInfoAsync(cc98IdInfo.RegisterZjuInfoId);
+				: await GetUserInfoAsync(cc98IdInfo.RegisterZjuInfoId, cancellationToken);
 
 			var result = new AccountResultModel
 			{
@@ -202,11 +218,12 @@ namespace CC98.LogOn.Controllers
 		/// 执行修改激活信息操作。
 		/// </summary>
 		/// <param name="model">数据模型。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Policies.Admin)]
-		public async Task<IActionResult> ChangeActivationInfo(ChangeActivationInputModel model)
+		public async Task<IActionResult> ChangeActivationInfo(ChangeActivationInputModel model, CancellationToken cancellationToken = default)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -216,7 +233,7 @@ namespace CC98.LogOn.Controllers
 			var userName = model.CC98UserName;
 			var cc98User = await (from i in DbContext.Users
 								  where i.Name == userName
-								  select i).FirstOrDefaultAsync();
+								  select i).FirstOrDefaultAsync(cancellationToken);
 
 			if (cc98User == null)
 			{
@@ -228,7 +245,7 @@ namespace CC98.LogOn.Controllers
 
 			try
 			{
-				await DbContext.SaveChangesAsync();
+				await DbContext.SaveChangesAsync(cancellationToken);
 				MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功", "你已经成功修改了这个账户的激活和绑定信息");
 				return Ok();
 			}
@@ -242,11 +259,12 @@ namespace CC98.LogOn.Controllers
 		/// 实现密码重置功能。
 		/// </summary>
 		/// <param name="model">视图模型。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Policies.Admin)]
-		public async Task<IActionResult> ResetPassword(ResetPasswordInputModel model)
+		public async Task<IActionResult> ResetPassword(ResetPasswordInputModel model, CancellationToken cancellationToken = default)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -256,7 +274,7 @@ namespace CC98.LogOn.Controllers
 			var userName = model.CC98UserName;
 			var cc98User = await (from i in DbContext.Users
 								  where i.Name == userName
-								  select i).FirstOrDefaultAsync();
+								  select i).FirstOrDefaultAsync(cancellationToken);
 
 			if (cc98User == null)
 			{
@@ -275,7 +293,7 @@ namespace CC98.LogOn.Controllers
 
 			try
 			{
-				await DbContext.SaveChangesAsync();
+				await DbContext.SaveChangesAsync(cancellationToken);
 				MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功", "你已经成功修改了这个账户的密码");
 				return Ok();
 			}
@@ -328,15 +346,17 @@ namespace CC98.LogOn.Controllers
 		/// 提取浙大通行证信息的辅助方法。
 		/// </summary>
 		/// <param name="schoolId">浙大通行证编号。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>表示异步操作的对象。操作结果包含浙大通行证信息。</returns>
-		private async Task<ZjuInfoUserInfo> GetUserInfoAsync(string schoolId)
+		private Task<ZjuInfoUserInfo> GetUserInfoAsync(string schoolId, CancellationToken cancellationToken = default)
 		{
-			using (var service = new ZjuInfoService())
+			using var service = new ZjuInfoService
 			{
-				service.AppKey = Configuration["Authentication:ZjuInfo:ClientId"];
-				service.AppSecret = Configuration["Authentication:ZjuInfo:ClientSecret"];
-				return await service.GetUserInfoAsync(schoolId);
-			}
+				AppKey = Configuration["Authentication:ZjuInfo:ClientId"],
+				AppSecret = Configuration["Authentication:ZjuInfo:ClientSecret"]
+			};
+
+			return service.GetUserInfoAsync(schoolId, cancellationToken);
 		}
 	}
 }

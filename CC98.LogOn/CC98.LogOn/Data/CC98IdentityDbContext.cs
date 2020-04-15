@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CC98.LogOn.Data
 {
@@ -31,7 +32,15 @@ namespace CC98.LogOn.Data
 		/// </summary>
 		public virtual DbSet<CC98User> Users { get; set; }
 
+		/// <summary>
+		/// 获取或设置数据库中包含的所有用户头衔的集合。
+		/// </summary>
 		public virtual DbSet<UserTitle> UserTitles { get; set; }
+
+		/// <summary>
+		/// 获取或设置数据库中包含的浙大通行证锁定信息的集合。
+		/// </summary>
+		public virtual DbSet<ZjuAccountLockDownRecord> ZjuAccountLockDownRecords { get; set; }
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -55,9 +64,9 @@ namespace CC98.LogOn.Data
 		public async Task<int> CreateAccountAsync(string userName, string password, Gender gender, string ipAddress,
 			string zjuInfoId)
 		{
-			var connnection = (SqlConnection)Database.GetDbConnection();
+			var connection = (SqlConnection)Database.GetDbConnection();
 
-			var command = connnection.CreateCommand();
+			var command = connection.CreateCommand();
 			command.CommandType = CommandType.StoredProcedure;
 			command.CommandText = "CreateUser";
 			command.Parameters.AddWithValue("@userName", userName);
@@ -67,7 +76,7 @@ namespace CC98.LogOn.Data
 			command.Parameters.AddWithValue("@zjuInfoId", (object)zjuInfoId ?? DBNull.Value);
 			command.Parameters.Add("@userId", SqlDbType.Int).Direction = ParameterDirection.Output;
 
-			await connnection.OpenAsync();
+			await connection.OpenAsync();
 			await command.ExecuteNonQueryAsync();
 
 			return (int)command.Parameters["@userId"].Value;
@@ -105,71 +114,9 @@ namespace CC98.LogOn.Data
 				throw new ArgumentNullException(nameof(zjuInfoId));
 			}
 
-			return await UserTitles.FromSql($"EXEC LoadZjuInfoIdUserTitles {zjuInfoId}").ToArrayAsync();
+			return await UserTitles.FromSqlInterpolated($"EXEC LoadZjuInfoIdUserTitles {zjuInfoId}").ToArrayAsync();
 		}
 
 		#endregion
-	}
-
-	/// <summary>
-	/// 定义用户的头衔信息。
-	/// </summary>
-	[Table("UserTitles")]
-	public class UserTitle
-	{
-		/// <summary>
-		/// 头衔的标识。
-		/// </summary>
-		[Key]
-		public int Id { get; set; }
-		/// <summary>
-		/// 头衔的名称。
-		/// </summary>
-		[Required]
-		[StringLength(50)]
-		public string Name { get; set; }
-		/// <summary>
-		/// 头衔的描述。
-		/// </summary>
-		public string Description { get; set; }
-
-		/// <summary>
-		/// 头衔的类型。
-		/// </summary>
-		public UserTitleType Type { get; set; }
-
-		/// <summary>
-		/// 头衔的图像地址。
-		/// </summary>
-		[Required]
-		public string IconUri { get; set; }
-
-		/// <summary>
-		/// 头衔的排序权重。
-		/// </summary>
-		public int SortOrder { get; set; }
-	}
-
-	/// <summary>
-	/// 定义用户头衔的类型。
-	/// </summary>
-	public enum UserTitleType
-	{
-		/// <summary>
-		/// 和用户的论坛活跃等级相关的头衔。
-		/// </summary>
-		Level,
-		/// <summary>
-		/// 和用户的权限相关的头衔。
-		/// </summary>
-		Permission,
-		/// <summary>
-		/// 可自定义的头衔。
-		/// </summary>
-		Custom,
-		/// <summary>
-		/// 特殊头衔。
-		/// </summary>
-		Special
 	}
 }

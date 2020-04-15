@@ -22,16 +22,14 @@ namespace CC98.LogOn
             if (password == null)
                 throw new ArgumentNullException(nameof(password));
 
-            using (var md5 = MD5.Create())
-            {
-                var passwordBytes = Encoding.UTF8.GetBytes(password);
-                var hashBytes = md5.ComputeHash(passwordBytes);
+            using var md5 = MD5.Create();
+            var passwordBytes = Encoding.UTF8.GetBytes(password);
+            var hashBytes = md5.ComputeHash(passwordBytes);
 
-                // CC98 的 MD5 哈希实际上只用用到中间八位。
-                var realBytes = hashBytes.Skip(4).Take(8).ToArray();
+            // CC98 的 MD5 哈希实际上只用用到中间八位。
+            var realBytes = hashBytes.Skip(4).Take(8).ToArray();
 
-                return BytesToString(realBytes);
-            }
+            return BytesToString(realBytes);
         }
 
         /// <summary>

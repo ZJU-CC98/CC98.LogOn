@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace CC98.LogOn.ZjuInfoAuth
 {
@@ -10,7 +10,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// <summary>
 		/// 获取或设置响应的用户信息。
 		/// </summary>
-		[JsonProperty("userinfo")]
+		[JsonPropertyName("userinfo")]
 		public ZjuInfoUserInfo UserInfo { get; set; }
 	}
 }

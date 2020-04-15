@@ -14,28 +14,31 @@ namespace CC98.LogOn.ZjuInfoAuth
 		/// <param name="claimActions">包含所有声明操作的集合。</param>
 		public static void ConfigureZjuInfoClaims(this ClaimActionCollection claimActions)
 		{
-			claimActions.MapJsonWithDescription(ClaimTypes.NameIdentifier, ClaimValueTypes.String, "CODE");
-			claimActions.MapJsonWithDescription(ClaimTypes.Name, ClaimValueTypes.String, "XM");
-			claimActions.MapJsonWithDescription(ClaimTypes.Gender, ClaimValueTypes.Integer, "XB", "XBMC");
-			claimActions.MapJsonWithDescription(ClaimTypes.DateOfBirth, ClaimValueTypes.Date, "CSRQ");
-			claimActions.MapJsonWithDescription(ClaimTypes.Email, ClaimValueTypes.Email, "DZYX");
-			claimActions.MapJsonWithDescription(ClaimTypes.MobilePhone, ClaimValueTypes.String, "LXDH");
+			var action = new ZjuInfoJsonClaimAction();
 
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Organization, ClaimValueTypes.Integer, "JGDM", "JGMC");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.UserType, ClaimValueTypes.Integer, "YHLX", "YHLXMC");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.CertificateType, ClaimValueTypes.Integer, "ZJLX", "ZJLXMC");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.CertificateId, ClaimValueTypes.String, "ZJHM");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.PoliticalStatus, ClaimValueTypes.Integer, "ZZMMDM", "ZZMMMC");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Nationality, ClaimValueTypes.String, "GJ", "GJMC");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Ethnicity, ClaimValueTypes.Integer, "MDZM", "MZMC");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Grade, ClaimValueTypes.String, "NJ");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Class, ClaimValueTypes.Integer, "BH", "BJMC");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.Major, ClaimValueTypes.Integer, "ZYDM", "ZYMC");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.StudentStatus, ClaimValueTypes.String, "XJZT");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.StaffStatus, ClaimValueTypes.String, "ZGZT");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.PlaceOfBirth, ClaimValueTypes.String, "SYD");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.LengthOfSchooling, ClaimValueTypes.Double, "XZ");
-			claimActions.MapJsonWithDescription(ZjuInfoClaimTypes.EntranceTime, ClaimValueTypes.Date, "RXSJ");
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ClaimTypes.NameIdentifier, ClaimValueTypes.String, "CODE"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ClaimTypes.Name, ClaimValueTypes.String, "XM"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ClaimTypes.Gender, ClaimValueTypes.Integer, "XB", "XBMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ClaimTypes.DateOfBirth, ClaimValueTypes.Date, "CSRQ"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ClaimTypes.Email, ClaimValueTypes.Email, "DZYX"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ClaimTypes.MobilePhone, ClaimValueTypes.String, "LXDH"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.Organization, ClaimValueTypes.Integer, "JGDM", "JGMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.UserType, ClaimValueTypes.Integer, "YHLX", "YHLXMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.CertificateType, ClaimValueTypes.Integer, "ZJLX", "ZJLXMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.CertificateId, ClaimValueTypes.String, "ZJHM"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.PoliticalStatus, ClaimValueTypes.Integer, "ZZMMDM", "ZZMMMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.Nationality, ClaimValueTypes.String, "GJ", "GJMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.Ethnicity, ClaimValueTypes.Integer, "MDZM", "MZMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.Grade, ClaimValueTypes.String, "NJ"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.Class, ClaimValueTypes.Integer, "BH", "BJMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.Major, ClaimValueTypes.Integer, "ZYDM", "ZYMC"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.StudentStatus, ClaimValueTypes.String, "XJZT"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.StaffStatus, ClaimValueTypes.String, "ZGZT"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.PlaceOfBirth, ClaimValueTypes.String, "SYD"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.LengthOfSchooling, ClaimValueTypes.Double, "XZ"));
+			action.Mappings.Add(new ZjuInfoJsonClaimMapping(ZjuInfoClaimTypes.EntranceTime, ClaimValueTypes.Date, "RXSJ"));
+
+			claimActions.Add(action);
 		}
 	}
 }
