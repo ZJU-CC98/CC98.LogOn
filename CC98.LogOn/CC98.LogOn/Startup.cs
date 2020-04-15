@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.Text.Json;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ZjuInfoAuth;
@@ -56,7 +58,7 @@ namespace CC98.LogOn
 
 
 			// 添加 MVC 服务
-			services.AddMvc(options =>
+			services.AddControllersWithViews(options =>
 				{
 					options.EnableActionResultExceptionFilter(); // ActionResult 异常处理
 					options.AddFlagsEnumModelBinderProvider(); // 标志枚举绑定
@@ -70,8 +72,11 @@ namespace CC98.LogOn
 			// CC98 密码散列服务
 			services.AddSingleton<CC98PasswordHashService>();
 
+
 			// 添加身份验证服务
 			services.AddAuthentication(IdentityConstants.ApplicationScheme)
+				.AddCookie(IdentityConstants.ApplicationScheme)
+				.AddCookie(IdentityConstants.ExternalScheme)
 				// 浙大通行证身份验证
 				.AddZjuInfo(options =>
 				{
@@ -129,11 +134,9 @@ namespace CC98.LogOn
 		/// </summary>
 		/// <param name="app">应用程序对象。</param>
 		/// <param name="env">宿主环境对象。</param>
-		/// <param name="loggerFactory">日志工厂对象。</param>
 		[UsedImplicitly]
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-
 			// 根据是否属于调试模式，分别启用错误处理
 			if (env.IsDevelopment())
 			{
@@ -177,6 +180,7 @@ namespace CC98.LogOn
 			app.UseRouting();
 
 			// 启用身份验证和授权服务
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			// 配置路由映射

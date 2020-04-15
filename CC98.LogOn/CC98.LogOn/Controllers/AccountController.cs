@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
@@ -126,7 +127,7 @@ namespace CC98.LogOn.Controllers
 			{
 				zjuInfoId = User.GetId();
 				var bindCount = await (from i in IdentityDbContext.Users
-									   where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+									   where i.RegisterZjuInfoId == zjuInfoId
 									   select i).CountAsync();
 
 				if (bindCount >= AppSetting.MaxCC98AccountPerZjuInfoId)
@@ -138,7 +139,7 @@ namespace CC98.LogOn.Controllers
 			}
 
 			var userExists = await (from i in IdentityDbContext.Users
-									where string.Equals(i.Name, userName, StringComparison.OrdinalIgnoreCase)
+									where i.Name == userName
 									select i).AnyAsync();
 
 			if (userExists)
@@ -260,8 +261,7 @@ namespace CC98.LogOn.Controllers
 				var userName = model.UserName;
 
 				var user = await (from i in IdentityDbContext.Users
-								  where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
-										&& string.Equals(i.Name, userName, StringComparison.OrdinalIgnoreCase)
+								  where i.RegisterZjuInfoId == zjuInfoId && i.Name == userName
 								  select i).FirstOrDefaultAsync();
 
 				if (user == null)
@@ -433,15 +433,15 @@ namespace CC98.LogOn.Controllers
 		/// <returns>²Ù×÷½á¹û¡£</returns>
 		[HttpGet]
 		[Authorize]
-		public async Task<IActionResult> My(int page = 1)
+		public async Task<IActionResult> My(int page = 1, CancellationToken cancellationToken = default)
 		{
 			var zjuInfoId = User.GetId();
 
 			var accounts = from i in IdentityDbContext.Users
-						   where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+						   where i.RegisterZjuInfoId == zjuInfoId
 						   select i;
 
-			return View(await accounts.ToPagedListAsync(20, page));
+			return View(await accounts.ToPagedListAsync(20, page, cancellationToken));
 		}
 
 		/// <summary>

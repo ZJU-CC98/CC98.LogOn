@@ -44,7 +44,7 @@ namespace CC98.LogOn.Services
 		public Task<int> GetActivatedUserCountAsync(string zjuInfoId, CancellationToken cancellationToken = default)
 		{
 			return (from i in DbContext.Users
-					where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+					where i.RegisterZjuInfoId == zjuInfoId
 					select i).CountAsync(cancellationToken);
 		}
 
@@ -57,7 +57,7 @@ namespace CC98.LogOn.Services
 		public async Task<IEnumerable<CC98User>> GetActivatedUsersAsync(string zjuInfoId, CancellationToken cancellationToken = default)
 		{
 			return await (from i in DbContext.Users
-						  where string.Equals(i.RegisterZjuInfoId, zjuInfoId, StringComparison.OrdinalIgnoreCase)
+						  where i.RegisterZjuInfoId == zjuInfoId
 						  select i).ToArrayAsync(cancellationToken);
 		}
 

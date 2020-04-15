@@ -21,12 +21,13 @@ namespace CC98.LogOn.Controllers
 	/// </summary>
 	public class ManageController : Controller
 	{
-		public ManageController(CC98IdentityDbContext dbContext, IConfiguration configuration, IOperationMessageAccessor messageAccessor, CC98PasswordHashService cc98PasswordHashService)
+		public ManageController(CC98IdentityDbContext dbContext, IConfiguration configuration, IOperationMessageAccessor messageAccessor, CC98PasswordHashService cc98PasswordHashService, CC98DataService cc98DataService)
 		{
 			DbContext = dbContext;
 			Configuration = configuration;
 			MessageAccessor = messageAccessor;
 			CC98PasswordHashService = cc98PasswordHashService;
+			CC98DataService = cc98DataService;
 		}
 
 		/// <summary>
@@ -53,7 +54,7 @@ namespace CC98.LogOn.Controllers
 		/// <summary>
 		/// 提供 CC98 数据服务。
 		/// </summary>
-		private CC98DataService CC98DataService { get; set; }
+		private CC98DataService CC98DataService { get; }
 
 		/// <summary>
 		/// 查询账号。
@@ -348,15 +349,16 @@ namespace CC98.LogOn.Controllers
 		/// <param name="schoolId">浙大通行证编号。</param>
 		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>表示异步操作的对象。操作结果包含浙大通行证信息。</returns>
-		private Task<ZjuInfoUserInfo> GetUserInfoAsync(string schoolId, CancellationToken cancellationToken = default)
+		private async Task<ZjuInfoUserInfo> GetUserInfoAsync(string schoolId, CancellationToken cancellationToken = default)
 		{
-			using var service = new ZjuInfoService
+			var service = new ZjuInfoService
 			{
 				AppKey = Configuration["Authentication:ZjuInfo:ClientId"],
 				AppSecret = Configuration["Authentication:ZjuInfo:ClientSecret"]
 			};
 
-			return service.GetUserInfoAsync(schoolId, cancellationToken);
+			// ReSharper disable once AsyncConverter.AsyncAwaitMayBeElidedHighlighting
+			return await service.GetUserInfoAsync(schoolId, cancellationToken);
 		}
 	}
 }

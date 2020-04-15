@@ -12,7 +12,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 	/// <summary>
 	/// 提供浙大通行证的额外接口服务。
 	/// </summary>
-	public class ZjuInfoService : IDisposable
+	public class ZjuInfoService : IDisposable, IAsyncDisposable
 	{
 		/// <summary>
 		/// 用于进行网络通讯的 HTTP 客户端对象。
@@ -50,8 +50,14 @@ namespace CC98.LogOn.ZjuInfoAuth
 			var response = await HttpClient.PostAsync(uri, new FormUrlEncodedContent(postData), cancellationToken);
 			response.EnsureSuccessStatusCode();
 
-			await using var data = await response.Content.ReadAsStreamAsync();
-			var responseObj = await JsonSerializer.DeserializeAsync<ZjuInfoUserDetailResponse>(data, cancellationToken: cancellationToken);
+			var data = await response.Content.ReadAsStringAsync();
+
+			var options = new JsonSerializerOptions();
+			options.Converters.Add(new NullableTypeEmptyStringConverterFactory());
+			var responseObj = JsonSerializer.Deserialize<ZjuInfoUserDetailResponse>(data, options);
+
+			//await using var data = await response.Content.ReadAsStreamAsync();
+			//var responseObj = await JsonSerializer.DeserializeAsync<ZjuInfoUserDetailResponse>(data, null, cancellationToken);
 
 			return responseObj.UserInfo;
 		}
@@ -107,6 +113,12 @@ namespace CC98.LogOn.ZjuInfoAuth
 		public void Dispose()
 		{
 			HttpClient?.Dispose();
+		}
+
+		public ValueTask DisposeAsync()
+		{
+			HttpClient.Dispose();
+			return new ValueTask();
 		}
 	}
 }

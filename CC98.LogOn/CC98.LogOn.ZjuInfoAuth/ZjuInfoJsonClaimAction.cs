@@ -44,7 +44,7 @@ namespace CC98.LogOn.ZjuInfoAuth
 				foreach (var prop in element.EnumerateObject())
 				{
 					var propName = prop.Name;
-					var propValue = prop.Value.GetString();
+					var propValue = prop.Value.ToString();
 
 					dataDic.Add(propName, propValue);
 				}
@@ -61,13 +61,24 @@ namespace CC98.LogOn.ZjuInfoAuth
 
 				// 提取值
 				var claimValue = dataDic.GetValueOrDefault(mapping.ClaimValueName);
-				var claim = new Claim(mapping.ClaimType, mapping.ValueType,claimValue, issuer);
+
+				// 值不存在，则忽略该声明
+				if (string.IsNullOrEmpty(claimValue))
+				{
+					continue;
+				}
+
+				var claim = new Claim(mapping.ClaimType,claimValue, mapping.ValueType, issuer);
 
 				// 如果还定义了描述，则增加描述。
 				if (!string.IsNullOrEmpty(mapping.ClaimDescriptionName))
 				{
 					var claimDescription = dataDic.GetValueOrDefault(mapping.ClaimDescriptionName);
-					claim.Properties.Add(ClaimProperties.Keys.Description, claimDescription);
+					if (!string.IsNullOrEmpty(claimDescription))
+					{
+						claim.Properties.Add(ClaimProperties.Keys.Description, claimDescription);
+
+					}
 				}
 
 				identity.AddClaim(claim);

@@ -49,14 +49,14 @@ namespace CC98.LogOn.ZjuInfoAuth
 			AuthenticationProperties properties, OAuthTokenResponse tokens)
 		{
 			var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-			request.Headers.Authorization = new AuthenticationHeaderValue(tokens.TokenType, tokens.AccessToken);
+			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken); // 不能使用 token.TokenType 指定 scheme 因为服务器没有提供
 
 			var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 			if (!response.IsSuccessStatusCode)
 				throw new HttpRequestException($"获取浙大通行证个人信息时无法服务器无法正常响应。状态代码：{response.StatusCode}");
 
-			var payload = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync());
-			var regeneratedData = RebuildJsonObject(payload);
+			using var payload = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync());
+			var regeneratedData = payload.RootElement;
 
 			var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options,
 				Backchannel, tokens, regeneratedData);
@@ -66,15 +66,5 @@ namespace CC98.LogOn.ZjuInfoAuth
 			return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
 		}
 
-		/// <summary>
-		///     将服务器提供的 JSON 对象数据进行重新组合，以便于后续声明处理程序提取声明数据。
-		/// </summary>
-		/// <param name="data"></param>
-		private static JsonElement RebuildJsonObject(JsonDocument data)
-		{
-			// 所有数据都放在 attributes 核心节点中
-			var attributeNode = data.RootElement.GetProperty("attributes");
-			return attributeNode;
-		}
 	}
 }
