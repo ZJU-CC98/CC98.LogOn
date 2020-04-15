@@ -1,4 +1,6 @@
-﻿<environment include="Development">
+﻿@using Microsoft.Extensions.Hosting
+
+<environment include="@Environments.Development">
 	<script src="~/lib/jquery-validate/jquery.validate.js"></script>
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 	<script src="~/lib/i18next/i18next.js"></script>
@@ -6,36 +8,44 @@
 	<script src="~/lib/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.js"></script>
 	<script src="~/lib/pwstrength-bootstrap/pwstrength-bootstrap.js"></script>
 </environment>
-<environment exclude="Development">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"
-			integrity="sha256-bu/BP02YMudBc96kI7yklc639Mu4iKGUNNcam8D2nLc="
+
+<environment exclude="@Environments.Development">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"
+			integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI="
 			crossorigin="anonymous"
 			asp-fallback-src="~/lib/jquery-validate/jquery.validate.min.js"
 			asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"
 			integrity="sha256-9GycpJnliUjJDVDqP0UEu/bsm9U+3dnQUH8+3W10vkY="
 			crossorigin="anonymous"
 			asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
 			asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/15.1.0/i18next.min.js"
-			integrity="sha256-aVuNU89+UmmelPCPkrZfD1DPVZSPMYF2VcCYs4VT2Kw="
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/19.4.1/i18next.min.js"
+			integrity="sha256-MBE5rOmx+a42b4fDyLKSh0h5OlXnEvzFUTbMwYTkj2M="
 			crossorigin="anonymous"
 			asp-fallback-src="~/lib/i18next/i18next.min.js"
 			asp-fallback-test="window.i18next"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-xhr-backend/2.0.1/i18nextXHRBackend.min.js"
-			integrity="sha256-DK68Yy4nZYgTxSPtC4VNE5RlHI7d1ve6YET+inmksmw="
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-xhr-backend/3.2.2/i18nextXHRBackend.min.js"
+			integrity="sha256-dxNIQVw/2RvuqZbPG4/pe6P0YpTY5mg7/ppSKWLjN8Y="
 			crossorigin="anonymous"
 			asp-fallback-src="~/lib/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"
 			asp-fallback-test="window.i18nextXHRBackend"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/3.0.1/i18nextBrowserLanguageDetector.min.js"
-			integrity="sha256-eeDsopx70pr2AOE0yFvAk4k0y6pfQXFOmdhn8oY4nq4="
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/4.0.2/i18nextBrowserLanguageDetector.min.js"
+			integrity="sha256-l+r6NMMxIw4+LxsC7EP+yBFnRBAwa4lYPoq74tB61aA="
 			crossorigin="anonymous"
 			asp-fallback-src="~/lib/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"
 			asp-fallback-test="window.i18nextBrowserLanguageDetector"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pwstrength-bootstrap/3.0.4/pwstrength-bootstrap.min.js" 
-	        integrity="sha256-d2Fguy9Os3DfZDl0HZWt/uCx4M1QpztOnhwEKeMURUI=" 
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pwstrength-bootstrap/3.0.6/pwstrength-bootstrap.min.js" 
+	        integrity="sha256-ugDJ18kbNFsU160encDbF9I4vnI9DyS63P9wEUe70XI="
 	        crossorigin="anonymous"
-			asp-fallback-src="~/lib/pwstrength-bootstrap/pwstrength-bootstrap.min.js"></script>
+	        asp-fallback-src="~/lib/pwstrength-bootstrap/pwstrength-bootstrap.min.js"
+	        asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.pwstrength"></script>
 </environment>
 
 

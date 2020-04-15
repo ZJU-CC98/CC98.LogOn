@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace CC98.LogOn
 {
@@ -10,25 +11,25 @@ namespace CC98.LogOn
 	public static class Program
 	{
 		/// <summary>
-		///     应用程序的入口方法。
+		/// 应用程序的入口方法。
 		/// </summary>
 		/// <param name="args">应用程序的启动参数。</param>
 		[UsedImplicitly]
 		public static void Main(string[] args)
 		{
-			BuildWebHost(args).Run();
+			CreateHostBuilder(args).Build().Run();
 		}
 
 		/// <summary>
-		///     构建应用程序宿主服务。
+		/// 创建宿主构建程序。
 		/// </summary>
 		/// <param name="args">应用程序的启动参数。</param>
-		/// <returns>应用程序宿主对象。</returns>
-		public static IWebHost BuildWebHost(string[] args)
-		{
-			return WebHost.CreateDefaultBuilder(args)
-				.UseStartup<Startup>()
-				.Build();
-		}
+		/// <returns>用于启动宿主的 <see cref="IHostBuilder"/> 对象。</returns>
+		private static IHostBuilder CreateHostBuilder(string[] args) =>
+			Host.CreateDefaultBuilder(args)
+				.ConfigureWebHostDefaults(webBuilder =>
+				{
+					webBuilder.UseStartup<Startup>();
+				});
 	}
 }

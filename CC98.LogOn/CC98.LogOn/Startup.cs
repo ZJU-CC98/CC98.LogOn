@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Framework.DependencyInjection;
 using Sakura.AspNetCore.Localization;
@@ -132,7 +133,7 @@ namespace CC98.LogOn
 		/// <param name="env">宿主环境对象。</param>
 		/// <param name="loggerFactory">日志工厂对象。</param>
 		[UsedImplicitly]
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 
 			// 根据是否属于调试模式，分别启用错误处理
@@ -145,6 +146,8 @@ namespace CC98.LogOn
 			{
 				// 通用错误页面
 				app.UseExceptionHandler("/Home/Error");
+				// 强制 HSTS
+				app.UseHsts();
 			}
 
 			// 多语言版本支持
@@ -166,19 +169,25 @@ namespace CC98.LogOn
 			// 会话服务
 			app.UseSession();
 
+			// 强制 HTTPS
+			app.UseHttpsRedirection();
+
 			// 允许访问静态文件
 			app.UseStaticFiles();
 
-			// 启用身份验证服务
-			app.UseAuthentication();
+			// 启用 HTTP 路由
+			app.UseRouting();
 
-			// MVC 路由配置
-			app.UseMvc(routes =>
+			// 启用身份验证和授权服务
+			app.UseAuthorization();
+
+			// 配置路由映射
+			app.UseEndpoints(endpoints =>
 			{
-				routes.MapRoute(
-					"default",
-					"{controller=Home}/{action=Index}/{id?}");
+				// MVC 路由
+				endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 			});
+
 		}
 	}
 }
