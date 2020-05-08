@@ -1,7 +1,9 @@
 ﻿@using CC98.LogOn.Services
+@using Microsoft.Extensions.Options
 @using Sakura.AspNetCore.Authentication
 @model CC98.LogOn.ViewModels.Account.RegisterViewModel
 @inject CC98DataService CC98DataService
+@inject IOptions<AppSetting> AppSettingOptions
 @inject ExternalSignInManager ExternalSignInManager
 @{
 	ViewBag.Title = "注册 CC98 账号";
@@ -56,15 +58,24 @@
 
 				if (await CC98DataService.CanActivateUsersAsync(User.GetId()))
 				{
-					<div class="form-group">
-						<div class="form-check">
-							<label class="form-check-label">
-								<input asp-for="BindToZjuInfoId" type="checkbox" checked="checked" class="form-check-input" onchange="switchSkipState();" /> 绑定到我的浙大通行证
-							</label>
+					if (AppSettingOptions.Value.ForceZjuInfoIdBind)
+					{
+						<input asp-for="BindToZjuInfoId" type="hidden" value="true" />
+						<div class="alert alert-info">你注册的账号将自动使用你当前登录的浙大通行证进行激活。请注意：你以后将不能更改这个账号关联的浙大通行证，每个浙大通行证能够注册的账号数量有限。</div>
+					}
+					else
+					{
+						<div class="form-group">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input asp-for="BindToZjuInfoId" type="checkbox" checked="checked" class="form-check-input" onchange="switchSkipState();" /> 绑定到我的浙大通行证
+								</label>
+							</div>
+							<span asp-validation-for="BindToZjuInfoId" cla class="text-danger"></span>
+							<small class="form-text text-muted">默认情况下，你注册的账号将自动使用你当前登录的浙大通行证进行激活。如果你不希望系统自动进行这样的操作，可以取消选中上面的复选框。<span class="text-warning">注意：激活操作不可撤销，你以后也不能更改这个账号关联的浙大通行证。</span></small>
 						</div>
-						<span asp-validation-for="BindToZjuInfoId" cla class="text-danger"></span>
-						<small class="form-text text-muted">默认情况下，你注册的账号将自动使用你当前登录的浙大通行证进行激活。如果你不希望系统自动进行这样的操作，可以取消选中上面的复选框。<span class="text-warning">注意：激活操作不可撤销，你以后也不能更改这个账号关联的浙大通行证。</span></small>
-					</div>
+					}
+					
 				}
 				else
 				{
@@ -142,6 +153,7 @@
 		});
 
 		function switchSkipState() {
+
 			var bindToZjuInfoId = $('input[name="BindToZjuInfoId"]').prop('checked');
 			switchSkipCore(bindToZjuInfoId);
 		}
@@ -158,16 +170,19 @@
 			}
 		}
 
-		$(function () {
+		$(function() {
 
-			switchSkipState();
+			if ($('input[name="BindToZjuInfoId"]').prop("type") === "hidden") {
+				switchSkipCore(true);
+			} else {
+				switchSkipState();
+			}
 
 			$('#show-register-tip-link').popover({
 				trigger: 'focus',
 				html: true,
 				content: $('#register-tip').html()
 			});
-
 		});
 
 	</script>

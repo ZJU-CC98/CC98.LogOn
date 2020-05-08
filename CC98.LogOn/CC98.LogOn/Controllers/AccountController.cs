@@ -88,6 +88,12 @@ namespace CC98.LogOn.Controllers
 		[HttpGet]
 		public IActionResult Register()
 		{
+			// 如果要求绑定通行证，则强制登录。
+			if (AppSetting.ForceZjuInfoIdBind && !User.Identity.IsAuthenticated)
+			{
+				return Challenge();
+			}
+
 			return View();
 		}
 
@@ -100,13 +106,29 @@ namespace CC98.LogOn.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Register(RegisterViewModel model)
 		{
+			// 如果要求绑定通行证，则强制登录。
+			if (AppSetting.ForceZjuInfoIdBind)
+			{
+				// 未登录
+				if (!User.Identity.IsAuthenticated)
+				{
+					return Challenge();
+				}
+
+				// 选择不绑定
+				if (!model.BindToZjuInfoId)
+				{
+					return Forbid();
+				}
+			}
+
 			var userName = model.UserName ?? string.Empty;
 			string zjuInfoId = null;
 
 			// HACK: 后台检测用户名是否合法
 			if (!Regex.IsMatch(userName, @"^\w+$", RegexOptions.Compiled | RegexOptions.Singleline))
 			{
-				ModelState.AddModelError("", "用户名中不能包含标点符号、空白和其它不非文字类字符。");
+				ModelState.AddModelError("", "用户名中不能包含标点符号、空白和其它非文字类字符。");
 			}
 
 			// 用户名字符长度检测

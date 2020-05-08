@@ -20,5 +20,10 @@
 		/// </summary>
 		public PermissionSettingGroup Permissions { get; set; }
 
+		/// <summary>
+		/// 获取或设置一个值，指示注册账号时是否强制要求浙大通行证信息绑定。
+		/// </summary>
+		public bool ForceZjuInfoIdBind { get; set; }
+
 	}
 }
