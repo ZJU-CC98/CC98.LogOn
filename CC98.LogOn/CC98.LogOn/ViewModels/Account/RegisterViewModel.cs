@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 using CC98.LogOn.Data;
 
 namespace CC98.LogOn.ViewModels.Account
@@ -48,5 +49,12 @@ namespace CC98.LogOn.ViewModels.Account
 		/// </summary>
 		[Display(Name = "绑定到通行证")]
 		public bool BindToZjuInfoId { get; set; }
+
+		/// <summary>
+		/// 获取或设置一个值，指示是否要接受许可协议。
+		/// </summary>
+		[Display(Name = "接受许可协议")]
+		[Required(ErrorMessage = "你必须接受许可协议才能继续")]
+		public bool AcceptTerms { get; set; }
 	}
 }

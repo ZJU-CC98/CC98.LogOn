@@ -25,5 +25,10 @@
 		/// </summary>
 		public bool ForceZjuInfoIdBind { get; set; }
 
+		/// <summary>
+		/// 获取或设置用户许可协议的地址。
+		/// </summary>
+		public string TermsAddress { get; set; }
+
 	}
 }
