@@ -14,11 +14,19 @@ namespace CC98.LogOn.Data
 		[Key]
 		[StringLength(50)]
 		[Required]
+		[Display(Name = "通行证账号")]
 		public string ZjuAccountId { get; set; }
+
+		/// <summary>
+		/// 获取或设置锁定的原因说明。
+		/// </summary>
+		[Display(Name = "锁定理由")]
+		public string Reason { get; set; }
 
 		/// <summary>
 		/// 获取或设置锁定的时间。
 		/// </summary>
+		[Display(Name = "锁定时间")]
 		public DateTimeOffset Time { get; set; }
 	}
 }

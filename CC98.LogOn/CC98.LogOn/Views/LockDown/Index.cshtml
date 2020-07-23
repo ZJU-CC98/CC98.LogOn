@@ -1,0 +1,120 @@
+﻿@using CC98.LogOn.ViewModels.Manage
+@model IPagedList<ZjuAccountLockDownRecord>
+@{
+	ViewBag.Title = "通行证账号锁定记录一览";
+}
+
+@if (Model.Any())
+{
+<div class="alert alert-info">下标列出了目前被锁定的通行证账号。被锁定的通行证账号将无法用于激活或创建新的 CC98 账号，但已注册的 CC98 账号不会直接受到影响，你可以手动对该通行证账号名下的 CC98 账号进行必要的管理操作。单击账号名称可查看该账号的详情。</div>
+<table class="table table-hover table-striped">
+	<thead>
+		<tr>
+			<th>
+				通行证账号
+			</th>
+			<th>
+				锁定原因
+			</th>
+			<th>
+				锁定时间
+			</th>
+			<th>
+				操作
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+			{
+		<tr data-id="@item.ZjuAccountId">
+			<th><a asp-controller="Manage" asp-action="QueryId" asp-route-id="@item.ZjuAccountId" asp-route-type="@QueryIdType.SchoolId" target="_blank">@item.ZjuAccountId</a></th>
+			<td>
+				@if (!string.IsNullOrEmpty(item.Reason))
+						{
+				<span>@item.Reason</span>
+						}
+						else
+						{
+				<span class="text-muted">无</span>
+						}
+			</td>
+			<td>
+				<span>@item.Time.ToString("G")</span>
+			</td>
+			<td>
+				<div class="btn-group btn-group-sm">
+					<button class="btn btn-danger" onclick="doDelete(this);">删除</button>
+				</div>
+			</td>
+		</tr>
+			}
+	</tbody>
+</table>
+
+<pager />
+}
+else
+{
+<p class="text-muted text-center">目前还没有被锁定的通行证账号。</p>
+}
+
+<hr />
+<a class="btn btn-primary" asp-controller="LockDown" asp-action="Create">添加新的锁定记录</a>
+
+<form asp-controller="LockDown" asp-action="Delete" method="post" asp-antiforgery="true" data-ajax="true" data-ajax-success="onSuccess()" data-ajax-failure="onError(this, xhr)">
+
+	<input id="delete-id-input" type="hidden" name="id" />
+
+	<div id="delete-id-dialog" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">删除账号警告</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>你确定要从锁定表中删除账号 <strong id="delete-id-text"></strong> 吗？删除后，这个通行证账号将可以继续注册或激活新账号。这个操作无法撤销。</p>
+					<p>如果要继续，请单击<q>删除账号</q>按钮。否则请关闭对话框或者单击对话框外的其它位置。</p>
+				</div>
+				<div class="modal-footer">
+					<div class="error-text text-danger"></div>
+					<button type="submit" class="btn btn-danger">删除账号</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</form>
+
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial"/>
+	<partial name="_AjaxPartial"/>
+
+	<script type="text/javascript">
+		function doDelete(ele) {
+
+			var row = $(ele).closest('tr');
+			var id = $(row).data('id');
+
+			$('#delete-id-input').val(id);
+			$('#delete-id-text').text(id);
+
+			$('#delete-id-dialog').modal();
+		}
+
+		function onSuccess() {
+			location.reload();
+		}
+
+		function onError(ele, xhr) {
+			$('.error-text', ele).text(xhr.responseText);
+		}
+
+	</script>
+
+}

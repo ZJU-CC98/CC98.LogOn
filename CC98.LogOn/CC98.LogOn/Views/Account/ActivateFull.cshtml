@@ -3,7 +3,7 @@
 }
 
 <div class="text-center">
-	<p class="text-danger">你当前绑定的浙大通行证已经达到了允许激活的账号数量上限，无法激活新账号。</p>
+	<p class="text-danger">你当前绑定的浙大通行证已经被锁定或达到了允许激活的账号数量上限，无法激活新账号。</p>
 	<hr/>
 	<a class="btn btn-primary" asp-controller="Account" asp-action="My">查看通行证关联的账号</a>
 	<a class="btn btn-primary" asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">登录另一个浙大通行证</a>

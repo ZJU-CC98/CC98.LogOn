@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -60,9 +62,10 @@ namespace CC98.LogOn.Data
 		/// <param name="gender">账户的默认性别。</param>
 		/// <param name="ipAddress">创建时的 IP 地址。</param>
 		/// <param name="zjuInfoId">账户关联的浙大通行证。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>表示异步操作的任务。</returns>
 		public async Task<int> CreateAccountAsync(string userName, string password, Gender gender, string ipAddress,
-			string zjuInfoId)
+			string zjuInfoId, CancellationToken cancellationToken = default)
 		{
 			var connection = (SqlConnection)Database.GetDbConnection();
 
@@ -76,8 +79,8 @@ namespace CC98.LogOn.Data
 			command.Parameters.AddWithValue("@zjuInfoId", (object)zjuInfoId ?? DBNull.Value);
 			command.Parameters.Add("@userId", SqlDbType.Int).Direction = ParameterDirection.Output;
 
-			await connection.OpenAsync();
-			await command.ExecuteNonQueryAsync();
+			await connection.OpenAsync(cancellationToken);
+			await command.ExecuteNonQueryAsync(cancellationToken);
 
 			return (int)command.Parameters["@userId"].Value;
 		}
@@ -86,7 +89,7 @@ namespace CC98.LogOn.Data
 		///     更新最近用户。
 		/// </summary>
 		/// <returns>表示异步操作的任务。</returns>
-		public async Task BindUserAsync(int userId, string bindId, string userName, string password, string ip)
+		public async Task BindUserAsync(int userId, string bindId, string userName, string password, string ip, CancellationToken cancellationToken = default)
 		{
 			var connection = (SqlConnection)Database.GetDbConnection();
 
@@ -98,23 +101,24 @@ namespace CC98.LogOn.Data
 			command.Parameters.AddWithValue("@userName", userName);
 			command.Parameters.AddWithValue("@bindPassword", password);
 			command.Parameters.AddWithValue("@ip", ip);
-			await connection.OpenAsync();
-			await command.ExecuteNonQueryAsync();
+			await connection.OpenAsync(cancellationToken);
+			await command.ExecuteNonQueryAsync(cancellationToken);
 		}
 
 		/// <summary>
 		/// 获取给定通行证账户关联的用户头衔集合。
 		/// </summary>
 		/// <param name="zjuInfoId"></param>
+		/// <param name="cancellationToken"></param>
 		/// <returns></returns>
-		public async Task<IEnumerable<UserTitle>> GetZjuInfoRelatedUserTitlesAsync(string zjuInfoId)
+		public async Task<IEnumerable<UserTitle>> GetZjuInfoRelatedUserTitlesAsync(string zjuInfoId, CancellationToken cancellationToken = default)
 		{
 			if (string.IsNullOrEmpty(zjuInfoId))
 			{
 				throw new ArgumentNullException(nameof(zjuInfoId));
 			}
 
-			return await UserTitles.FromSqlInterpolated($"EXEC LoadZjuInfoIdUserTitles {zjuInfoId}").ToArrayAsync();
+			return await UserTitles.FromSqlInterpolated($"EXEC LoadZjuInfoIdUserTitles {zjuInfoId}").ToArrayAsync(cancellationToken);
 		}
 
 		#endregion

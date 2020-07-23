@@ -80,7 +80,7 @@
 				else
 				{
 					<div class="alert alert-warning">
-						系统目前限制每个浙大通行证最多可以绑定<strong>@CC98DataService.MaxActivationCount</strong> 个 CC98 账号。你当前登录的浙大通行证账号绑定数量已经达到上限，无法用于激活新账号。你在不激活的情况下继续注册账号，或者<a asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">更换浙大通行证账号</a>。
+						你的浙大通行证账号被锁定，或达到了允许激活的账号数量上上限，无法激活新账号。目前系统管理员允许每个浙大通行证激活最多 <strong>@CC98DataService.MaxActivationCount</strong> 个 CC98 账号。你可以在不激活的情况下继续注册账号，或者<a asp-controller="Account" asp-action="LogOn" asp-route-returnUrl="@Url.Action()">更换浙大通行证账号</a>。
 					</div>
 				}
 			}

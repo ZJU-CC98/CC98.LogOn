@@ -7,17 +7,21 @@ using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+
 using CC98.LogOn.Data;
 using CC98.LogOn.Services;
 using CC98.LogOn.ViewModels.Account;
 using CC98.LogOn.ZjuInfoAuth;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+
 using Sakura.AspNetCore;
 using Sakura.AspNetCore.Authentication;
 using Sakura.AspNetCore.Localization;
@@ -101,10 +105,11 @@ namespace CC98.LogOn.Controllers
 		///     执行注册操作。
 		/// </summary>
 		/// <param name="model">数据模型。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterViewModel model)
+		public async Task<IActionResult> Register(RegisterViewModel model, CancellationToken cancellationToken)
 		{
 			// 如果要求绑定通行证，则强制登录。
 			if (AppSetting.ForceZjuInfoIdBind)
@@ -118,8 +123,14 @@ namespace CC98.LogOn.Controllers
 				// 选择不绑定
 				if (!model.BindToZjuInfoId)
 				{
-					return Forbid();
+					ModelState.AddModelError(string.Empty, "目前系统管理员要求注册账号必须绑定浙大通行证。");
 				}
+			}
+
+			// 如果绑定到通行证，但通行证被锁定，则返回错误。
+			if (model.BindToZjuInfoId && await IsLockDownAsync(cancellationToken))
+			{
+				ModelState.AddModelError(string.Empty, "你的通行证账号已被锁定，无法注册账户。");
 			}
 
 			var userName = model.UserName ?? string.Empty;
@@ -173,7 +184,7 @@ namespace CC98.LogOn.Controllers
 				{
 					var newUserId = await IdentityDbContext.CreateAccountAsync(model.UserName,
 						CC98PasswordHashService.GetPasswordHash(model.Password), model.Gender,
-						HttpContext.Connection.RemoteIpAddress.ToString(), model.BindToZjuInfoId ? zjuInfoId : null);
+						HttpContext.Connection.RemoteIpAddress.ToString(), model.BindToZjuInfoId ? zjuInfoId : null, cancellationToken);
 
 					if (newUserId != -1)
 					{
@@ -205,12 +216,19 @@ namespace CC98.LogOn.Controllers
 		///     执行激活操作。
 		/// </summary>
 		/// <param name="model">视图模型。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[HttpPost]
 		[Authorize]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Activate(ActivateViewModel model)
+		public async Task<IActionResult> Activate(ActivateViewModel model, CancellationToken cancellationToken)
 		{
+			// 锁定检测。
+			if (await IsLockDownAsync(cancellationToken))
+			{
+				ModelState.AddModelError(string.Empty, "你的通行证账号已经被锁定，无法激活新账号。");
+			}
+
 			if (ModelState.IsValid)
 			{
 				var zjuInfoId = User.GetId();
@@ -220,7 +238,7 @@ namespace CC98.LogOn.Controllers
 
 				var user = await (from i in IdentityDbContext.Users
 								  where i.Name == userName && i.PasswordHash == passwordHash
-								  select i).FirstOrDefaultAsync();
+								  select i).FirstOrDefaultAsync(cancellationToken);
 
 				if (user == null)
 				{
@@ -232,13 +250,13 @@ namespace CC98.LogOn.Controllers
 				}
 				else
 				{
-					if (!await CC98DataService.CanActivateUsersAsync(zjuInfoId))
+					if (!await CC98DataService.CanActivateUsersAsync(zjuInfoId, cancellationToken))
 						ModelState.AddModelError("", "这个浙大通行证账号绑定的 CC98 账号数量已经达到上限，无法继续绑定。");
 					else
 						try
 						{
 							await IdentityDbContext.BindUserAsync(user.Id, zjuInfoId, user.Name, user.PasswordHash,
-								HttpContext.Connection.RemoteIpAddress.ToString());
+								HttpContext.Connection.RemoteIpAddress.ToString(), cancellationToken);
 
 							MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功",
 								string.Format(CultureInfo.CurrentUICulture, "你已经成功激活了账号 {0}", user.Name));
@@ -271,11 +289,12 @@ namespace CC98.LogOn.Controllers
 		///     执行重置密码操作。
 		/// </summary>
 		/// <param name="model">数据模型。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[HttpPost]
 		[Authorize]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model, CancellationToken cancellationToken)
 		{
 			if (ModelState.IsValid)
 			{
@@ -284,7 +303,7 @@ namespace CC98.LogOn.Controllers
 
 				var user = await (from i in IdentityDbContext.Users
 								  where i.RegisterZjuInfoId == zjuInfoId && i.Name == userName
-								  select i).FirstOrDefaultAsync();
+								  select i).FirstOrDefaultAsync(cancellationToken);
 
 				if (user == null)
 				{
@@ -296,7 +315,7 @@ namespace CC98.LogOn.Controllers
 
 					try
 					{
-						await IdentityDbContext.SaveChangesAsync();
+						await IdentityDbContext.SaveChangesAsync(cancellationToken);
 						MessageAccessor.Messages.Add(OperationMessageLevel.Success, "操作成功",
 							string.Format(CultureInfo.CurrentUICulture, "你已经成功重置了 CC98 账户“{0}”的密码。", user.Name));
 						return RedirectToAction("My", "Account");
@@ -332,10 +351,11 @@ namespace CC98.LogOn.Controllers
 		///     执行登录后回调。
 		/// </summary>
 		/// <param name="returnUrl">登录完成后要返回的地址。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
 		/// <returns>操作结果。</returns>
 		[AllowAnonymous]
 		[HttpGet]
-		public async Task<IActionResult> LogOnCallback(string returnUrl)
+		public async Task<IActionResult> LogOnCallback(string returnUrl, CancellationToken cancellationToken)
 		{
 			var principal = await ExternalSignInManager.GetExternalPrincipalAsync();
 
@@ -349,10 +369,12 @@ namespace CC98.LogOn.Controllers
 			var userId = principal.GetId();
 
 			// 提取权限设置
-			var roles = await GetSpecialRolesForIdAsync(userId);
+			var roles = await GetSpecialRolesForIdAsync(userId, cancellationToken);
 
 			// 登录
-			await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, CloneWithClaims(principal, IdentityConstants.ApplicationScheme, roles.Select(i => new Claim(ClaimTypes.Role, i, ClaimValueTypes.String))));
+			await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme,
+				CloneWithClaims(principal, IdentityConstants.ApplicationScheme,
+					roles.Select(i => new Claim(ClaimTypes.Role, i, ClaimValueTypes.String))));
 
 			if (Url.IsLocalUrl(returnUrl))
 				return Redirect(returnUrl);
@@ -363,8 +385,9 @@ namespace CC98.LogOn.Controllers
 		/// 获取给定用户标识的所有特殊角色。
 		/// </summary>
 		/// <param name="userId">用户标识对象。</param>
+		/// <param name="cancellationToken"></param>
 		/// <returns>包含所有特殊角色的集合。</returns>
-		private async Task<IEnumerable<string>> GetSpecialRolesForIdAsync(string userId)
+		private async Task<IEnumerable<string>> GetSpecialRolesForIdAsync(string userId, CancellationToken cancellationToken)
 		{
 			// 没有任何权限设置
 			if (AppSetting.Permissions == null)
@@ -372,7 +395,8 @@ namespace CC98.LogOn.Controllers
 				return Enumerable.Empty<string>();
 			}
 
-			var userTitles = (await IdentityDbContext.GetZjuInfoRelatedUserTitlesAsync(userId)).Select(i => i.Name).Distinct()
+			var userTitles = (await IdentityDbContext.GetZjuInfoRelatedUserTitlesAsync(userId, cancellationToken))
+				.Select(i => i.Name).Distinct()
 				.ToArray();
 
 			var result = new List<string>();
@@ -393,6 +417,26 @@ namespace CC98.LogOn.Controllers
 			}
 
 			return result.ToArray();
+		}
+
+		/// <summary>
+		/// 获取一个值，指示当前用户账号是否已经被锁定。
+		/// </summary>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
+		private async Task<bool> IsLockDownAsync(CancellationToken cancellationToken)
+		{
+			// 当前用户标识
+			var userId = User.GetId();
+
+			// 用户未登录
+			if (string.IsNullOrEmpty(userId))
+			{
+				return false;
+			}
+
+			var lockDownRecord = await IdentityDbContext.ZjuAccountLockDownRecords.FindAsync(new object[] { userId }, cancellationToken);
+			return lockDownRecord != null;
 		}
 
 		/// <summary>

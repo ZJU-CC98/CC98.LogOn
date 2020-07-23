@@ -4,14 +4,16 @@ using CC98.LogOn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC98.LogOn.Migrations
 {
     [DbContext(typeof(CC98IdentityDbContext))]
-    partial class CC98IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200723093635_AddLockDownReason")]
+    partial class AddLockDownReason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

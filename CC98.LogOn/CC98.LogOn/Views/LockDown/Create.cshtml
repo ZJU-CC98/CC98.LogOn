@@ -1,0 +1,38 @@
+﻿@model ZjuAccountLockDownRecord
+@{
+	ViewBag.Title = "创建通行证锁定记录";
+}
+
+<form asp-controller="LockDown" asp-action="Create" method="post" asp-antiforgery="true">
+
+	<div class="alert alert-warning">警告：创建记录后所有信息都不能进行修改。你只能通过删除重新创建的方式修改锁定记录的任何信息。</div>
+
+	<div class="row justify-content-center">
+		<div class="col-12 col-sm-9 col-md-6">
+
+			<div class="form-group">
+				<label asp-for="ZjuAccountId">通行证账号</label>
+				<input type="text" asp-for="ZjuAccountId" class="form-control" />
+				<span class="text-danger" asp-validation-for="ZjuAccountId"></span>
+				<small class="form-text text-muted">要锁定的通行证账号，也即当事人的学工号。</small>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="Reason">锁定原因</label>
+				<textarea rows="3" asp-for="Reason" class="form-control"></textarea>
+				<span class="text-danger" asp-validation-for="Reason"></span>
+				<small class="form-text text-muted">锁定原因。建议在原因中列出导致锁定的 CC98 账号名称和相关主题/回复内容等。</small>
+			</div>
+
+			<hr />
+
+			<div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+			<button type="submit" class="btn btn-primary">创建锁定记录</button>
+			<button type="reset" class="btn btn-outline-secondary">清空内容</button>
+
+		</div>
+	</div>
+
+</form>
+
