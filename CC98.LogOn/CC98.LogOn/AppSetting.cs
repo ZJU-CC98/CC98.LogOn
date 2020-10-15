@@ -30,5 +30,15 @@
 		/// </summary>
 		public string TermsAddress { get; set; }
 
+		/// <summary>
+		/// 电子邮件支持地址。
+		/// </summary>
+		public string SupportEmailLink { get; set; }
+
+		/// <summary>
+		/// QQ 群支持地址。
+		/// </summary>
+		public string SupportQQGroupLink { get; set; }
+
 	}
 }

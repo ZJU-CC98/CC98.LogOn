@@ -361,7 +361,7 @@ namespace CC98.LogOn.Controllers
 
 			if (principal?.Identity == null)
 			{
-				MessageAccessor.Messages.Add(OperationMessageLevel.Error, "操作失败", "登录过程中发生错误，请稍后再试一次");
+				MessageAccessor.Messages.Add(OperationMessageLevel.Error, "操作失败", "登录浙大通行证中发生错误。请确保你在浙大通行证登录界面中输入了正确的用户名密码。如果你看不到输入用户名和密码的界面，请尝试访问浙大通行证主页手动登录浙大通行证，然后再试一次。");
 				return RedirectToAction("Index", "Home");
 			}
 
