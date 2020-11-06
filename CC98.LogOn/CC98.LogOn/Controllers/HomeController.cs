@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CC98.LogOn.Controllers
 {
@@ -12,6 +14,16 @@ namespace CC98.LogOn.Controllers
 		/// </summary>
 		/// <returns>操作结果。</returns>
 		public IActionResult Index()
+		{
+			return View();
+		}
+
+		/// <summary>
+		/// 显示错误页面。
+		/// </summary>
+		/// <returns>操作结果。</returns>
+		[AllowAnonymous]
+		public IActionResult Error()
 		{
 			return View();
 		}

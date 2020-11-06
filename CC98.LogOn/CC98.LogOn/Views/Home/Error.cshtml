@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Diagnostics
+@using Microsoft.Extensions.Options
+@using CC98.LogOn.ZjuInfoAuth
+@inject IOptions<ZjuInfoOAuthOptions> ZjuInfoOAuthOptions
+@{
+	Layout = "_Layout";
+	ViewBag.Title = "网站运行时发生错误";
+
+	var expHandler = Context.Features.Get<IExceptionHandlerPathFeature>();
+}
+
+<h1 class="text-danger lead text-center">@ViewBag.Title</h1>
+<hr />
+<p>这可能是开发人员在调试网站引起的，请在稍后再试一次。如果你总是看到这个错误，请联系 CC98 管理团队。</p>
+
+@* 浙大通行证回调错误 *@
+@if (expHandler.Path == ZjuInfoOAuthOptions.Value.CallbackPath.Value)
+{
+<hr />
+
+<div class="card border-info text-info">
+	<div class="card-body">
+		<h5 class="card-title">检测到浙大通行证登录错误</h5>
+		<hr />
+		<div class="card-text">
+			<p>某些技术较为落后的浏览器无法正确处理在浙大通行证登录过程中使用的数据加密保护机制，使用这些浏览器执行登录操作将导致登录失败。如果你遇到了这个问题，建议你下载并安装最新版的 <a href="https://www.google.com/intl/zh-CN/chrome/" target="_blank">Chrome</a>、<a href="https://www.firefox.com.cn/download/" target="_blank">FireFox</a> 或者 <a href="https://www.microsoft.com/zh-cn/edge" target="_blank">Edge</a> 浏览器，然后再访问这个网站执行登录操作。</p>
+		</div>
+	</div>
+</div>
+}
