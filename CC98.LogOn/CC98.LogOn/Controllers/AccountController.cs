@@ -102,6 +102,78 @@ namespace CC98.LogOn.Controllers
 		}
 
 		/// <summary>
+		/// 检查用户名是否合法。AJAX 调用。
+		/// </summary>
+		/// <param name="userName">要检查的用户名。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
+		/// <returns>操作结果。</returns>
+		[AllowAnonymous]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> CheckUserName(string userName, CancellationToken cancellationToken = default)
+		{
+			await CheckUserNameValidCoreAsync(userName, cancellationToken);
+
+			if (ModelState.IsValid)
+			{
+				return Ok();
+			}
+
+			return Ok(ModelState[nameof(RegisterViewModel.UserName)].Errors[0].ErrorMessage);
+		}
+
+		/// <summary>
+		/// 检查用户名是否合法的核心方法。
+		/// </summary>
+		/// <param name="userName">要检查的用户名。</param>
+		/// <param name="cancellationToken">用于取消操作的令牌。</param>
+		/// <returns>表示异步操作的任务。</returns>
+		private async Task CheckUserNameValidCoreAsync(string userName, CancellationToken cancellationToken)
+		{
+			// 数据视图键。
+			const string modelKey = nameof(RegisterViewModel.UserName);
+
+			if (AppSetting.UserNameBlackList != null)
+			{
+				foreach (var blackListItem in AppSetting.UserNameBlackList)
+				{
+					if (Regex.IsMatch(userName, blackListItem))
+					{
+						ModelState.AddModelError(modelKey, "用户名不符合注册规定，请换个名称再试一次。");
+					}
+				}
+			}
+
+			// HACK: 后台检测用户名是否合法
+			if (!Regex.IsMatch(userName, @"^\w+$", RegexOptions.Compiled | RegexOptions.Singleline))
+			{
+				ModelState.AddModelError(modelKey, "用户名中不能包含标点符号、空白和其它非文字类字符。");
+			}
+
+			// 用户名字符长度检测
+			var charCount = 0;
+
+			// 简化算法：只考虑 ASCII 范围
+			foreach (var c in userName)
+				if (c < 128)
+					charCount++;
+				else
+					charCount += 2;
+
+			if (charCount > 10)
+				ModelState.AddModelError(modelKey, "用户名的长度超过限制。只能包含最多 10 个字符（非英文字母数字均视为两个字符）。");
+
+			var userExists = await (from i in IdentityDbContext.Users
+									where i.Name == userName
+									select i).AnyAsync(cancellationToken);
+
+			if (userExists)
+				ModelState.AddModelError(modelKey, "该用户名已经存在，请换个用户名再试一次。");
+
+		}
+
+
+		/// <summary>
 		///     执行注册操作。
 		/// </summary>
 		/// <param name="model">数据模型。</param>
@@ -115,7 +187,7 @@ namespace CC98.LogOn.Controllers
 			if (AppSetting.ForceZjuInfoIdBind)
 			{
 				// 未登录
-				if (!User.Identity.IsAuthenticated)
+				if (!User.Identity?.IsAuthenticated ?? false)
 				{
 					return Challenge();
 				}
@@ -142,26 +214,15 @@ namespace CC98.LogOn.Controllers
 				ModelState.AddModelError("", "用户名中不能包含标点符号、空白和其它非文字类字符。");
 			}
 
-			// 用户名字符长度检测
-			var charCount = 0;
 
-			// 简化算法：只考虑 ASCII 范围
-			foreach (var c in userName)
-				if (c < 128)
-					charCount++;
-				else
-					charCount += 2;
-
-			if (charCount > 10)
-				ModelState.AddModelError("", "用户名的长度超过限制。只能包含最多 10 个字符（非英文字母数字均视为两个字符）。");
 
 			// 激活检测
-			if (User.Identity.IsAuthenticated)
+			if (User.Identity?.IsAuthenticated ?? false)
 			{
 				zjuInfoId = User.GetId();
 				var bindCount = await (from i in IdentityDbContext.Users
 									   where i.RegisterZjuInfoId == zjuInfoId
-									   select i).CountAsync();
+									   select i).CountAsync(cancellationToken);
 
 				if (bindCount >= AppSetting.MaxCC98AccountPerZjuInfoId)
 					ModelState.AddModelError("", "当前浙大通行证绑定的账户数量已经达到上限，无法激活新账号。");
@@ -171,12 +232,8 @@ namespace CC98.LogOn.Controllers
 				ModelState.AddModelError("", "未登录到浙大通行证账号，无法激活新账号。");
 			}
 
-			var userExists = await (from i in IdentityDbContext.Users
-									where i.Name == userName
-									select i).AnyAsync();
-
-			if (userExists)
-				ModelState.AddModelError("", "该用户名已经存在，请换个用户名再试一次。");
+			// 检查用户名合法性
+			await CheckUserNameValidCoreAsync(userName, cancellationToken);
 
 
 			if (ModelState.IsValid)
@@ -184,7 +241,7 @@ namespace CC98.LogOn.Controllers
 				{
 					var newUserId = await IdentityDbContext.CreateAccountAsync(model.UserName,
 						CC98PasswordHashService.GetPasswordHash(model.Password), model.Gender,
-						HttpContext.Connection.RemoteIpAddress.ToString(), model.BindToZjuInfoId ? zjuInfoId : null, cancellationToken);
+						HttpContext.Connection.RemoteIpAddress?.ToString(), model.BindToZjuInfoId ? zjuInfoId : null, cancellationToken);
 
 					if (newUserId != -1)
 					{

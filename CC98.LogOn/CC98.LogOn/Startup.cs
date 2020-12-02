@@ -141,6 +141,7 @@ namespace CC98.LogOn
 		[UsedImplicitly]
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
+
 			// 根据是否属于调试模式，分别启用错误处理
 			if (env.IsDevelopment())
 			{

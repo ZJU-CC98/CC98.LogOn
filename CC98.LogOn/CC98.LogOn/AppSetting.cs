@@ -40,5 +40,10 @@
 		/// </summary>
 		public string SupportQQGroupLink { get; set; }
 
+		/// <summary>
+		/// 用户名黑名单列表。
+		/// </summary>
+		public string[] UserNameBlackList { get; set; }
+
 	}
 }
