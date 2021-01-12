@@ -131,6 +131,7 @@ namespace CC98.LogOn
 
 			services.AddTransient<CC98DataService>();
 			services.AddSingleton<CC98PasswordHashService>();
+			services.AddSingleton<PasswordCheckService>();
 		}
 
 		/// <summary>

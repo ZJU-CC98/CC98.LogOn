@@ -39,7 +39,7 @@ namespace CC98.LogOn.Controllers
 		public AccountController(CC98IdentityDbContext identityDbContext,
 			IDynamicStringLocalizer<AccountController> localizer, CC98PasswordHashService cc98PasswordHashService,
 			IOptions<AppSetting> appSetting, IOperationMessageAccessor messageAccessor, CC98DataService cc98DataService,
-			ExternalSignInManager externalSignInManager)
+			ExternalSignInManager externalSignInManager, PasswordCheckService passwordCheckService)
 		{
 			IdentityDbContext = identityDbContext;
 			Localizer = localizer;
@@ -47,8 +47,14 @@ namespace CC98.LogOn.Controllers
 			MessageAccessor = messageAccessor;
 			CC98DataService = cc98DataService;
 			ExternalSignInManager = externalSignInManager;
+			PasswordCheckService = passwordCheckService;
 			AppSetting = appSetting.Value;
 		}
+
+		/// <summary>
+		/// 密码检查服务。
+		/// </summary>
+		private PasswordCheckService PasswordCheckService { get; }
 
 		/// <summary>
 		///     获取数据库上下文对象。
@@ -211,9 +217,13 @@ namespace CC98.LogOn.Controllers
 			// HACK: 后台检测用户名是否合法
 			if (!Regex.IsMatch(userName, @"^\w+$", RegexOptions.Compiled | RegexOptions.Singleline))
 			{
-				ModelState.AddModelError("", "用户名中不能包含标点符号、空白和其它非文字类字符。");
+				ModelState.AddModelError(nameof(model.UserName), "用户名中不能包含标点符号、空白和其它非文字类字符。");
 			}
 
+			if (!await PasswordCheckService.IsValidPasswordAsync(model.Password, cancellationToken))
+			{
+				ModelState.AddModelError(nameof(model.Password), AppSetting.PasswordStrength.ErrorMessage);
+			}
 
 
 			// 激活检测

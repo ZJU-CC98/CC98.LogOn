@@ -45,5 +45,36 @@
 		/// </summary>
 		public string[] UserNameBlackList { get; set; }
 
+		/// <summary>
+		/// 密码强度设定。
+		/// </summary>
+		public PasswordStrengthSetting PasswordStrength { get; set; }
+
+	}
+
+	/// <summary>
+	/// 密码强度设置。
+	/// </summary>
+	public class PasswordStrengthSetting
+	{
+		/// <summary>
+		/// 最小长度。
+		/// </summary>
+		public int MinLength { get; set; }
+
+		/// <summary>
+		/// 最小字符种类个数。
+		/// </summary>
+		public int MinCategoryCount { get; set; }
+
+		/// <summary>
+		/// 是否不允许常见密码。
+		/// </summary>
+		public bool CannotBeCommon { get; set; }
+
+		/// <summary>
+		/// 错误消息。
+		/// </summary>
+		public string ErrorMessage { get; set; }
 	}
 }
